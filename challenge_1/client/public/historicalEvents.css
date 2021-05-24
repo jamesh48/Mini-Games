@@ -1,0 +1,23 @@
+.pageNo {
+  border: 1px solid black;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.pageNo:hover {
+  background-color: lightblue;
+}
+
+.active, .active:hover {
+  background-color: blue;
+}
+
+.page-no-a {
+  padding: 5px 5px;
+  color: black;
+}
+
+.active-page-no-a {
+  padding: 5px 5px;
+  color: white;
+}
