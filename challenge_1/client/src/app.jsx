@@ -10,7 +10,7 @@ export default () => {
   const [numberOfPages, setNumberOfPages] = useState(0);
 
   useEffect(async () => {
-    const {data: {results, totalPages}} = await axios('/data', { params: { searchQuery, offset, limit: 10 } });
+    const { data: { results, totalPages } } = await axios('/data', { params: { searchQuery, offset, limit: 10 } });
     setNumberOfPages(totalPages);
     setHistoricalEntries(results);
   }, [searchQuery, offset])
@@ -23,12 +23,19 @@ export default () => {
     setOffset(inboundOffset);
   }
 
+  const editCallback = async (updatedDescription, id) => {
+    let provisionalEntries = historicalEntries.map((item) => {
+      return {...item, description: item._id === id ? updatedDescription : item.description }
+    });
+    setHistoricalEntries(provisionalEntries);
+    const result = await axios.patch(`q?id=${id}&description=${updatedDescription}`)
+  }
+
   return (
     <div>
       <h4>Lets Find some Historical Events!</h4>
       <SearchBar searchCallback={searchCallback} />
-      <HistoricalEventList historicalEntries={historicalEntries} offsetCallback={offsetCallback} numberOfPages={numberOfPages} />
+      <HistoricalEventList historicalEntries={historicalEntries} offsetCallback={offsetCallback} editCallback={editCallback} numberOfPages={numberOfPages} searchQuery={searchQuery} />
     </div>
-
   )
 }

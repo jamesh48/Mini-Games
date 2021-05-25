@@ -3,29 +3,27 @@ import ReactPaginate from 'react-paginate';
 
 
 export default ({offsetCallback, numberOfPages}) => {
-  const [page, setPage] = useState(1);
-
   const handlePageClick = (data) => {
-    // const inboundPage = data.selected + 1;
     const offset = Math.ceil(data.selected * 10);
-    // setPage(inboundPage);
     offsetCallback(offset)
   }
 
-  return (
+  return numberOfPages ? (
     <ReactPaginate
       previousLabel={'previous'}
+      previousClassName={'page-no-previous'}
+      nextClassName={'page-no-next'}
       nextLabel={'next'}
       breakLabel={'...'}
-      breakClassName={'break-me'}
+      breakClassName={'breaker'}
       pageCount={numberOfPages}
       marginPagesDisplayed={2}
-      pageRangeDisplayed={6}
+      pageRangeDisplayed={3}
       pageClassName={'pageNo'}
       pageLinkClassName={'page-no-a'}
       activeLinkClassName={'active-page-no-a'}
       onPageChange={handlePageClick}
       containerClassName={'pagination'}
       activeClassName={'active'}
-    />)
+    />) : null;
 }

@@ -1,4 +1,5 @@
 const path = require('path');
+// const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
   mode: 'development',
@@ -22,4 +23,8 @@ module.exports = {
     path: path.resolve(__dirname, './client/public'),
     filename: 'bundle.js',
   },
+  // plugins: [new HtmlWebpackPlugin({
+  //   favicon: "./client/public/images/favicon.png",
+  //   title: 'hello'
+  // })],
 };
