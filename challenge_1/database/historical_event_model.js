@@ -7,7 +7,11 @@ const historicalEventSchema = new Schema({
   lang: String,
   category1: String,
   category2: String,
-  granularity: String
+  granularity: String,
+  favoriteSet: {
+    type: 'array',
+    items: { type: 'string', uniqueItems: true }
+  }
 });
 
 const HistoricalEvent = mongoose.model('HistoricalEvent', historicalEventSchema);

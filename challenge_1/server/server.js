@@ -10,15 +10,41 @@ app.use('*', (req, res, next) => {
 })
 app.use(express.static(path.resolve('client/public')));
 
-app.get('/data', async ({ query }, res) => {
+app.get('/data', async ({ query }, res, next) => {
   const results = await db.search(query)
-  res.send(results)
+  res.send(results);
 })
 
-app.patch('/:q', async ({query}, res) => {
-  const ok = await db.patch(query);
+// app.get('/getFavoriteSets', async (req, res) => {
+// let favoriteSets = await db.getFavoriteSets();
+// favoriteSets = favoriteSets.reduce((total, item) => {
+//   return [...total, item.name]
+// }, [])
+// res.send(favoriteSets);
+// })
+
+app.get('/fromFS', async ({ query }, res) => {
+  const result = await db.findFromFavoriteSet(query);
+  res.send(result);
+})
+
+app.post('/addFSTable', async ({ query }, res) => {
+  const result = await db.addFavoriteSetToTable(query);
+  res.send(result);
+})
+
+// app.patch('/addFSDoc', async ({ query }, res) => {
+//   const result = await db.addFavoriteSetToDoc(query)
+//   res.send(result);
+// });
+app.patch('/:q', async ({ query }, res) => {
+  console.log(query)
+  const result = await db.patch(Object.entries(query));
+  // res.send(result);
   res.send('ok');
 })
+
+
 
 app.listen(8000, () => {
   console.log('App listening on port 8000')

@@ -5,7 +5,7 @@
   -webkit-text-stroke: .4px olivedrab; /* width and color */
   border-radius: 2px;
 }
-#historical-event-list {
+.historical-event-list {
   list-style: none;
   padding-left: 0;
   border: 3px solid orange;
@@ -20,6 +20,29 @@
   border-right:none;
 }
 
+.favorite-options-list {
+  list-style: none;
+  padding: 15px 5px;
+  border: 1px solid black;
+}
+
+.favorite-options-list-li {
+  display: inline-block;
+  padding: 5px;
+}
+
+.li-header {
+  text-decoration: underline;
+}
+
+.favorite-options-list-li > a {
+  text-decoration: none;
+}
+
+.favorite {
+  background-color: steelblue;
+  border: 1px solid greenyellow;
+}
 .pageNo {
   border: 1px solid black;
   display: inline-block;
@@ -84,7 +107,7 @@
   padding-right: 2.5%;
 }
 .edit-button {
-  left: 95%;
+  left: 80%;
 }
 .update-cancel-buttons {
   left: 87.5%;
@@ -93,6 +116,24 @@
 .edit-button, .update-cancel-buttons {
   position: relative;
   bottom: 5px;
+}
+
+.favorite-set-select {
+  position: relative;
+  bottom: 5px;
+  left: 79%;
+  width: 150px;
+  /* -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none; */
+}
+
+.favorite-set-select > .already-favorited {
+  background-color: blue;
+}
+
+.already-favorited {
+  background-color: blue;
 }
 
 

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
+import FavoriteSetSelect from './favoriteSetSelect.jsx';
 
-export default ({ entry: { date, description, _id: editID }, editCallback }) => {
+export default ({ entry: { date, description, _id: editID, favoriteSet: eventsFavoriteSets }, editCallback, favoriteSets, addFavoriteCallback, updateCallback, indicator }) => {
   const [editingStateValues, setEditingStateValues] = useState(
     { originalDescription: description, editingDescription: description, editState: false }
   );
@@ -23,17 +24,23 @@ export default ({ entry: { date, description, _id: editID }, editCallback }) => 
     description = description.split('ampampndash').join('\u2013').split('ampndash').join('\u2013').split('ampquot').join('"')
     return description;
   }
+
   return !editingStateValues.editState ? (
     <li className='historical-entry'>
-      <div className='inner-entry'>
+      <div className={`inner-entry ${indicator}`}>
         <p>Date: {evaluateDate(date)}</p>
         <p>{evaluateDescription(description)}</p>
+        {addFavoriteCallback ?
+          <FavoriteSetSelect updateCallback={updateCallback} addFavoriteCallback={addFavoriteCallback} eventsFavoriteSets={eventsFavoriteSets} favoriteSets={favoriteSets} favID={editID} /> : null
+        }
         {/* Edit */}
-        <button className='edit-button' onClick={() => {
-          setEditingStateValues({ ...editingStateValues, editState: true });
-        }}>
-          Edit
-        </button>
+        {editCallback ?
+          <button className='edit-button' onClick={() => {
+            setEditingStateValues({ ...editingStateValues, editState: true });
+          }}>
+            Edit
+        </button> : null
+        }
       </div>
     </li >
   ) : (
