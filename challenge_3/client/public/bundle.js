@@ -10,13 +10,73 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "./client/src/components/BowlingBall.jsx":
+/*!***********************************************!*\
+  !*** ./client/src/components/BowlingBall.jsx ***!
+  \***********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ \"./node_modules/react/index.js\");\n\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (({\n  rolling\n}) => {\n  const styles = {\n    holeOne: {\n      'left': '20px',\n      'bottom': '-25px' // boxShadow: 'inset .5px 1.4px 1px rgba(0, 0, 0,1)',\n\n    },\n    holeTwo: {\n      'left': '34px',\n      'bottom': '-10px'\n    },\n    holeThree: {\n      'left': '37px',\n      'bottom': '37px'\n    },\n    ballShadow: {\n      bottom: '0px',\n      boxShadow: 'inset -25px -25px 40px rgba(0, 0, 0, .5)'\n    }\n  };\n  const [holePositions, setHolePositions] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(styles);\n  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {\n    if (rolling === true) {\n      window.rollingInterval = setInterval(() => {\n        setHolePositions(eHP => {\n          let currentPosition = Number(eHP.ballShadow.bottom.split('px')[0]);\n          currentPosition = currentPosition + 1;\n          let currentShadow = Number(eHP.ballShadow.boxShadow.split('px')[1].trim(''));\n          currentShadow = currentShadow - 1;\n          let ballShadow = { ...eHP.ballShadow,\n            ...{\n              boxShadow: `inset -25px ${currentShadow + 'px'} 40px rgba(0,0,0,.5)`,\n              bottom: currentPosition + 'px'\n            }\n          };\n          let splitter = Number(eHP.holeOne.bottom.split('px')[0]);\n          splitter = splitter + 1;\n          let holeOne = { ...eHP.holeOne,\n            ...{\n              bottom: splitter + 'px'\n            }\n          };\n          splitter = Number(eHP.holeTwo.bottom.split('px')[0]);\n          splitter = splitter + 1;\n          let holeTwo = { ...eHP.holeTwo,\n            ...{\n              bottom: splitter + 'px'\n            }\n          };\n          splitter = Number(eHP.holeThree.bottom.split('px')[0]);\n          splitter = splitter + 1;\n          let holeThree = { ...eHP.holeThree,\n            ...{\n              bottom: splitter + 'px'\n            }\n          };\n\n          if (holeOne.bottom === '42px') {\n            ballShadow.boxShadow = `inset -25px 30px 40px rgba(0,0,0,.5)`;\n          }\n\n          if (holeOne.bottom === '45px') {\n            holeOne.bottom = '-100px';\n            holeTwo.bottom = '-85px';\n            holeThree.bottom = '-38px';\n          }\n\n          let newHoles = { ...eHP,\n            holeOne,\n            holeTwo,\n            holeThree,\n            ballShadow\n          };\n          return newHoles;\n        });\n      }, 3);\n    } else {\n      clearInterval(window.rollingInterval);\n      setHolePositions(styles);\n    }\n  }, [rolling]);\n  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(\"div\", {\n    id: \"ball-element\",\n    onClick: () => {\n      setRolling(true);\n    }\n  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(\"div\", {\n    id: \"bowling-ball\",\n    style: holePositions.ballShadow\n  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(\"p\", {\n    id: \"hole-one\",\n    style: holePositions.holeOne\n  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(\"p\", {\n    id: \"hole-two\",\n    style: holePositions.holeTwo\n  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(\"p\", {\n    id: \"hole-three\",\n    style: holePositions.holeThree\n  })));\n});\n\n//# sourceURL=webpack://Bowling/./client/src/components/BowlingBall.jsx?");
+
+/***/ }),
+
+/***/ "./client/src/components/PinEntry.jsx":
+/*!********************************************!*\
+  !*** ./client/src/components/PinEntry.jsx ***!
+  \********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ \"./node_modules/react/index.js\");\n/* harmony import */ var _BowlingBall_jsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./BowlingBall.jsx */ \"./client/src/components/BowlingBall.jsx\");\n\n\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (({\n  pinCount,\n  pinReset,\n  sweepBarPosition,\n  handleBowl,\n  pinEntryClientHeight\n}) => {\n  const [pinEntry, setPinEntry] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(0); // Validation Tests\n\n  const prospectivePins = Number(pinEntry) + Number(pinCount);\n  const rightAmountOfPins = pinEntry > 0 && prospectivePins <= 10;\n  const strikeOrSpare = prospectivePins === 10;\n  const tooManyPins = prospectivePins > 10;\n  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(\"div\", {\n    style: {\n      bottom: `${sweepBarPosition !== 0 ? sweepBarPosition + 'px' : '-47.5vh'}`\n    },\n    ref: pinEntryClientHeight,\n    id: sweepBarPosition !== 0 ? 'sweep-bar' : 'pin-entry'\n  }, sweepBarPosition === 0 ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(\"form\", {\n    onSubmit: e => {\n      return new Promise((resolve, reject) => {\n        handleBowl(e, resolve);\n      }).then(() => {\n        setPinEntry(10 - (pinCount + Number(pinEntry)));\n      });\n    }\n  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(\"input\", {\n    id: rightAmountOfPins ? 'pin-input-active' : tooManyPins ? 'pin-input-invalid' : 'pin-input-inactive',\n    type: \"text\",\n    value: pinEntry || '',\n    onChange: () => {\n      setPinEntry(event.target.value);\n    }\n  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(\"button\", {\n    hidden: true,\n    style: {\n      display: 'none'\n    } // id={rightAmountOfPins ? 'bowl-button-active' : 'bowl-button-inactive'}\n    ,\n    type: \"submit\"\n  }, \"Bowl!\")) : null);\n});\n\n//# sourceURL=webpack://Bowling/./client/src/components/PinEntry.jsx?");
+
+/***/ }),
+
+/***/ "./client/src/components/Pins.jsx":
+/*!****************************************!*\
+  !*** ./client/src/components/Pins.jsx ***!
+  \****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ \"./node_modules/react/index.js\");\n\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (({\n  pinMap,\n  sweepBarPosition,\n  pinsClientHeight\n}) => {\n  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(\"div\", {\n    style: {\n      bottom: `${sweepBarPosition}px`\n    },\n    ref: pinsClientHeight,\n    id: \"pin-container\"\n  }, pinMap.reduce((total, row, index, arr) => {\n    return [...total, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(\"div\", {\n      className: \"pin-row\",\n      id: 'row-' + index,\n      key: index\n    }, row.map((pin, pinDex) => {\n      return !pinMap[index][pinDex] ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(\"span\", {\n        className: \"pin\",\n        key: pinDex\n      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(\"p\", null)) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(\"span\", {\n        className: \"pin pin-down\",\n        key: pinDex\n      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(\"p\", null, \"X\"));\n    }))];\n  }, []));\n});\n\n//# sourceURL=webpack://Bowling/./client/src/components/Pins.jsx?");
+
+/***/ }),
+
+/***/ "./client/src/components/app.jsx":
+/*!***************************************!*\
+  !*** ./client/src/components/app.jsx ***!
+  \***************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ \"./node_modules/react/index.js\");\n/* harmony import */ var _Pins_jsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Pins.jsx */ \"./client/src/components/Pins.jsx\");\n/* harmony import */ var _PinEntry_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./PinEntry.jsx */ \"./client/src/components/PinEntry.jsx\");\n/* harmony import */ var _validationMessageStrike_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./validationMessageStrike.jsx */ \"./client/src/components/validationMessageStrike.jsx\");\n/* harmony import */ var _validationMessageSpare_jsx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./validationMessageSpare.jsx */ \"./client/src/components/validationMessageSpare.jsx\");\n/* harmony import */ var _BowlingBall_jsx__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./BowlingBall.jsx */ \"./client/src/components/BowlingBall.jsx\");\n\n\n\n\n\n\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (() => {\n  const pinReset = [[false, false, false, false], [false, false, false], [false, false], [false]];\n  const [pinCount, setPinCount] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(0);\n  const [pinMap, setPinMap] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(pinReset);\n  const [sweepBarPosition, setSweepBarPosition] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(0);\n  const [numberOfBowls, setNumberOfBowls] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(0);\n  const [rolling, setRolling] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);\n  const [validationMessage, setValidationMessage] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null);\n  const pinsClientHeight = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(null);\n  const pinEntryClientHeight = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(null);\n  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {\n    if (pinCount === 10) {\n      window.interval = setInterval(() => {\n        setSweepBarPosition(prevPosition => {\n          return prevPosition + 1;\n        });\n      }, 20);\n    }\n  }, [pinCount]);\n\n  const handleBowl = ({\n    target: [{\n      value: pinEntry\n    }]\n  }, resolve) => {\n    event.preventDefault();\n    setRolling(true);\n    setTimeout(() => {\n      setPinMap(existingPinMap => {\n        const existingBowledPins = existingPinMap.join(',').split(',').filter(x => x === 'true').length;\n        const updatedBowledPins = pinCount + Number(pinEntry);\n        let count = updatedBowledPins - existingBowledPins;\n\n        while (count) {\n          const searchRow = Math.floor(Math.random() * 4);\n          const searchColumn = Math.floor(Math.random() * (3 - searchRow + 1));\n\n          if (!existingPinMap[searchRow][searchColumn]) {\n            existingPinMap[searchRow][searchColumn] = true;\n            count--;\n          }\n        }\n\n        return existingPinMap;\n      });\n      setNumberOfBowls(current => {\n        return Number(current) + 1;\n      });\n      setPinCount(current => {\n        return Number(current) + Number(pinEntry);\n      });\n      setRolling(false);\n      resolve();\n    }, 3500);\n  };\n\n  if (sweepBarPosition === pinEntryClientHeight.current?.clientHeight + pinsClientHeight.current?.clientHeight + 10) {\n    clearInterval(window.interval);\n\n    if (numberOfBowls === 1) {\n      setValidationMessage('strike');\n    }\n\n    if (numberOfBowls > 1) {\n      setValidationMessage('spare');\n    }\n\n    setNumberOfBowls(0);\n    setSweepBarPosition(0);\n    setPinCount(0);\n    setPinMap(pinReset);\n    setTimeout(() => {\n      setValidationMessage(null);\n    }, 3000);\n  }\n\n  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(\"div\", {\n    id: \"bowling-alley\"\n  }, validationMessage === 'strike' ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_validationMessageStrike_jsx__WEBPACK_IMPORTED_MODULE_3__.default, null) : validationMessage === 'spare' ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_validationMessageSpare_jsx__WEBPACK_IMPORTED_MODULE_4__.default, null) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(\"div\", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Pins_jsx__WEBPACK_IMPORTED_MODULE_1__.default, {\n    pinsClientHeight: pinsClientHeight,\n    pinMap: pinMap,\n    sweepBarPosition: sweepBarPosition\n  }), sweepBarPosition === 0 ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_BowlingBall_jsx__WEBPACK_IMPORTED_MODULE_5__.default, {\n    rolling: rolling\n  }) : null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_PinEntry_jsx__WEBPACK_IMPORTED_MODULE_2__.default, {\n    pinCount: pinCount,\n    pinEntryClientHeight: pinEntryClientHeight,\n    sweepBarPosition: sweepBarPosition,\n    pinMap: pinMap,\n    handleBowl: handleBowl\n  })));\n});\n\n//# sourceURL=webpack://Bowling/./client/src/components/app.jsx?");
+
+/***/ }),
+
+/***/ "./client/src/components/validationMessageSpare.jsx":
+/*!**********************************************************!*\
+  !*** ./client/src/components/validationMessageSpare.jsx ***!
+  \**********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ \"./node_modules/react/index.js\");\n\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (() => {\n  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(\"div\", {\n    id: \"spare-message\"\n  }, \"Spare!\");\n});\n\n//# sourceURL=webpack://Bowling/./client/src/components/validationMessageSpare.jsx?");
+
+/***/ }),
+
+/***/ "./client/src/components/validationMessageStrike.jsx":
+/*!***********************************************************!*\
+  !*** ./client/src/components/validationMessageStrike.jsx ***!
+  \***********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\nconst React = __webpack_require__(/*! react */ \"./node_modules/react/index.js\");\n\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (() => {\n  return /*#__PURE__*/React.createElement(\"div\", {\n    id: \"strike-message\"\n  }, \"Strike!\");\n});\n\n//# sourceURL=webpack://Bowling/./client/src/components/validationMessageStrike.jsx?");
+
+/***/ }),
+
 /***/ "./client/src/index.jsx":
 /*!******************************!*\
   !*** ./client/src/index.jsx ***!
   \******************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ \"./node_modules/react/index.js\");\n/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ \"./node_modules/react-dom/index.js\");\n\n\nreact_dom__WEBPACK_IMPORTED_MODULE_1__.render( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(\"div\", null, \"Hello World\"), document.getElementById('root'));\n\n//# sourceURL=webpack://Bowling/./client/src/index.jsx?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ \"./node_modules/react/index.js\");\n/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ \"./node_modules/react-dom/index.js\");\n/* harmony import */ var _components_app_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/app.jsx */ \"./client/src/components/app.jsx\");\n\n\n\nreact_dom__WEBPACK_IMPORTED_MODULE_1__.render( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_app_jsx__WEBPACK_IMPORTED_MODULE_2__.default, null), document.getElementById('root'));\n\n//# sourceURL=webpack://Bowling/./client/src/index.jsx?");
 
 /***/ }),
 
@@ -137,6 +197,23 @@ eval("\n\nif (false) {} else {\n  module.exports = __webpack_require__(/*! ./cjs
 /******/ 	}
 /******/ 	
 /************************************************************************/
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	(() => {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__webpack_require__.d = (exports, definition) => {
+/******/ 			for(var key in definition) {
+/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
+/******/ 			}
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	(() => {
+/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/ 	})();
+/******/ 	
 /******/ 	/* webpack/runtime/make namespace object */
 /******/ 	(() => {
 /******/ 		// define __esModule on exports

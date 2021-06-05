@@ -1,8 +1,4 @@
-
 import React from 'react';
-
 export default () => {
-  return (
-    <div>Hello World</div>
-  )
+  return (<div id='spare-message'>Spare!</div>)
 }

@@ -11,7 +11,7 @@ export default ({ eventsFavoriteSets, favoriteSets, addFavoriteCallback, favID }
         if (!newSet) {
           return;
         }
-        // addFavoriteCallback.call(newSet, event);
+        addFavoriteCallback.call(newSet, event);
       } else {
         addFavoriteCallback(event);
       }

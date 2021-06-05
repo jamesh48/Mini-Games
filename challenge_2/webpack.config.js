@@ -1,9 +1,12 @@
-const SRC_DIR = './client/src';
-const DIST_DIR = './client/public';
+// const SRC_DIR = './client/srcx';
+// const DIST_DIR = './client/public';
 const path = require('path');
+// const HtmlWebpackPlugin = require('html-webpack-plugin')
+
 module.exports = {
   mode: 'development',
-  entry: path.resolve(__dirname, `${SRC_DIR}/index.jsx`),
+  watch: true,
+  entry: path.resolve(__dirname, './client/src/index.jsx'),
   module: {
     rules: [
       {
@@ -20,7 +23,11 @@ module.exports = {
     extensions: ['*', '.js', '.jsx'],
   },
   output: {
-    path: path.resolve(__dirname, `${DIST_DIR}`),
+    path: path.resolve(__dirname, './client/public/'),
     filename: 'bundle.js',
   },
+  // plugins: [new HtmlWebpackPlugin({
+  //   favicon: "./client/public/images/favicon.png",
+  //   title: 'hello'
+  // })],
 };
