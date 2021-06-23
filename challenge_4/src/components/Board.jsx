@@ -112,7 +112,6 @@ export default () => {
     event.preventDefault();
 
     if (event.type === 'contextmenu') {
-
       setFlippers((prevFlippers) => {
         if (prevFlippers[tile] === 'flag') {
           prevFlippers.splice(tile, 1, false);
@@ -124,10 +123,83 @@ export default () => {
     }
 
     if (event.type === 'click') {
-      setFlippers((prevFlippers) => {
-        prevFlippers.splice(tile, 1, true);
-        return [...prevFlippers];
-      })
+      if (!numbers[tile] && !mines.includes(tile)) {
+
+        const tileRecurse = (tile) => {
+
+
+          setFlippers((prevFlippers) => {
+            prevFlippers.splice(tile, 1, true);
+
+            const evalU = tile => (tile - horizontalDimension);
+            const evalR = tile => (tile + 1);
+            const evalD = tile => (tile + horizontalDimension);
+            const evalL = tile => (tile - 1);
+
+            const testTile = (tile, test) => {
+              return (
+                !numbers[test(tile)]
+                && !mines.includes(test(tile))
+                && prevFlippers[test(tile)] === false
+                && test(tile) >= 0
+                && test(tile) <= (verticalDimension * horizontalDimension)
+              )
+            }
+            // ***********
+            //  Going Up
+            // ***********
+
+            if (
+              testTile(tile, evalU)
+            ) {
+              tileRecurse(evalU(tile))
+            }
+
+            // ***********
+            //  Going Right
+            // ***********
+
+            if (
+              testTile(tile, evalR)
+              && (evalR(tile) % horizontalDimension !== 0
+                || (evalR(tile) % horizontalDimension === 0 && tile % horizontalDimension === 0))
+            ) {
+              tileRecurse(evalR(tile))
+            }
+
+            // ***********
+            //  Going Down
+            // ***********
+
+            if (
+              testTile(tile, evalD)
+            ) {
+              tileRecurse(evalD(tile))
+            }
+
+            // ***********
+            //  Going Left
+            // ***********
+
+            if (
+              testTile(tile, evalL)
+              && ((evalL(tile + 1)) % horizontalDimension !== 0
+                || (evalL(tile + 1) % horizontalDimension === 0 && evalL(tile) % horizontalDimension === 0))
+            ) {
+              tileRecurse(evalL(tile));
+            }
+
+            return [...prevFlippers];
+          });
+        }
+
+        tileRecurse(tile)
+      } else {
+        setFlippers((prevFlippers) => {
+          prevFlippers.splice(tile, 1, true);
+          return [...prevFlippers];
+        });
+      }
     }
   }
 
@@ -140,12 +212,6 @@ export default () => {
 
             if (mines.includes(currCanidate)) {
               return <div
-                // onClick={() => {
-                //   setFlippers((prevFlippers) => {
-                //     prevFlippers.splice(currCanidate, 1, true);
-                //     return [...prevFlippers];
-                //   })
-                // }}
 
                 onClick={
                   handleClick.bind(event, currCanidate)
@@ -154,7 +220,7 @@ export default () => {
                   handleClick.bind(event, currCanidate)
                 }
 
-                key={sqrIndex} className='mine sweep-square'>{flippers[currCanidate] === true ? '*' : flippers[currCanidate] === 'flag' ? 'f' : null}</div>
+                key={sqrIndex} className={flippers[currCanidate] === 'flag' ? 'flag sweep-square' : flippers[currCanidate] === true ? 'mine sweep-square' : 'sweep-square'}>{flippers[currCanidate] === true ? '*' : null}</div>
             }
 
             if (numbers[currCanidate]) {
@@ -168,27 +234,20 @@ export default () => {
                   handleClick.bind(event, currCanidate)
                 }
 
-                key={sqrIndex} className='number sweep-square'>
-                {flippers[currCanidate] === true ? numbers[currCanidate] : flippers[currCanidate] === 'flag' ? 'f' : null}
+                key={sqrIndex} className={flippers[currCanidate] === 'flag' ? 'flag sweep-square' : 'number sweep-square'}>
+                {flippers[currCanidate] === true ? numbers[currCanidate] : null}
               </div>
             }
 
             return <div
-              // onClick={() => {
-              //   setFlippers((prevFlippers) => {
-              //     prevFlippers.splice(currCanidate, 1, true);
-              //     return [...prevFlippers];
-              //   })
-              // }}
-
               onClick={
-                handleClick.bind(event, currCanidate)
+                handleClick.bind(event, currCanidate, 'empty')
               }
 
               onContextMenu={
                 handleClick.bind(event, currCanidate)
               }
-              key={sqrIndex} className={flippers[currCanidate] === true ? 'sweep-square dark-square' : 'sweep-square'}>{flippers[currCanidate] === 'flag' ? 'f' : null}</div>
+              key={sqrIndex} className={flippers[currCanidate] === 'flag' ? 'flag sweep-square' : flippers[currCanidate] === true ? 'sweep-square dark-square' : 'sweep-square'}></div>
           })}
         </div>
       )

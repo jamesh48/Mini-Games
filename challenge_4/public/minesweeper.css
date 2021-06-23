@@ -16,12 +16,34 @@
   background-color: lightslategray;
 }
 
-.dark-square {
-  background-color: darkslategray;
-}
-
 .sweep-square:hover {
   background-color: lightgrey;
+}
+
+.flag {
+  background-color: greenyellow;
+  background-image: url('./flag_icon.png');
+  background-repeat: no-repeat;
+  background-size: 25px;
+  background-position: center;
+}
+
+.flag:hover {
+  background-color: greenyellow;
+}
+
+.mine {
+  background-color: red;
+  color: white;
+}
+
+.mine:hover {
+  background-color: red;
+  color: white;
+}
+
+.dark-square {
+  background-color: darkslategray;
 }
 
 .dark-square:hover {
