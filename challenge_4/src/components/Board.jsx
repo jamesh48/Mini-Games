@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from 'react';
-const verticalDimension = 9;
-const horizontalDimension = 9;
-const numberOfMines = 10;
 
-const generateMines = () => {
+const generateMines = (numberOfMines, verticalDimension, horizontalDimension) => {
   let mineArr = [];
   while (mineArr.length < numberOfMines) {
     const mineCanidate = Math.floor(Math.random() * (verticalDimension * horizontalDimension));
@@ -14,7 +11,7 @@ const generateMines = () => {
   return mineArr;
 }
 
-const generateNumbers = (mines) => {
+const generateNumbers = (mines, verticalDimension, horizontalDimension) => {
   let board = [...Array(verticalDimension * horizontalDimension).keys()];
   let numBoard = {};
 
@@ -103,15 +100,73 @@ const generateNumbers = (mines) => {
 
 
 
-export default () => {
+export default ({ skillLevel, timerOn, timerOnCallback }) => {
+
+  let horizontalDimension; let verticalDimension; let numberOfMines;
+  if (skillLevel === 'beginner') {
+    verticalDimension = 9;
+    horizontalDimension = 9;
+    numberOfMines = 10;
+  }
+  if (skillLevel === 'intermediate') {
+    verticalDimension = 16;
+    horizontalDimension = 16;
+    numberOfMines = 40;
+  }
+
+  if (skillLevel === 'advanced') {
+    verticalDimension = 16;
+    horizontalDimension = 30;
+    numberOfMines = 99;
+  }
+
+
   const [flippers, setFlippers] = useState(Array.from({ length: horizontalDimension * verticalDimension }, () => false));
-  const [mines, setMines] = useState(generateMines());
-  const [numbers, setNumbers] = useState(generateNumbers(mines));
+  const [mines, setMines] = useState(generateMines(numberOfMines, verticalDimension, horizontalDimension));
+  const [numbers, setNumbers] = useState(generateNumbers(mines, verticalDimension, horizontalDimension));
 
-  const handleClick = (tile) => {
+  useEffect(() => {
+    console.log(horizontalDimension * verticalDimension, numberOfMines)
+    setFlippers(Array.from({ length: horizontalDimension * verticalDimension }, () => false));
+    setMines(generateMines(numberOfMines, verticalDimension, horizontalDimension));
+  }, [skillLevel])
+
+  useEffect(() => {
+    console.log(mines)
+    setNumbers(generateNumbers(mines, verticalDimension, horizontalDimension));
+  }, [mines])
+
+  const handleClick = (tile, indicator) => {
     event.preventDefault();
+    // If there is a victory reveal all the Empty Squares
+    if (indicator === 'victory') {
+      setFlippers((prevFlippers) => {
+        prevFlippers = prevFlippers.map((flipper, index) => {
+          if (flipper === 'flag' || mines.includes(index)) {
+            return 'flag'
+          } else  {
+            return true
+          }
+        });
+    //     console.log(prevFlippers)
+        return [...prevFlippers];
+      })
+    }
 
-    if (event.type === 'contextmenu') {
+    else if (indicator === 'dead') {
+      console.log('dying')
+      setFlippers((prevFlippers) => {
+        prevFlippers = prevFlippers.map((flipper, index) => {
+          if (mines.includes(index)) {
+            return true;
+          } else {
+            return flipper;
+          }
+        })
+        return [...prevFlippers]
+      })
+
+    } else if (event.type === 'contextmenu') {
       setFlippers((prevFlippers) => {
         if (prevFlippers[tile] === 'flag') {
           prevFlippers.splice(tile, 1, false);
@@ -124,10 +179,7 @@ export default () => {
 
     if (event.type === 'click') {
       if (!numbers[tile] && !mines.includes(tile)) {
-
         const tileRecurse = (tile) => {
-
-
           setFlippers((prevFlippers) => {
             prevFlippers.splice(tile, 1, true);
 
@@ -206,28 +258,64 @@ export default () => {
   return (
     [...new Array(verticalDimension)].map((row, rowIndex) => {
       return (
-        <div key={rowIndex} className='sweep-row'>
+        <div key={rowIndex} className={'sweep-row'}>
           {[...new Array(horizontalDimension)].map((sqr, sqrIndex) => {
             const currCanidate = ((rowIndex * horizontalDimension) + sqrIndex);
 
+            // *****
+            // Mine
+            // *****
             if (mines.includes(currCanidate)) {
               return <div
 
+                data-testid={`test-${currCanidate}`}
+
                 onClick={
-                  handleClick.bind(event, currCanidate)
+                  () => {
+                    timerOnCallback('bomb'); handleClick(currCanidate, 'dead');
+                  }
                 }
                 onContextMenu={
-                  handleClick.bind(event, currCanidate)
+                  () => {
+                    handleClick(currCanidate)
+                    // Winning test
+                    // All Flippers are Flipped or a flipper has a flag on it->
+                    if (flippers.every((flipper) => flipper === true || flipper === 'flag')) {
+                      // And the flags are in the correct position->
+                      if (mines.every((mine) => flippers[mine] === 'flag')) {
+                        timerOnCallback('victory')
+                      }
+                    }
+                  }
                 }
 
                 key={sqrIndex} className={flippers[currCanidate] === 'flag' ? 'flag sweep-square' : flippers[currCanidate] === true ? 'mine sweep-square' : 'sweep-square'}>{flippers[currCanidate] === true ? '*' : null}</div>
             }
+            // *****
+            // Number
+            // *****
 
             if (numbers[currCanidate]) {
               return <div
 
+                data-testid={`test-${currCanidate}`}
+
                 onClick={
-                  handleClick.bind(event, currCanidate)
+                  () => {
+                    // Gameplay As Usual
+                    if (timerOn === true) {
+                      handleClick(currCanidate)
+                    } else {
+                      // Start the Timer
+                      timerOnCallback();
+                      handleClick(currCanidate)
+                    }
+                    // Trigger Victory only if all numbers have been clicked on->
+                    if (Object.keys(numbers).every(num => flippers[num] === true)) {
+                      timerOnCallback('victory');
+                      handleClick(currCanidate, 'victory')
+                    }
+                  }
                 }
 
                 onContextMenu={
@@ -239,44 +327,31 @@ export default () => {
               </div>
             }
 
+            // *****
+            // Empty Square
+            // *****
             return <div
-              onClick={
-                handleClick.bind(event, currCanidate, 'empty')
-              }
 
+              data-testid={`test-${currCanidate}`}
+
+              onClick=
+              {
+                () => {
+                  if (timerOn === true) {
+                    handleClick(currCanidate);
+                  } else {
+                    timerOnCallback();
+                    handleClick(currCanidate);
+                  }
+                }
+              }
               onContextMenu={
                 handleClick.bind(event, currCanidate)
               }
-              key={sqrIndex} className={flippers[currCanidate] === 'flag' ? 'flag sweep-square' : flippers[currCanidate] === true ? 'sweep-square dark-square' : 'sweep-square'}></div>
+              key={sqrIndex} className={flippers[currCanidate] === 'flag' ? 'flag sweep-square' : flippers[currCanidate] === true ? 'sweep-square dark-square' : 'sweep-square'} ></div>
           })}
-        </div>
+        </div >
       )
     })
   )
 }
-
-// export default () => {
-
-
-
-  // const flipperCallback = (tile) => {
-
-  // }
-
-  // useEffect(() => {
-  //   setBoard(flippers, flipperCallback);
-  // }, flippers)
-
-
-
-
-  // const [board, setBoard] = useState(generateBoard());
-
-  // useEffect(() => {
-  //   console.log(flippers);
-  // }, flippers);
-
-
-  // return generateBoard();
-  // return generateBoard(flippers, flipperCallback);
-// }

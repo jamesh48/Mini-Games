@@ -1,3 +1,4 @@
 node_modules
 *.DS_Store
 challenge_1/database/controllers.js
+.env
