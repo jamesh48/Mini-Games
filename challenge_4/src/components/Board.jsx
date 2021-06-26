@@ -119,7 +119,6 @@ export default ({ surprised, surprisedCallback, skillLevel, timerOn, timerOnCall
   }, [])
 
   useEffect(() => {
-    console.log(solidUserName)
     if (solidUserName) {
       clearInterval(window.test);
       setColors(null);
@@ -246,7 +245,7 @@ export default ({ surprised, surprisedCallback, skillLevel, timerOn, timerOnCall
   if (skillLevel === 'beginner') {
     verticalDimension = 9;
     horizontalDimension = 9;
-    numberOfMines = 10;
+    numberOfMines = 1;
   }
   if (skillLevel === 'intermediate') {
     verticalDimension = 16;
@@ -289,8 +288,10 @@ export default ({ surprised, surprisedCallback, skillLevel, timerOn, timerOnCall
     if (flippers[0] !== 'dead') {
       // Only store score when all flippers have been flipped (ends recursive loop)
       if (flippers.every((flipper) => (flipper === true || flipper === 'flag' || mines[flipper]))) {
-        surprisedCallback('victory');
+        // Post Result
         timerOnCallback('victory');
+        // This Gets the posted result
+        surprisedCallback('victory');
 
         // If a victory is detected, flip all the empty squares
       } else if (Object.keys(numbers).every(num => flippers[num] === true)) {
