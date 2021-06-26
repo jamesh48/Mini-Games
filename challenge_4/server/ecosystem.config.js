@@ -10,8 +10,8 @@ module.exports = {
       key: '../minesweeper.pem',
       ref: 'origin/master',
       repo: 'git@github.com:jamesh48/rpt26-mini-apps-2.git',
-      path: '/home/ubuntu/minesweeper',
-      'post-deploy': 'npm install && pm2 startOrRestart /home/ubuntu/minesweeper/source/challenge_4/server/ecosystem.config.js && pm2 save'
+      path: '/home/ubuntu/minesweeper/',
+      'post-deploy': 'npm install && pm2 startOrRestart challenge_4/server/ecosystem.config.js && pm2 save'
     }
   }
 }
