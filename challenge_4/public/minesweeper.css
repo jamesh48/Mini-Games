@@ -6,6 +6,7 @@ html {
   color: ivory;
   padding: 0px;
   margin: 1% 0 1% 1%;
+  background-color: rgb(31, 33, 36);
 }
 
 #login-form {

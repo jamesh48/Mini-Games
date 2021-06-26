@@ -13,10 +13,9 @@ export default ({ userPassCallback, userPass, userNameCallback, handleSubmit, us
     } else {
       return (
         <>
-          <h5 className='login-header'>Login -></h5>
+          <input className='login-header' value='Login ->' type='submit'></input>
           <input type='text' disabled={solidUserName ? true : false} onChange={userNameCallback} value={solidUserName || userName} placeholder='enter username' value={userName} />
           <input type='text' placeholder='password' value={userPass} onChange={userPassCallback} />
-          <input hidden={true} type='submit' />
         </>
       )
     }
