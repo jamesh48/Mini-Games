@@ -102,15 +102,96 @@ const generateNumbers = (mines, verticalDimension, horizontalDimension) => {
 
 export default ({ surprised, surprisedCallback, skillLevel, timerOn, timerOnCallback, resetCallback, flagsRemainingCallback, solidUserName }) => {
 
+  const [colors, setColors] = useState(null);
+
+  useEffect(() => {
+    window.test = setInterval(() => {
+      setColors((existingColors) => {
+        if (existingColors === null) {
+          return ['blue-num', 'green-num', 'red-num', 'black-num', 'purple-num', 'maroon-num', 'turquoise-num', 'golden', 'grey-num']
+        } else {
+          let lastColor = existingColors.pop();
+          existingColors.unshift(lastColor);
+          return [...existingColors];
+        }
+      })
+    }, 50)
+  }, [])
+
+  useEffect(() => {
+    console.log(solidUserName)
+    if (solidUserName) {
+      clearInterval(window.test);
+      setColors(null);
+    }
+  }, [solidUserName])
+
+  const generateColors = (tile) => {
+    // Letters Only
+    // if (tile !== 6 && tile !== 7 && tile !== 8 && tile !== 9 && tile !== 15 && tile !== 16 && tile !== 17 && tile !== 18 && tile !== 19 && tile < 26) {
+
+    // Stars only
+    if (tile === 6 || tile === 7 || tile === 8 || tile === 9 || tile === 15 || tile === 16 || tile === 17 || tile === 18 || tile === 19 || tile > 25) {
+
+      if (tile === 0 || tile === 10 || tile === 20 || tile === 30) {
+        return colors[0]
+      } else if (tile === 1 || tile === 11 || tile === 21 || tile === 31) {
+        return colors[1];
+      } else if (tile === 2 || tile === 12 || tile === 22 || tile === 32) {
+        return colors[2];
+      } else if (tile === 3 || tile === 13 || tile === 23 || tile === 33) {
+        return colors[3];
+      } else if (tile === 4 || tile === 14 || tile === 24 || tile === 34) {
+        return colors[4];
+      } else if (tile === 5 || tile === 15 || tile === 25 || tile === 35) {
+        return colors[5];
+      } else if (tile === 6 || tile === 16 || tile === 26 || tile === 27) {
+        return colors[6];
+      } else if (tile === 7 || tile === 17 || tile === 18 || tile === 28) {
+        return colors[7];
+      } else if (tile === 8 || tile === 9 || tile === 19 || tile === 29) {
+        return colors[8];
+      }
+    }
+
+    // return classNameArr;
+  }
   const genLoginMessage = (t) => {
     if (skillLevel === 'beginner') {
-    return t === 0 ? 'P' :  t === 1 ? 'l' : t === 2 ? 'e' : t === 3 ? 'a' : t === 4 ? 's' : t === 5 ? 'e' : t === 10 ? 'L' : t === 11 ? 'o' : t === 12 ? 'g' : t === 13 ? 'i' : t === 14 ? 'n' : t === 20 ? 'F' : t === 21 ? 'i' : t === 22 ? 'r' : t === 23 ? 's' : t === 24 ? 't' : t === 25 ? '!' : t < 36 ? '*' : null;
+      return t === 0 ? 'P' : t === 1 ? 'l' : t === 2 ? 'e' : t === 3 ? 'a' : t === 4 ? 's' : t === 5 ? 'e' : t === 10 ? 'L' : t === 11 ? 'o' : t === 12 ? 'g' : t === 13 ? 'i' : t === 14 ? 'n' : t === 20 ? 'F' : t === 21 ? 'i' : t === 22 ? 'r' : t === 23 ? 's' : t === 24 ? 't' : t === 25 ? '!' : t < 36 ? '*' : null;
     }
+  }
+
+  const genMineClassNames = (tile) => {
+
+    let classNameArr = ['sweep-square']
+
+    if (colors !== null) {
+      classNameArr.push(generateColors(tile), 'disabled');
+      return classNameArr.join(' ');
+    } else if (surprised === 'victory' && flippers[tile] === 'flag') {
+      classNameArr.push('flag', 'disabled');
+    } else if (surprised === 'victory' || !solidUserName) {
+      classNameArr.push('disabled');
+    } else if (surprised === 'dead') {
+      classNameArr.push('disabled', 'mine')
+    } else if (flippers[tile] === 'flag') {
+      classNameArr.push('flag')
+    } else if (flippers[tile] === true) {
+      classNameArr.push('mine')
+    }
+
+    return classNameArr.join(' ')
+
   }
 
   const genNumberClassNames = (num) => {
     let classNameArr = ['sweep-square'];
-    if (surprised === 'victory' || surprised === 'dead' || !solidUserName) {
+
+    if (colors !== null) {
+      classNameArr.push(generateColors(num), 'disabled');
+      return classNameArr.join(' ')
+    } else if (surprised === 'victory' || surprised === 'dead' || !solidUserName) {
       classNameArr.push('disabled')
     } else if (flippers[num] === 'flag') {
       classNameArr.push('flag');
@@ -132,16 +213,33 @@ export default ({ surprised, surprisedCallback, skillLevel, timerOn, timerOnCall
     } else if (numbers[num] === 6) {
       classNameArr.push('turquoise-num');
     } else if (numbers[num] === 7) {
-      classNameArr.push('black-num');
-    } else if (numbers[num] === 8) {
-      classNameArr.push('grey-num');
-    }
+       classNameArr.push('black-num');
+     } else if (numbers[num] === 8) {
+       classNameArr.push('grey-num');
+     }
 
     if (!solidUserName) {
       classNameArr.pop();
-
     }
     return classNameArr.join(' ');
+  }
+
+  const genEmptyClassNames = (tile) => {
+    let classNameArr = ['sweep-square'];
+    if (colors !== null) {
+      classNameArr.push(generateColors(tile), 'disabled');
+      return classNameArr.join(' ');
+    } else if (surprised === 'victory' || surprised === 'dead') {
+      classNameArr.push('disabled', 'dark-square')
+    } else if (!solidUserName) {
+      classNameArr.push('disabled')
+    } else if (flippers[tile] === 'flag') {
+      classNameArr.push('flag')
+    } else if (flippers[tile] === true) {
+      classNameArr.push('dark-square')
+    }
+
+    return classNameArr.join(' ')
   }
 
   let horizontalDimension; let verticalDimension; let numberOfMines;
@@ -379,11 +477,8 @@ export default ({ surprised, surprisedCallback, skillLevel, timerOn, timerOnCall
 
                 key={sqrIndex}
 
-                className={surprised === 'victory' && flippers[currCanidate] === 'flag' ? 'flag disabled sweep-square' :
-                  surprised === 'victory' || !solidUserName ? 'disabled sweep-square' :
-                    surprised === 'dead' ? 'disabled mine sweep-square' :
-                      flippers[currCanidate] === 'flag' ? 'flag sweep-square' : flippers[currCanidate] === true ? 'mine sweep-square' : 'sweep-square'}>{
-                        !solidUserName ? genLoginMessage(currCanidate) : flippers[currCanidate] && flippers[currCanidate] !== 'flag' ? '*' : null}</div>
+                className={genMineClassNames(currCanidate)}>{
+                  !solidUserName ? genLoginMessage(currCanidate) : flippers[currCanidate] && flippers[currCanidate] !== 'flag' ? '*' : null}</div>
             }
             // *****
             // Number
@@ -516,7 +611,7 @@ export default ({ surprised, surprisedCallback, skillLevel, timerOn, timerOnCall
                   }
                 }
               }
-              key={sqrIndex} className={surprised === 'victory' || surprised === 'dead' ? 'disabled sweep-square dark-square' : !solidUserName ? 'disabled sweep-square' : flippers[currCanidate] === 'flag' ? 'flag sweep-square' : flippers[currCanidate] === true ? 'sweep-square dark-square' : 'sweep-square'} >{!solidUserName ? genLoginMessage(currCanidate) : null}</div>
+              key={sqrIndex} className={genEmptyClassNames(currCanidate)} >{!solidUserName ? genLoginMessage(currCanidate) : null}</div>
           })}
         </div >
       )
