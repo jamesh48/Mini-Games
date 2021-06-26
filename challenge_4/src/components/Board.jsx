@@ -245,7 +245,7 @@ export default ({ surprised, surprisedCallback, skillLevel, timerOn, timerOnCall
   if (skillLevel === 'beginner') {
     verticalDimension = 9;
     horizontalDimension = 9;
-    numberOfMines = 1;
+    numberOfMines = 10;
   }
   if (skillLevel === 'intermediate') {
     verticalDimension = 16;
