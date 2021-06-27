@@ -451,7 +451,8 @@ export default ({ surprised, surprisedCallback, skillLevel, timerOn, timerOnCall
 
                 onMouseUp={
                   (event) => {
-                    if (event.button === 0) {
+                    if (event.button === 0 && !event.ctrlKey) {
+                      console.log(event)
                       surprisedCallback('dead');
                     }
 
@@ -463,6 +464,8 @@ export default ({ surprised, surprisedCallback, skillLevel, timerOn, timerOnCall
 
                 onContextMenu={
                   () => {
+                  console.log('xxx')
+
                     // Set Flags Remaining -1 or +1
                     if (flippers[currCanidate] === false) {
                       flagsRemainingCallback(true);
