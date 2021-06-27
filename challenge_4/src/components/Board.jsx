@@ -456,7 +456,7 @@ export default ({ surprised, surprisedCallback, skillLevel, timerOn, timerOnCall
                       surprisedCallback('dead');
                     }
 
-                    if (event.button === 2) {
+                    if (event.button === 2 || event.ctrlKey) {
                       surprisedCallback('reset')
                     }
                   }
