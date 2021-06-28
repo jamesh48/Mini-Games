@@ -62,7 +62,7 @@ html {
 
 .flag {
   background-color: greenyellow;
-  background-image: url('./images/flag_icon.png');
+  background-image: url('https://minesweeper-images.s3.us-east-2.amazonaws.com/flag_icon.png');
   background-repeat: no-repeat;
   background-size: 25px;
   background-position: center;
@@ -111,20 +111,20 @@ html {
   height: 20px;
   padding: 2.5px 12.5px 2.5px 12.5px;
 }
-/* #smiley-guy {
-  background-image: url('./images/smileys/smiley-face.png');
-} */
+#smiley-guy {
+  background-image: url('https://minesweeper-images.s3.us-east-2.amazonaws.com/smiley-face.png');
+}
 
 #surprised-guy {
-  background-image: url('./images/smileys/surprise-face.png');
+  background-image: url('https://minesweeper-images.s3.us-east-2.amazonaws.com/surprise-face.png');
 }
 
 #dead-guy {
-  background-image: url('./images/smileys/dead-face.png');
+  background-image: url('https://minesweeper-images.s3.us-east-2.amazonaws.com/dead-face.png');
 }
 
 #victory-guy {
-  background-image: url('./images/smileys/victory-face.png');
+  background-image: url('https://minesweeper-images.s3.us-east-2.amazonaws.com/victory-face.png');
 }
 
 #flags-remaining {
