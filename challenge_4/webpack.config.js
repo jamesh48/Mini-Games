@@ -16,6 +16,26 @@ module.exports = {
           presets: ["@babel/preset-react"]
         },
       },
+      {
+        test: /\.(css|scss)$/,
+        include: path.resolve('src'),
+        use: [
+          {
+            loader: 'style-loader',
+          },
+          {
+            loader: 'css-loader',
+            options: {
+              // discardDuplicates: true,
+              importLoaders: 1,
+              // modules: {
+              //   localIdentName: '[name]__[local]___[hash:base64:5]',
+              // },
+              sourceMap: process.env.NODE_ENV !== 'production',
+            },
+          },
+        ]
+      },
     ],
   },
   resolve: {

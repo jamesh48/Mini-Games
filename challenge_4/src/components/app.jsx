@@ -8,6 +8,8 @@ import LeaderBoard from './LeaderBoard.jsx';
 import SmileyBar from './SmileyBar.jsx';
 import UserNameEntry from './UserNameEntry.jsx';
 
+import '../minesweeper.css';
+
 export default () => {
   const [skillLevel, setSkillLevel] = useState('beginner');
   const [timerOn, setTimerOn] = useState(false);
