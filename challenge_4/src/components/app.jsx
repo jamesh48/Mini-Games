@@ -8,6 +8,8 @@ import LeaderBoard from './LeaderBoard.jsx';
 import SmileyBar from './SmileyBar.jsx';
 import UserNameEntry from './UserNameEntry.jsx';
 
+import '../images/smileys/smiley-face.png';
+
 import '../minesweeper.css';
 
 export default () => {
