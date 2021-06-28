@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import '../images/smileys/smiley-face.png';
+import smiley from '../images/smileys/smiley-face.png';
+
 
 const generateMines = (numberOfMines, verticalDimension, horizontalDimension) => {
   let mineArr = [];
