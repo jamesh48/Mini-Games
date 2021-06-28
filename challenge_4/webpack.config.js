@@ -36,6 +36,15 @@ module.exports = {
           },
         ]
       },
+      {
+        test: /\.(png)$/,
+        include: path.resolve('src/images'),
+        use: [
+          {
+            loader: 'file-loader',
+          }
+        ]
+      }
     ],
   },
   resolve: {
