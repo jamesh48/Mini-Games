@@ -7,14 +7,14 @@ export default ({ skillLevel, surprised, solidUserName }) => {
 
   // Axios Utils--------------------------------
   const getAllResults = () => {
-    return axios.get('/topTimes', { params: { skillLevel } })
+    return axios.get('/minesweeper-topTimes', { params: { skillLevel } })
       .then(({ data: results }) => {
         setTopScores(results);
       })
   }
 
   const getPersonalizedResults = () => {
-    return axios.get('/topTimes', { params: { skillLevel, username: personalized } })
+    return axios.get('/minesweeper-topTimes', { params: { skillLevel, username: personalized } })
       .then(({ data: results }) => {
         setTopScores(results);
       })

@@ -8,15 +8,14 @@ app.use(cors());
 
 app.use(express.static(path.resolve('public')));
 
-app.get('/topTimes', async ({ query: { skillLevel, username } }, res) => {
+app.get('/minesweeper-topTimes', async ({ query: { skillLevel, username } }, res) => {
   const topScores = await getResults(skillLevel, username);
   res.json(topScores);
 })
 
-app.get('/validateUser', async ({ query: { userName, userPass } }, res) => {
+app.get('/minesweeper-validateUser', async ({ query: { userName, userPass } }, res) => {
   try {
     const test = await validateUser(userName, userPass);
-
     if (!test) {
       res.send('already exists')
     } else if (test === 'wrong password') {
@@ -24,21 +23,19 @@ app.get('/validateUser', async ({ query: { userName, userPass } }, res) => {
     } else {
       res.send('does not exist');
     }
-  } catch(err) {
+  } catch (err) {
     console.error(err);
     res.send(err);
   }
 });
 
-app.post('/createUser', async ({query: {userName, userPass}}, res) => {
+app.post('/minesweeper-createUser', async ({ query: { userName, userPass } }, res) => {
   const posted = await postNewUser(userName, userPass);
-
   res.send(posted);
 })
 
-app.post('/topTimes', async ({ query: { skillLevel, timerTime, solidUserName } }, res) => {
+app.post('/minesweeper-topTimes', async ({ query: { skillLevel, timerTime, solidUserName } }, res) => {
   try {
-
     await postResult(skillLevel, timerTime, solidUserName);
     res.send('ok');
   } catch (err) {

@@ -292,8 +292,10 @@ export default ({ surprised, surprisedCallback, skillLevel, timerOn, timerOnCall
       if (flippers.every((flipper) => (flipper === true || flipper === 'flag' || mines[flipper]))) {
         // Post Result
         timerOnCallback('victory');
-        // This Gets the posted result
-        surprisedCallback('victory');
+        setTimeout(() => {
+          // This Gets the posted result
+          surprisedCallback('victory');
+        }, 500)
 
         // If a victory is detected, flip all the empty squares
       } else if (Object.keys(numbers).every(num => flippers[num] === true)) {
@@ -454,9 +456,8 @@ export default ({ surprised, surprisedCallback, skillLevel, timerOn, timerOnCall
                 onMouseUp={
                   (event) => {
                     if (event.button === 0 && !event.ctrlKey) {
-                      console.log(event)
                       surprisedCallback('dead');
-                    }
+                    };
 
                     if (event.button === 2 || event.ctrlKey) {
                       surprisedCallback('reset')
@@ -466,8 +467,6 @@ export default ({ surprised, surprisedCallback, skillLevel, timerOn, timerOnCall
 
                 onContextMenu={
                   () => {
-                  console.log('xxx')
-
                     // Set Flags Remaining -1 or +1
                     if (flippers[currCanidate] === false) {
                       flagsRemainingCallback(true);

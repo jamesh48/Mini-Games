@@ -72,7 +72,7 @@ export default () => {
   }, [timerOn])
 
   const postResult = () => {
-    return axios.post('/topTimes', null, { params: { skillLevel, solidUserName, timerTime } }).then((results) => console.log(results))
+    return axios.post('/minesweeper-topTimes', null, { params: { skillLevel, solidUserName, timerTime } }).then((results) => console.log(results))
   }
 
   const timerOnCallback = (indicator) => {
@@ -120,13 +120,12 @@ export default () => {
 
   const handleSubmit = () => {
     event.preventDefault();
-    console.log(userName, userPass)
-    return axios('/validateUser', { params: { userName, userPass } })
+    return axios('/minesweeper-validateUser', { params: { userName, userPass } })
       .then(({ data: result }) => {
         if (result === 'does not exist') {
           let prompt = window.confirm('User does not exist, Create new user?');
           if (prompt) {
-            return axios.post('/createUser', null, { params: { userName, userPass } })
+            return axios.post('/minesweeper-createUser', null, { params: { userName, userPass } })
               .then(({ data: posted }) => {
                 setSolidUserName(userName)
               })
