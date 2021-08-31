@@ -4,4 +4,4 @@ challenge_1/database/controllers.js
 .env
 config.json
 *.pem
-challenge_4/public/bundle.js
+bundle.js
