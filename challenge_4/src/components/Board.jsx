@@ -206,7 +206,7 @@ export default ({ surprised, surprisedCallback, skillLevel, timerOn, timerTime, 
         setTimeout(() => {
           // This Gets the posted result
           surprisedCallback('victory');
-        }, 500)
+        }, 50)
 
         // If a victory is detected, flip all the empty squares
       } else if (Object.keys(numbers).every(num => flippers[num] === true)) {

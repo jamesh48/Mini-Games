@@ -7,7 +7,8 @@
     "test": "jest",
     "start": "nodemon ./server/index.js",
     "database": "npx sequelize db:drop && npx sequelize db:create && npx sequelize db:migrate",
-    "build": "webpack"
+    "build": "webpack",
+    "deploy": "pm2 deploy ./server/ecosystem.config.js production"
   },
   "keywords": [],
   "author": "",
