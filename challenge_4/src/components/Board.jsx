@@ -124,7 +124,7 @@ export default ({ surprised, surprisedCallback, skillLevel, timerOn, timerTime, 
   };
 
   const [colors, setColors] = useState(['blue-num', 'green-num', 'red-num', 'black-num', 'purple-num', 'maroon-num', 'turquoise-num', 'golden', 'grey-num']);
-  const [colorDelay, setColorDelay] = useState(500);
+  const [colorDelay, setColorDelay] = useState(50);
   const [flippers, setFlippers] = useState(Array.from({ length: horizontalDimension * verticalDimension }, () => false));
   const [mines, setMines] = useState(generateMines(numberOfMines, verticalDimension, horizontalDimension));
   const [numbers, setNumbers] = useState(generateNumbers(mines, verticalDimension, horizontalDimension));
@@ -206,7 +206,7 @@ export default ({ surprised, surprisedCallback, skillLevel, timerOn, timerTime, 
         setTimeout(() => {
           // This Gets the posted result
           surprisedCallback('victory');
-        }, 50)
+        }, 500)
 
         // If a victory is detected, flip all the empty squares
       } else if (Object.keys(numbers).every(num => flippers[num] === true)) {
