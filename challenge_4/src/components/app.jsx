@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import regeneratorRuntime from "regenerator-runtime";
 import Board from './Board.jsx';
@@ -8,6 +8,7 @@ import LeaderBoard from './LeaderBoard.jsx';
 import SmileyBar from './SmileyBar.jsx';
 import UserNameEntry from './UserNameEntry.jsx';
 import useInterval from './useInterval.jsx';
+import { pure } from 'recompose';
 
 import '../minesweeper.css';
 
@@ -21,7 +22,7 @@ export default () => {
   const [userName, setUserName] = useState('');
   const [userPass, setUserPass] = useState('');
   const [delay, setDelay] = useState(null);
-  const [solidUserName, setSolidUserName] = useState(null);
+  const [definedUserName, setSolidUserName] = useState(null);
 
   // If Delay is null, clear the timer
   useEffect(() => {
@@ -31,9 +32,14 @@ export default () => {
   }, [delay]);
 
   // If Timer is changed to true, start the timer.
-  useEffect(() => {
-    setDelay(() => timerOn && timerOn !== 'bombed' ? 1000 : null, [timerOn])
-  });
+  useEffect(async () => {
+    if (Array.isArray(timerOn)) {
+      const result = await postResult(timerOn[0]);
+      setDelay(-1);
+    } else {
+      setDelay(() => (timerOn && timerOn !== 'bombed') ? 10 : null)
+    }
+  }, [timerOn]);
 
   useInterval(() => {
     setTimerTime((prevTimerTime) => prevTimerTime += 10);
@@ -43,43 +49,43 @@ export default () => {
   useEffect(() => {
     if (timerOn === false) {
       setFlagsRemaining(() => skillLevel === 'beginner' ? 10 : skillLevel === 'intermediate' ? 40 : 99);
-    }
-  }, [skillLevel, timerOn])
+    };
+  }, [skillLevel, timerOn]);
 
-  const postResult = async () => {
-    const { data: results } = await axios.post('/minesweeper-topTimes', null, { params: { skillLevel, solidUserName, timerTime } })
-    console.log(results);
+  const postResult = async (resultTime) => {
+    const { data: results } = await axios.post('/minesweeper-topTimes', null, { params: { skillLevel, definedUserName, resultTime } });
+    return results;
   };
 
-  const timerOnCallback = (indicator) => {
-    if (indicator === 'bomb') {
+  const timerOnCallback = useCallback((indicator) => {
+    if (Array.isArray(indicator)) {
+      setTimerOn(indicator);
+    } else if (indicator === 'bomb') {
       setTimerOn('bombed')
-    } else if (indicator === 'victory') {
-      postResult();
-    } else {
+    } else if (!Array.isArray(indicator)) {
       setTimerOn(true);
-    }
-  }
+    };
+  }, []);
 
   const skillCallback = ({ target: { id } }) => {
     setSkillLevel(id);
   };
 
-  const flagsRemainingCallback = (indicator) => {
+  const flagsRemainingCallback = useCallback((indicator) => {
     if (indicator === true) {
       setFlagsRemaining((prevFlagsRemaining) => prevFlagsRemaining - 1);
     }
     if (indicator === false) {
       setFlagsRemaining((prevFlagsRemaining) => prevFlagsRemaining + 1);
     }
-  }
+  }, []);
 
   const resetCallback = () => {
     setSurprised(false);
     setTimerOn(false);
-  }
+  };
 
-  const surprisedCallback = (indicator) => {
+  const surprisedCallback = useCallback((indicator) => {
     if (indicator === 'victory') {
       setSurprised('victory')
     } else if (indicator === 'dead') {
@@ -89,7 +95,7 @@ export default () => {
     } else {
       setSurprised(true);
     }
-  }
+  }, []);
 
   const handleSubmit = async () => {
     event.preventDefault();
@@ -119,14 +125,25 @@ export default () => {
 
   return (
     <div>
-      <UserNameEntry userName={userName} userPassCallback={userPassCallback} userPass={userPass} handleSubmit={handleSubmit} userNameCallback={userNameCallback} solidUserName={solidUserName} skillLevel={skillLevel} />
+      <UserNameEntry userName={userName} userPassCallback={userPassCallback} userPass={userPass} handleSubmit={handleSubmit} userNameCallback={userNameCallback} definedUserName={definedUserName} skillLevel={skillLevel} />
 
       <div style={{ display: 'flex' }}>
         <div id='total-board' className={skillLevel}>
           <SmileyBar surprised={surprised} skillLevel={skillLevel} flagsRemaining={flagsRemaining} resetCallback={resetCallback} />
-          <Board solidUserName={solidUserName} surprised={surprised} surprisedCallback={surprisedCallback} timerOnCallback={timerOnCallback} timerOn={timerOn} skillLevel={skillLevel} resetCallback={resetCallback} flagsRemainingCallback={flagsRemainingCallback} flagsRemaining={flagsRemaining} />
+          <Board
+            timerTime={timerTime}
+            definedUserName={definedUserName}
+            surprised={surprised}
+            surprisedCallback={surprisedCallback}
+            timerOnCallback={timerOnCallback}
+            timerOn={timerOn}
+            skillLevel={skillLevel}
+            resetCallback={resetCallback}
+            flagsRemainingCallback={flagsRemainingCallback}
+            flagsRemaining={flagsRemaining}
+          />
         </div>
-        <LeaderBoard solidUserName={solidUserName} skillLevel={skillLevel} surprised={surprised} />
+        <LeaderBoard definedUserName={definedUserName} skillLevel={skillLevel} surprised={surprised} />
       </div>
       <div>
         <MilliSecondTimer skillLevel={skillLevel} timerTime={timerTime} />
@@ -134,6 +151,6 @@ export default () => {
         <SkillLevelSelector skillLevel={skillLevel} skillCallback={skillCallback} />
       </div>
     </div>
-  )
-}
+  );
+};
 

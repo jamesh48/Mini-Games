@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 function useInterval(callback, delay) {
   const savedCallback = useRef();
 
+
   // Remember the latest callback.
   useEffect(() => {
     savedCallback.current = callback;
@@ -13,6 +14,12 @@ function useInterval(callback, delay) {
     function tick() {
       savedCallback.current();
     }
+
+    // If victory is declared stop the timer...
+    if (delay === -1) {
+      return;
+    };
+
     if (delay !== null) {
       let id = setInterval(tick, delay);
       return () => clearInterval(id);

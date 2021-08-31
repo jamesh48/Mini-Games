@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-export default ({ skillLevel, surprised, solidUserName }) => {
+export default ({ skillLevel, surprised, definedUserName }) => {
   const [topScores, setTopScores] = useState([]);
   const [personalized, setPersonalized] = useState(false);
 
@@ -40,7 +40,7 @@ export default ({ skillLevel, surprised, solidUserName }) => {
         getAllResults();
       }
     }
-  }, [surprised, solidUserName])
+  }, [surprised, definedUserName])
 
   useEffect(() => {
     if (personalized) {
@@ -97,7 +97,7 @@ export default ({ skillLevel, surprised, solidUserName }) => {
       <h3 className='scores-list' id='leaderboard-header'>{makeTitle()}</h3>
       {topScores.map((entry, index) => {
 
-        const golden = (solidUserName === entry.username);
+        const golden = (definedUserName === entry.username);
 
         return entry ? (
           <div key={index} className={personalized ? 'personalized scores-list' : 'scores-list'}>

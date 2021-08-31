@@ -1,9 +1,7 @@
-import React, { useState, useEffect } from 'react';
-// import MineSquare from './Squares/MineSquare.jsx';
-// import NumberSquare from './Squares/NumberSquare.jsx';
-// import EmptySquare from './Squares/EmptySquare.jsx';
-import GlobalSquare from './Squares/GlobalSquare.jsx';
-
+import React, { useState, useEffect, useCallback } from 'react';
+import { pure } from 'recompose';
+import Square from './Squares/GlobalSquare.jsx';
+import useInterval from './useInterval.jsx';
 import smiley from '../images/smileys/smiley-face.png';
 
 const generateMines = (numberOfMines, verticalDimension, horizontalDimension) => {
@@ -15,7 +13,7 @@ const generateMines = (numberOfMines, verticalDimension, horizontalDimension) =>
     }
   }
   return mineArr;
-}
+};
 
 const generateNumbers = (mines, verticalDimension, horizontalDimension) => {
   let board = [...Array(verticalDimension * horizontalDimension).keys()];
@@ -104,168 +102,80 @@ const generateNumbers = (mines, verticalDimension, horizontalDimension) => {
   return numBoard;
 }
 
-const testB = ({ surprised, surprisedCallback, skillLevel, timerOn, timerOnCallback, resetCallback, flagsRemainingCallback, solidUserName }) => {
-  const [colors, setColors] = useState(null);
-
-  useEffect(() => {
-    window.test = setInterval(() => {
-      setColors((existingColors) => {
-        if (existingColors === null) {
-          return ['blue-num', 'green-num', 'red-num', 'black-num', 'purple-num', 'maroon-num', 'turquoise-num', 'golden', 'grey-num']
-        } else {
-          let lastColor = existingColors.pop();
-          existingColors.unshift(lastColor);
-          return [...existingColors];
-        }
-      })
-    }, 50)
-  }, []);
-
-  useEffect(() => {
-    if (solidUserName) {
-      window.clearInterval(window.test);
-      setColors(null);
-    }
-  }, [solidUserName])
-
-  const generateColors = (tile) => {
-    // Letters Only
-    // if (tile !== 6 && tile !== 7 && tile !== 8 && tile !== 9 && tile !== 15 && tile !== 16 && tile !== 17 && tile !== 18 && tile !== 19 && tile < 26) {
-
-    // Stars only
-    if (tile === 6 || tile === 7 || tile === 8 || tile === 9 || tile === 15 || tile === 16 || tile === 17 || tile === 18 || tile === 19 || tile > 25) {
-
-      if (tile === 0 || tile === 10 || tile === 20 || tile === 30) {
-        return colors[0]
-      } else if (tile === 1 || tile === 11 || tile === 21 || tile === 31) {
-        return colors[1];
-      } else if (tile === 2 || tile === 12 || tile === 22 || tile === 32) {
-        return colors[2];
-      } else if (tile === 3 || tile === 13 || tile === 23 || tile === 33) {
-        return colors[3];
-      } else if (tile === 4 || tile === 14 || tile === 24 || tile === 34) {
-        return colors[4];
-      } else if (tile === 5 || tile === 15 || tile === 25 || tile === 35) {
-        return colors[5];
-      } else if (tile === 6 || tile === 16 || tile === 26 || tile === 27) {
-        return colors[6];
-      } else if (tile === 7 || tile === 17 || tile === 18 || tile === 28) {
-        return colors[7];
-      } else if (tile === 8 || tile === 9 || tile === 19 || tile === 29) {
-        return colors[8];
-      }
-    }
-
-    // return classNameArr;
-  }
-  const genLoginMessage = (t) => {
-    if (skillLevel === 'beginner') {
-      return t === 0 ? 'P' : t === 1 ? 'l' : t === 2 ? 'e' : t === 3 ? 'a' : t === 4 ? 's' : t === 5 ? 'e' : t === 10 ? 'L' : t === 11 ? 'o' : t === 12 ? 'g' : t === 13 ? 'i' : t === 14 ? 'n' : t === 20 ? 'F' : t === 21 ? 'i' : t === 22 ? 'r' : t === 23 ? 's' : t === 24 ? 't' : t === 25 ? '!' : t < 36 ? '*' : null;
-    }
-  }
-
-  // const genMineClassNames = (tile) => {
-
-  //   let classNameArr = ['sweep-square']
-
-  //   if (colors !== null) {
-  //     classNameArr.push(generateColors(tile), 'disabled');
-  //     return classNameArr.join(' ');
-  //   } else if (surprised === 'victory' && flippers[tile] === 'flag') {
-  //     classNameArr.push('flag', 'disabled');
-  //   } else if (surprised === 'victory' || !solidUserName) {
-  //     classNameArr.push('disabled');
-  //   } else if (surprised === 'dead') {
-  //     classNameArr.push('disabled', 'mine')
-  //   } else if (flippers[tile] === 'flag') {
-  //     classNameArr.push('flag')
-  //   } else if (flippers[tile] === true) {
-  //     classNameArr.push('mine')
-  //   }
-
-  //   return classNameArr.join(' ')
-
-  // }
-
-  // const genNumberClassNames = (num) => {
-  //   let classNameArr = ['sweep-square'];
-
-  //   if (colors !== null) {
-  //     classNameArr.push(generateColors(num), 'disabled');
-  //     return classNameArr.join(' ')
-  //   } else if (surprised === 'victory' || surprised === 'dead' || !solidUserName) {
-  //     classNameArr.push('disabled')
-  //   } else if (flippers[num] === 'flag') {
-  //     classNameArr.push('flag');
-  //   } else {
-  //     classNameArr.push('number')
-  //   }
-
-  //   // Color Determination
-  //   if (numbers[num] === 1) {
-  //     classNameArr.push('blue-num');
-  //   } else if (numbers[num] === 2) {
-  //     classNameArr.push('green-num');
-  //   } else if (numbers[num] === 3) {
-  //     classNameArr.push('red-num');
-  //   } else if (numbers[num] === 4) {
-  //     classNameArr.push('purple-num');
-  //   } else if (numbers[num] === 5) {
-  //     classNameArr.push('maroon-num');
-  //   } else if (numbers[num] === 6) {
-  //     classNameArr.push('turquoise-num');
-  //   } else if (numbers[num] === 7) {
-  //     classNameArr.push('black-num');
-  //   } else if (numbers[num] === 8) {
-  //     classNameArr.push('grey-num');
-  //   }
-
-  //   if (!solidUserName) {
-  //     classNameArr.pop();
-  //   }
-  //   return classNameArr.join(' ');
-  // }
-
-  // const genEmptyClassNames = (tile) => {
-  //   let classNameArr = ['sweep-square'];
-  //   if (colors !== null) {
-  //     classNameArr.push(generateColors(tile), 'disabled');
-  //     return classNameArr.join(' ');
-  //   } else if (surprised === 'victory' || surprised === 'dead') {
-  //     classNameArr.push('disabled', 'dark-square')
-  //   } else if (!solidUserName) {
-  //     classNameArr.push('disabled')
-  //   } else if (flippers[tile] === 'flag') {
-  //     classNameArr.push('flag')
-  //   } else if (flippers[tile] === true) {
-  //     classNameArr.push('dark-square')
-  //   }
-
-  //   return classNameArr.join(' ')
-  // }
+export default ({ surprised, surprisedCallback, skillLevel, timerOn, timerTime, timerOnCallback, resetCallback, flagsRemainingCallback, definedUserName }) => {
 
   let horizontalDimension; let verticalDimension; let numberOfMines;
   if (skillLevel === 'beginner') {
     verticalDimension = 9;
     horizontalDimension = 9;
     numberOfMines = 10;
-  }
+  };
+
   if (skillLevel === 'intermediate') {
     verticalDimension = 16;
     horizontalDimension = 16;
     numberOfMines = 40;
-  }
+  };
 
   if (skillLevel === 'advanced') {
     verticalDimension = 16;
     horizontalDimension = 30;
     numberOfMines = 99;
-  }
+  };
 
-
+  const [colors, setColors] = useState(['blue-num', 'green-num', 'red-num', 'black-num', 'purple-num', 'maroon-num', 'turquoise-num', 'golden', 'grey-num']);
+  const [colorDelay, setColorDelay] = useState(500);
   const [flippers, setFlippers] = useState(Array.from({ length: horizontalDimension * verticalDimension }, () => false));
   const [mines, setMines] = useState(generateMines(numberOfMines, verticalDimension, horizontalDimension));
   const [numbers, setNumbers] = useState(generateNumbers(mines, verticalDimension, horizontalDimension));
+
+  useInterval(() => {
+    setColors((existingColors) => {
+      const lastColor = existingColors.pop();
+      existingColors.unshift(lastColor);
+      return [...existingColors];
+    })
+  }, colorDelay);
+
+  useEffect(() => {
+    if (colorDelay === null) {
+      setColors(null);
+    }
+  }, [colorDelay]);
+
+  useEffect(() => {
+    if (definedUserName) {
+      setColorDelay(null);
+    }
+  }, [definedUserName]);
+
+  const generateColors = useCallback((t) => {
+    // Stars only *
+    if ((t >= 6 && t <= 9) || (t >= 15 && t <= 19) || (t > 25)) {
+      const [blu, grn, red, blk, prpl, mrn, turq, gldn, gry] = colors;
+      return !(t % 10) ? blu
+        : !((t - 1) % 10) ? grn
+          : !((t - 2) % 10) ? red
+            : !((t - 3) % 10) ? blk
+              : !((t - 4) % 10) ? prpl
+                : !((t - 5) % 10) ? mrn
+                  : (!((t - 6) % 10) || t === 27) ? turq
+                    : (!((t - 7) % 10) || t === 18 || t === 28) ? gldn
+                      : (!((t - 9) % 10) || t === 8) ? gry
+                        : null;
+    };
+  }, [colors]);
+
+  const genLoginMessage = useCallback((t) => {
+    if (skillLevel === 'beginner') {
+      return t === 0 ? 'P' : t === 1 ? 'l' : t === 2 ? 'e' : t === 3 ? 'a' : t === 4 ? 's' : t === 5 ? 'e' : t === 10 ? 'L' : t === 11 ? 'o' : t === 12 ? 'g' : t === 13 ? 'i' : t === 14 ? 'n' : t === 20 ? 'F' : t === 21 ? 'i' : t === 22 ? 'r' : t === 23 ? 's' : t === 24 ? 't' : t === 25 ? '!' : t < 36 ? '*' : null;
+    }
+  }, []);
+
+
+  //
+  //
+  //
 
   // This condition resets the board when the smiley face is punched or the skillLevel is changed because timerOn is set to false. It also resets the board if the user changes the skillLevel before playing, which is most likely.
   useEffect(() => {
@@ -274,7 +184,7 @@ const testB = ({ surprised, surprisedCallback, skillLevel, timerOn, timerOnCallb
       setFlippers(Array.from({ length: horizontalDimension * verticalDimension }, () => false));
       // Generate Mines
       setMines(generateMines(numberOfMines, verticalDimension, horizontalDimension));
-    }
+    };
   }, [timerOn, skillLevel])
 
   // If Skill Level is changed, reset the board.
@@ -292,7 +202,7 @@ const testB = ({ surprised, surprisedCallback, skillLevel, timerOn, timerOnCallb
       // Only store score when all flippers have been flipped (ends recursive loop)
       if (flippers.every((flipper) => (flipper === true || flipper === 'flag' || mines[flipper]))) {
         // Post Result
-        timerOnCallback('victory');
+        timerOnCallback([timerTime]);
         setTimeout(() => {
           // This Gets the posted result
           surprisedCallback('victory');
@@ -312,21 +222,14 @@ const testB = ({ surprised, surprisedCallback, skillLevel, timerOn, timerOnCallb
         })
       }
     }
-
   }, [flippers])
 
-  const handleClick = (tile, indicator) => {
+  const handleClick = useCallback((tile, indicator) => {
     event.preventDefault();
-
     if (indicator === 'dead') {
       // Reveal all Flippers
       setFlippers((prevFlippers) => {
         prevFlippers = prevFlippers.map((flipper, index) => {
-          // if (mines.includes(index)) {
-          // return true;
-          // } else {
-          // return flipper;
-          // }
           if (index === 0) {
             return 'dead'
           } else {
@@ -334,7 +237,7 @@ const testB = ({ surprised, surprisedCallback, skillLevel, timerOn, timerOnCallb
           }
         })
         return [...prevFlippers]
-      })
+      });
 
     } else if (event.type === 'contextmenu') {
       setFlippers((prevFlippers) => {
@@ -348,6 +251,7 @@ const testB = ({ surprised, surprisedCallback, skillLevel, timerOn, timerOnCallb
     }
 
     if (event.type === 'click' && indicator !== 'dead') {
+      // Dark Tiles
       if (!numbers[tile] && !mines.includes(tile)) {
 
         const tileRecurse = (tile) => {
@@ -410,11 +314,10 @@ const testB = ({ surprised, surprisedCallback, skillLevel, timerOn, timerOnCallb
                 || (evalL(tile + 1) % horizontalDimension === 0 && evalL(tile) % horizontalDimension === 0))
             ) {
               tileRecurse(evalL(tile));
-            }
-
+            };
             return [...prevFlippers];
           });
-        }
+        };
 
         tileRecurse(tile)
       } else {
@@ -424,7 +327,7 @@ const testB = ({ surprised, surprisedCallback, skillLevel, timerOn, timerOnCallb
         });
       }
     }
-  }
+  }, [surprised])
 
   return (
     [...new Array(verticalDimension)].map((row, rowIndex) => {
@@ -433,94 +336,30 @@ const testB = ({ surprised, surprisedCallback, skillLevel, timerOn, timerOnCallb
           {[...new Array(horizontalDimension)].map((sqr, sqrIndex) => {
             const currCanidate = ((rowIndex * horizontalDimension) + sqrIndex);
             return (
-              <GlobalSquare
+              <Square
                 sqrIndex={sqrIndex}
                 flippers={flippers}
+                currCanidate={currCanidate}
+                definedUserName={definedUserName}
+
                 mines={mines}
                 numbers={numbers}
-                currCanidate={currCanidate}
                 colors={colors}
+                surprised={surprised}
+                timerOn={timerOn}
+
+                flagsRemainingCallback={flagsRemainingCallback}
+                surprisedCallback={surprisedCallback}
+                timerOnCallback={timerOnCallback}
                 generateColors={generateColors}
                 genLoginMessage={genLoginMessage}
                 handleClick={handleClick}
-                solidUserName={solidUserName}
-                surprised={surprised}
-                surprisedCallback={surprisedCallback}
-                timerOn={timerOn}
-                timerOnCallback={timerOnCallback}
-                flagsRemainingCallback={flagsRemainingCallback}
               />
             )
-            // // *****
-            // // Mine Square
-            // // *****
-            // if (mines.includes(currCanidate)) {
-            //   return (
-            //     <MineSquare
-            //       sqrIndex={sqrIndex}
-            //       flippers={flippers}
-            //       currCanidate={currCanidate}
-            //       colors={colors}
-            //       generateColors={generateColors}
-            //       genLoginMessage={genLoginMessage}
-            //       handleClick={handleClick}
-            //       solidUserName={solidUserName}
-            //       surprised={surprised}
-            //       surprisedCallback={surprisedCallback}
-            //       timerOnCallback={timerOnCallback}
-            //       flagsRemainingCallback={flagsRemainingCallback}
-            //     />
-            //   )
-            // }
-            // // *****
-            // // Number
-            // // *****
-
-            // if (numbers[currCanidate]) {
-            //   return (
-            //     <NumberSquare
-            //       sqrIndex={sqrIndex}
-            //       numbers={numbers}
-            //       colors={colors}
-            //       solidUserName={solidUserName}
-            //       surprised={surprised} flippers={flippers} currCanidate={currCanidate}
-            //       timerOn={timerOn}
-            //       timerOnCallback={timerOnCallback}
-            //       generateColors={generateColors}
-            //       genLoginMessage={genLoginMessage}
-            //       handleClick={handleClick}
-            //       surprisedCallback={surprisedCallback}
-            //       flagsRemainingCallback={flagsRemainingCallback}
-            //     />
-            //   )
-            // }
-
-            // // *****
-            // // Empty Square
-            // // *****
-            // return (
-            //   <EmptySquare
-            //     sqrIndex={sqrIndex}
-            //     flippers={flippers}
-            //     currCanidate={currCanidate}
-            //     colors={colors}
-            //     solidUserName={solidUserName}
-            //     surprised={surprised}
-            //     timerOn={timerOn}
-            //     timerOnCallback={timerOnCallback}
-            //     generateColors={generateColors}
-            //     genLoginMessage={genLoginMessage}
-            //     handleClick={handleClick}
-            //     surprisedCallback={surprisedCallback}
-            //     flagsRemainingCallback={flagsRemainingCallback}
-            //   />
-            // )
           })
           }
         </div >
       )
     })
-  )
+  );
 };
-
-export default testB;

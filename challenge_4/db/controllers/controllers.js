@@ -62,7 +62,6 @@ module.exports = {
     }
 
     if (skillLevel === 'advanced') {
-      console.log('xxx')
       const scoreResults = await advancedScores.findAll({
         limit: 10,
         order: [
@@ -75,12 +74,12 @@ module.exports = {
 
   },
 
-  postResult: async (skillLevel, time, solidUserName) => {
+  postResult: async (skillLevel, time, definedUserName) => {
     const { beginnerScores, intermediateScores, advancedScores } = sequelize.models;
 
     if (skillLevel === 'beginner') {
       try {
-        await beginnerScores.create({ username: solidUserName, time: time });
+        await beginnerScores.create({ username: definedUserName, time: time });
       } catch (err) {
         console.log(err);
         throw err;
@@ -89,7 +88,7 @@ module.exports = {
 
     if (skillLevel === 'intermediate') {
       try {
-        await intermediateScores.create({ username: solidUserName, time: time });
+        await intermediateScores.create({ username: definedUserName, time: time });
       } catch (err) {
         console.log(err);
         throw err;
@@ -98,7 +97,7 @@ module.exports = {
 
     if (skillLevel === 'advanced') {
       try {
-        await advancedScores.create({ username: solidUserName, time: time });
+        await advancedScores.create({ username: definedUserName, time: time });
       } catch (err) {
         console.log(err);
         throw err;
