@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-
+import regeneratorRuntime from "regenerator-runtime";
 import Board from './Board.jsx';
 import MilliSecondTimer from './MillisecondTimer.jsx';
 import SkillLevelSelector from './skillLevel.jsx';
 import LeaderBoard from './LeaderBoard.jsx';
 import SmileyBar from './SmileyBar.jsx';
 import UserNameEntry from './UserNameEntry.jsx';
+import useInterval from './useInterval.jsx';
 
 import '../minesweeper.css';
 
@@ -19,83 +20,55 @@ export default () => {
 
   const [userName, setUserName] = useState('');
   const [userPass, setUserPass] = useState('');
-
+  const [delay, setDelay] = useState(null);
   const [solidUserName, setSolidUserName] = useState(null);
 
-
+  // If Delay is null, clear the timer
   useEffect(() => {
-    if (timerOn === true) {
-      window.timer = setInterval(() => {
-        setTimerTime((prevTimerTime) => prevTimerTime += 10);
-      }, 10)
-    }
-    if (timerOn === false) {
-      clearInterval(window.timer);
+    if (delay === null) {
       setTimerTime(0);
-    }
+    };
+  }, [delay]);
 
-    if (timerOn === 'bombed') {
-      clearInterval(window.timer);
-    }
-  }, [timerOn]);
-
-
+  // If Timer is changed to true, start the timer.
   useEffect(() => {
-    if (skillLevel === 'beginner') {
-      setFlagsRemaining(10);
-    }
+    setDelay(() => timerOn && timerOn !== 'bombed' ? 1000 : null, [timerOn])
+  });
 
-    if (skillLevel === 'intermediate') {
-      setFlagsRemaining(40);
-    }
+  useInterval(() => {
+    setTimerTime((prevTimerTime) => prevTimerTime += 10);
+  }, delay);
 
-    if (skillLevel === 'advanced') {
-      setFlagsRemaining(99);
-    }
-
-  }, [skillLevel])
-
+  // This resets the flags whenever the skillLevel is changed or game is reset
   useEffect(() => {
     if (timerOn === false) {
-      if (skillLevel === 'beginner') {
-        setFlagsRemaining(10);
-      }
-
-      if (skillLevel === 'intermediate') {
-        setFlagsRemaining(40);
-      }
-
-      if (skillLevel === 'advanced') {
-        setFlagsRemaining(99);
-      }
+      setFlagsRemaining(() => skillLevel === 'beginner' ? 10 : skillLevel === 'intermediate' ? 40 : 99);
     }
-  }, [timerOn])
+  }, [skillLevel, timerOn])
 
-  const postResult = () => {
-    return axios.post('/minesweeper-topTimes', null, { params: { skillLevel, solidUserName, timerTime } }).then((results) => console.log(results))
-  }
+  const postResult = async () => {
+    const { data: results } = await axios.post('/minesweeper-topTimes', null, { params: { skillLevel, solidUserName, timerTime } })
+    console.log(results);
+  };
 
   const timerOnCallback = (indicator) => {
     if (indicator === 'bomb') {
       setTimerOn('bombed')
-      clearInterval(window.timer);
     } else if (indicator === 'victory') {
-      clearInterval(window.timer);
       postResult();
     } else {
       setTimerOn(true);
     }
   }
 
-  const skillCallback = () => {
-    setSkillLevel(event.target.id);
-  }
+  const skillCallback = ({ target: { id } }) => {
+    setSkillLevel(id);
+  };
 
   const flagsRemainingCallback = (indicator) => {
     if (indicator === true) {
       setFlagsRemaining((prevFlagsRemaining) => prevFlagsRemaining - 1);
     }
-
     if (indicator === false) {
       setFlagsRemaining((prevFlagsRemaining) => prevFlagsRemaining + 1);
     }
@@ -118,32 +91,31 @@ export default () => {
     }
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     event.preventDefault();
-    return axios('/minesweeper-validateUser', { params: { userName, userPass } })
-      .then(({ data: result }) => {
-        if (result === 'does not exist') {
-          let prompt = window.confirm('User does not exist, Create new user?');
-          if (prompt) {
-            return axios.post('/minesweeper-createUser', null, { params: { userName, userPass } })
-              .then(({ data: posted }) => {
-                setSolidUserName(userName)
-              })
-          }
-        } else if (result === 'wrong password') {
-          alert('Wrong Password, try again');
-        } else {
-          setSolidUserName(userName);
-        }
-      })
-  }
 
-  const userPassCallback = () => {
-    setUserPass(event.target.value);
-  }
-  const userNameCallback = () => {
-    setUserName(event.target.value);
-  }
+    const { data: result } = await axios('/minesweeper-validateUser', { params: { userName, userPass } });
+
+    if (result === 'does not exist') {
+      const prompt = window.confirm('User does not exist, Create new user?');
+      if (prompt) {
+        const { data: posted } = await axios.post('/minesweeper-createUser', null, { params: { userName, userPass } });
+        setSolidUserName(userName);
+      };
+    } else if (result === 'wrong password') {
+      alert('Wrong Password, try again...');
+    } else {
+      setSolidUserName(userName)
+    };
+  };
+
+  const userPassCallback = ({ target: { value } }) => {
+    setUserPass(value);
+  };
+
+  const userNameCallback = ({ target: { value } }) => {
+    setUserName(value);
+  };
 
   return (
     <div>

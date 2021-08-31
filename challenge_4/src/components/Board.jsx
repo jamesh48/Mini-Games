@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import smiley from '../images/smileys/smiley-face.png';
+// import MineSquare from './Squares/MineSquare.jsx';
+// import NumberSquare from './Squares/NumberSquare.jsx';
+// import EmptySquare from './Squares/EmptySquare.jsx';
+import GlobalSquare from './Squares/GlobalSquare.jsx';
 
+import smiley from '../images/smileys/smiley-face.png';
 
 const generateMines = (numberOfMines, verticalDimension, horizontalDimension) => {
   let mineArr = [];
@@ -100,10 +104,7 @@ const generateNumbers = (mines, verticalDimension, horizontalDimension) => {
   return numBoard;
 }
 
-
-
-export default ({ surprised, surprisedCallback, skillLevel, timerOn, timerOnCallback, resetCallback, flagsRemainingCallback, solidUserName }) => {
-
+const testB = ({ surprised, surprisedCallback, skillLevel, timerOn, timerOnCallback, resetCallback, flagsRemainingCallback, solidUserName }) => {
   const [colors, setColors] = useState(null);
 
   useEffect(() => {
@@ -118,11 +119,11 @@ export default ({ surprised, surprisedCallback, skillLevel, timerOn, timerOnCall
         }
       })
     }, 50)
-  }, [])
+  }, []);
 
   useEffect(() => {
     if (solidUserName) {
-      clearInterval(window.test);
+      window.clearInterval(window.test);
       setColors(null);
     }
   }, [solidUserName])
@@ -163,85 +164,85 @@ export default ({ surprised, surprisedCallback, skillLevel, timerOn, timerOnCall
     }
   }
 
-  const genMineClassNames = (tile) => {
+  // const genMineClassNames = (tile) => {
 
-    let classNameArr = ['sweep-square']
+  //   let classNameArr = ['sweep-square']
 
-    if (colors !== null) {
-      classNameArr.push(generateColors(tile), 'disabled');
-      return classNameArr.join(' ');
-    } else if (surprised === 'victory' && flippers[tile] === 'flag') {
-      classNameArr.push('flag', 'disabled');
-    } else if (surprised === 'victory' || !solidUserName) {
-      classNameArr.push('disabled');
-    } else if (surprised === 'dead') {
-      classNameArr.push('disabled', 'mine')
-    } else if (flippers[tile] === 'flag') {
-      classNameArr.push('flag')
-    } else if (flippers[tile] === true) {
-      classNameArr.push('mine')
-    }
+  //   if (colors !== null) {
+  //     classNameArr.push(generateColors(tile), 'disabled');
+  //     return classNameArr.join(' ');
+  //   } else if (surprised === 'victory' && flippers[tile] === 'flag') {
+  //     classNameArr.push('flag', 'disabled');
+  //   } else if (surprised === 'victory' || !solidUserName) {
+  //     classNameArr.push('disabled');
+  //   } else if (surprised === 'dead') {
+  //     classNameArr.push('disabled', 'mine')
+  //   } else if (flippers[tile] === 'flag') {
+  //     classNameArr.push('flag')
+  //   } else if (flippers[tile] === true) {
+  //     classNameArr.push('mine')
+  //   }
 
-    return classNameArr.join(' ')
+  //   return classNameArr.join(' ')
 
-  }
+  // }
 
-  const genNumberClassNames = (num) => {
-    let classNameArr = ['sweep-square'];
+  // const genNumberClassNames = (num) => {
+  //   let classNameArr = ['sweep-square'];
 
-    if (colors !== null) {
-      classNameArr.push(generateColors(num), 'disabled');
-      return classNameArr.join(' ')
-    } else if (surprised === 'victory' || surprised === 'dead' || !solidUserName) {
-      classNameArr.push('disabled')
-    } else if (flippers[num] === 'flag') {
-      classNameArr.push('flag');
-    } else {
-      classNameArr.push('number')
-    }
+  //   if (colors !== null) {
+  //     classNameArr.push(generateColors(num), 'disabled');
+  //     return classNameArr.join(' ')
+  //   } else if (surprised === 'victory' || surprised === 'dead' || !solidUserName) {
+  //     classNameArr.push('disabled')
+  //   } else if (flippers[num] === 'flag') {
+  //     classNameArr.push('flag');
+  //   } else {
+  //     classNameArr.push('number')
+  //   }
 
-    // Color Determination
-    if (numbers[num] === 1) {
-      classNameArr.push('blue-num');
-    } else if (numbers[num] === 2) {
-      classNameArr.push('green-num');
-    } else if (numbers[num] === 3) {
-      classNameArr.push('red-num');
-    } else if (numbers[num] === 4) {
-      classNameArr.push('purple-num');
-    } else if (numbers[num] === 5) {
-      classNameArr.push('maroon-num');
-    } else if (numbers[num] === 6) {
-      classNameArr.push('turquoise-num');
-    } else if (numbers[num] === 7) {
-       classNameArr.push('black-num');
-     } else if (numbers[num] === 8) {
-       classNameArr.push('grey-num');
-     }
+  //   // Color Determination
+  //   if (numbers[num] === 1) {
+  //     classNameArr.push('blue-num');
+  //   } else if (numbers[num] === 2) {
+  //     classNameArr.push('green-num');
+  //   } else if (numbers[num] === 3) {
+  //     classNameArr.push('red-num');
+  //   } else if (numbers[num] === 4) {
+  //     classNameArr.push('purple-num');
+  //   } else if (numbers[num] === 5) {
+  //     classNameArr.push('maroon-num');
+  //   } else if (numbers[num] === 6) {
+  //     classNameArr.push('turquoise-num');
+  //   } else if (numbers[num] === 7) {
+  //     classNameArr.push('black-num');
+  //   } else if (numbers[num] === 8) {
+  //     classNameArr.push('grey-num');
+  //   }
 
-    if (!solidUserName) {
-      classNameArr.pop();
-    }
-    return classNameArr.join(' ');
-  }
+  //   if (!solidUserName) {
+  //     classNameArr.pop();
+  //   }
+  //   return classNameArr.join(' ');
+  // }
 
-  const genEmptyClassNames = (tile) => {
-    let classNameArr = ['sweep-square'];
-    if (colors !== null) {
-      classNameArr.push(generateColors(tile), 'disabled');
-      return classNameArr.join(' ');
-    } else if (surprised === 'victory' || surprised === 'dead') {
-      classNameArr.push('disabled', 'dark-square')
-    } else if (!solidUserName) {
-      classNameArr.push('disabled')
-    } else if (flippers[tile] === 'flag') {
-      classNameArr.push('flag')
-    } else if (flippers[tile] === true) {
-      classNameArr.push('dark-square')
-    }
+  // const genEmptyClassNames = (tile) => {
+  //   let classNameArr = ['sweep-square'];
+  //   if (colors !== null) {
+  //     classNameArr.push(generateColors(tile), 'disabled');
+  //     return classNameArr.join(' ');
+  //   } else if (surprised === 'victory' || surprised === 'dead') {
+  //     classNameArr.push('disabled', 'dark-square')
+  //   } else if (!solidUserName) {
+  //     classNameArr.push('disabled')
+  //   } else if (flippers[tile] === 'flag') {
+  //     classNameArr.push('flag')
+  //   } else if (flippers[tile] === true) {
+  //     classNameArr.push('dark-square')
+  //   }
 
-    return classNameArr.join(' ')
-  }
+  //   return classNameArr.join(' ')
+  // }
 
   let horizontalDimension; let verticalDimension; let numberOfMines;
   if (skillLevel === 'beginner') {
@@ -431,195 +432,95 @@ export default ({ surprised, surprisedCallback, skillLevel, timerOn, timerOnCall
         <div key={rowIndex} className={'sweep-row'}>
           {[...new Array(horizontalDimension)].map((sqr, sqrIndex) => {
             const currCanidate = ((rowIndex * horizontalDimension) + sqrIndex);
+            return (
+              <GlobalSquare
+                sqrIndex={sqrIndex}
+                flippers={flippers}
+                mines={mines}
+                numbers={numbers}
+                currCanidate={currCanidate}
+                colors={colors}
+                generateColors={generateColors}
+                genLoginMessage={genLoginMessage}
+                handleClick={handleClick}
+                solidUserName={solidUserName}
+                surprised={surprised}
+                surprisedCallback={surprisedCallback}
+                timerOn={timerOn}
+                timerOnCallback={timerOnCallback}
+                flagsRemainingCallback={flagsRemainingCallback}
+              />
+            )
+            // // *****
+            // // Mine Square
+            // // *****
+            // if (mines.includes(currCanidate)) {
+            //   return (
+            //     <MineSquare
+            //       sqrIndex={sqrIndex}
+            //       flippers={flippers}
+            //       currCanidate={currCanidate}
+            //       colors={colors}
+            //       generateColors={generateColors}
+            //       genLoginMessage={genLoginMessage}
+            //       handleClick={handleClick}
+            //       solidUserName={solidUserName}
+            //       surprised={surprised}
+            //       surprisedCallback={surprisedCallback}
+            //       timerOnCallback={timerOnCallback}
+            //       flagsRemainingCallback={flagsRemainingCallback}
+            //     />
+            //   )
+            // }
+            // // *****
+            // // Number
+            // // *****
 
-            // *****
-            // Mine Square
-            // *****
-            if (mines.includes(currCanidate)) {
-              return <div
+            // if (numbers[currCanidate]) {
+            //   return (
+            //     <NumberSquare
+            //       sqrIndex={sqrIndex}
+            //       numbers={numbers}
+            //       colors={colors}
+            //       solidUserName={solidUserName}
+            //       surprised={surprised} flippers={flippers} currCanidate={currCanidate}
+            //       timerOn={timerOn}
+            //       timerOnCallback={timerOnCallback}
+            //       generateColors={generateColors}
+            //       genLoginMessage={genLoginMessage}
+            //       handleClick={handleClick}
+            //       surprisedCallback={surprisedCallback}
+            //       flagsRemainingCallback={flagsRemainingCallback}
+            //     />
+            //   )
+            // }
 
-                data-testid={`test-${currCanidate}`}
-
-                onClick={
-                  () => {
-                    timerOnCallback('bomb');
-                    handleClick(currCanidate, 'dead');
-                  }
-                }
-
-                onMouseDown={
-                  () => {
-                    surprisedCallback();
-                  }
-                }
-
-                onMouseUp={
-                  (event) => {
-                    if (event.button === 0 && !event.ctrlKey) {
-                      surprisedCallback('dead');
-                    };
-
-                    if (event.button === 2 || event.ctrlKey) {
-                      surprisedCallback('reset')
-                    }
-                  }
-                }
-
-                onContextMenu={
-                  () => {
-                    // Set Flags Remaining -1 or +1
-                    if (flippers[currCanidate] === false) {
-                      flagsRemainingCallback(true);
-                    }
-
-                    if (flippers[currCanidate] === 'flag') {
-                      flagsRemainingCallback(false);
-                    }
-
-                    handleClick(currCanidate);
-                  }
-                }
-
-                key={sqrIndex}
-
-                className={genMineClassNames(currCanidate)}>{
-                  !solidUserName ? genLoginMessage(currCanidate) : flippers[currCanidate] && flippers[currCanidate] !== 'flag' ? '*' : null}</div>
-            }
-            // *****
-            // Number
-            // *****
-
-            if (numbers[currCanidate]) {
-              return <div
-
-                data-testid={`test-${currCanidate}`}
-
-                onMouseDown={
-                  () => {
-                    if (!flippers[currCanidate] || flippers[currCanidate] === 'flag') {
-                      surprisedCallback()
-                    }
-                  }
-                }
-
-                onMouseUp={
-                  () => {
-                    if (!flippers[currCanidate] || flippers[currCanidate] === 'flag') {
-                      surprisedCallback('reset');
-                    }
-                  }
-                }
-                onClick={
-                  () => {
-                    // If an empty space is revealed under a flag, increment remaining flags
-                    if (flippers[currCanidate] === 'flag') {
-                      flagsRemainingCallback(false)
-                    }
-                    // Gameplay As Usual
-                    if (timerOn === true) {
-                      handleClick(currCanidate)
-                    } else {
-                      // Start the Timer
-                      timerOnCallback();
-                      handleClick(currCanidate)
-                    }
-                  }
-                }
-
-                onContextMenu={
-                  () => {
-                    //If number is already revealed- prevent user from putting a flag on it
-                    if (flippers[currCanidate] !== true) {
-                      // Set Flags Remaining -1 or +1
-                      if (flippers[currCanidate] === false) {
-                        flagsRemainingCallback(true);
-                      }
-
-                      if (flippers[currCanidate] === 'flag') {
-                        flagsRemainingCallback(false);
-                      }
-
-                      handleClick(currCanidate)
-
-                    } else {
-                      // and prevent the context menu in case they accidentally do right click the number
-                      event.preventDefault();
-                    }
-                  }
-                }
-
-                key={sqrIndex}
-
-                className={genNumberClassNames(currCanidate)}
-              >
-                {!solidUserName ? genLoginMessage(currCanidate) : flippers[currCanidate] && flippers[currCanidate] !== 'flag' ? numbers[currCanidate] : null}
-              </div>
-            }
-
-            // *****
-            // Empty Square
-            // *****
-            return <div
-
-              data-testid={`test-${currCanidate}`}
-              onMouseDown={
-                () => {
-                  // No Surprise Face if empty tile is already flipped
-                  if (!flippers[currCanidate]) {
-                    surprisedCallback();
-                  }
-                }
-              }
-
-              onMouseUp={
-                () => {
-                  //No Need to reset if empty tile is already flipped, but do reset if a flag was placed.
-                  if (!flippers[currCanidate] || flippers[currCanidate] === 'flag') {
-                    surprisedCallback('reset');
-                  }
-                }
-              }
-
-              onClick=
-              {
-                () => {
-                  // If an empty space is revealed under a flag, increment remaining flags
-                  if (flippers[currCanidate] === 'flag') {
-                    flagsRemainingCallback(false)
-                  }
-
-                  if (timerOn === true) {
-                    handleClick(currCanidate);
-                  } else {
-                    timerOnCallback();
-                    handleClick(currCanidate);
-                  }
-                }
-              }
-              onContextMenu={
-                (event) => {
-                  // Prevent flags on revealed empty squares
-                  if (flippers[currCanidate] !== true) {
-                    // Set Flags Remaining -1 or +1
-                    if (flippers[currCanidate] === false) {
-                      flagsRemainingCallback(true);
-                    }
-
-                    if (flippers[currCanidate] === 'flag') {
-                      flagsRemainingCallback(false);
-                    }
-
-                    handleClick(currCanidate)
-                  } else {
-                    // No Context Menu if user accidentally right clicks on empty square
-                    event.preventDefault();
-                  }
-                }
-              }
-              key={sqrIndex} className={genEmptyClassNames(currCanidate)} >{!solidUserName ? genLoginMessage(currCanidate) : null}</div>
-          })}
+            // // *****
+            // // Empty Square
+            // // *****
+            // return (
+            //   <EmptySquare
+            //     sqrIndex={sqrIndex}
+            //     flippers={flippers}
+            //     currCanidate={currCanidate}
+            //     colors={colors}
+            //     solidUserName={solidUserName}
+            //     surprised={surprised}
+            //     timerOn={timerOn}
+            //     timerOnCallback={timerOnCallback}
+            //     generateColors={generateColors}
+            //     genLoginMessage={genLoginMessage}
+            //     handleClick={handleClick}
+            //     surprisedCallback={surprisedCallback}
+            //     flagsRemainingCallback={flagsRemainingCallback}
+            //   />
+            // )
+          })
+          }
         </div >
       )
     })
   )
-}
+};
+
+export default testB;

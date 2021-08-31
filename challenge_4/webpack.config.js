@@ -3,7 +3,7 @@ const SRC_DIR = path.resolve('src');
 const DIST_DIR = path.resolve('public');
 
 module.exports = {
-  mode: 'production',
+  mode: 'development',
   watch: true,
   entry: path.join(SRC_DIR, 'index.jsx'),
   module: {
@@ -58,4 +58,4 @@ module.exports = {
     path: DIST_DIR,
     filename: 'bundle.js',
   },
-}
+};
