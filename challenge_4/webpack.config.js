@@ -3,9 +3,9 @@ const SRC_DIR = path.resolve('src');
 const DIST_DIR = path.resolve('public');
 
 module.exports = {
-  mode: 'production',
-  // watch: true,
-  entry: path.join(SRC_DIR, 'index.jsx'),
+  mode: 'development',
+  watch: true,
+  entry: path.join(SRC_DIR, 'index.js'),
   module: {
     rules: [
       {
@@ -34,6 +34,9 @@ module.exports = {
               sourceMap: process.env.NODE_ENV !== 'production',
             },
           },
+          {
+            loader: 'sass-loader'
+          }
         ]
       },
       {
@@ -53,6 +56,10 @@ module.exports = {
   },
   resolve: {
     extensions: ['*', '.js', '.jsx'],
+    // https://betterprogramming.pub/use-absolute-paths-with-react-51ced66f119f
+    alias: {
+      Components: path.resolve(__dirname, 'src/components/')
+    }
   },
   output: {
     path: DIST_DIR,

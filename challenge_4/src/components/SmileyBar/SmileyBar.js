@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import smiley from '../images/smileys/smiley-face.png';
+import './smileystyles.scss'
 
-export default ({ surprised, flagsRemaining, resetCallback }) => {
+export default React.memo(({ surprised, flagsRemaining, resetCallback }) => {
   return (
-    <div id='smiley-bar' style={{ alignItems: 'center' }}>
+    <div id='smiley-bar'>
       <div className='smiley-guy'
         id={
           surprised === 'dead' ? 'dead-guy'
@@ -11,8 +11,8 @@ export default ({ surprised, flagsRemaining, resetCallback }) => {
               : surprised === true ? 'surprised-guy'
                 : 'smiley-guy'
         }
-        onClick={() => { resetCallback() }}></div>
+        onClick={resetCallback}></div>
       <div id='flags-remaining'>{flagsRemaining}</div>
     </div>
   );
-}
+})

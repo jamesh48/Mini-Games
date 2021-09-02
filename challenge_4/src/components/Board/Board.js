@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { pure } from 'recompose';
-import Square from './Squares/GlobalSquare.jsx';
-import useInterval from './useInterval.jsx';
-import smiley from '../images/smileys/smiley-face.png';
+import Square from './Squares/GlobalSquare.js';
+import useInterval from 'Components/useInterval.js';
+import './boardstyles.scss';
 
 const generateMines = (numberOfMines, verticalDimension, horizontalDimension) => {
   let mineArr = [];
@@ -103,31 +102,22 @@ const generateNumbers = (mines, verticalDimension, horizontalDimension) => {
 }
 
 export default ({ surprised, surprisedCallback, skillLevel, timerOn, timerTime, timerOnCallback, resetCallback, flagsRemainingCallback, definedUserName }) => {
-
-  let horizontalDimension; let verticalDimension; let numberOfMines;
-  if (skillLevel === 'beginner') {
-    verticalDimension = 9;
-    horizontalDimension = 9;
-    numberOfMines = 10;
-  };
-
-  if (skillLevel === 'intermediate') {
-    verticalDimension = 16;
-    horizontalDimension = 16;
-    numberOfMines = 40;
-  };
-
-  if (skillLevel === 'advanced') {
-    verticalDimension = 16;
-    horizontalDimension = 30;
-    numberOfMines = 99;
-  };
-
+  const [dimensions, setDimensions] = useState({ verticalDimension: 9, horizontalDimension: 9, numberOfMines: 10 });
   const [colors, setColors] = useState(['blue-num', 'green-num', 'red-num', 'black-num', 'purple-num', 'maroon-num', 'turquoise-num', 'golden', 'grey-num']);
   const [colorDelay, setColorDelay] = useState(50);
-  const [flippers, setFlippers] = useState(Array.from({ length: horizontalDimension * verticalDimension }, () => false));
-  const [mines, setMines] = useState(generateMines(numberOfMines, verticalDimension, horizontalDimension));
-  const [numbers, setNumbers] = useState(generateNumbers(mines, verticalDimension, horizontalDimension));
+  const [flippers, setFlippers] = useState(Array.from({ length: dimensions.horizontalDimension * dimensions.verticalDimension }, () => false));
+  const [mines, setMines] = useState(generateMines(dimensions.numberOfMines, dimensions.verticalDimension, dimensions.horizontalDimension));
+  const [numbers, setNumbers] = useState(generateNumbers(mines, dimensions.verticalDimension, dimensions.horizontalDimension));
+
+  useEffect(() => {
+    setDimensions(skillLevel === 'beginner' ?
+      { verticalDimension: 9, horizontalDimension: 9, numberOfMines: 10 }
+      : skillLevel === 'intermediate' ?
+        { verticalDimension: 16, horizontalDimension: 16, numberOfMines: 40 }
+        // Advanced
+        : { verticalDimension: 16, horizontalDimension: 30, numberOfMines: 99 }
+    )
+  }, [skillLevel]);
 
   useInterval(() => {
     setColors((existingColors) => {
@@ -181,9 +171,9 @@ export default ({ surprised, surprisedCallback, skillLevel, timerOn, timerTime, 
   useEffect(() => {
     if (timerOn === false) {
       // Set all Tiles to False (hidden)
-      setFlippers(Array.from({ length: horizontalDimension * verticalDimension }, () => false));
+      setFlippers(Array.from({ length: dimensions.horizontalDimension * dimensions.verticalDimension }, () => false));
       // Generate Mines
-      setMines(generateMines(numberOfMines, verticalDimension, horizontalDimension));
+      setMines(generateMines(dimensions.numberOfMines, dimensions.verticalDimension, dimensions.horizontalDimension));
     };
   }, [timerOn, skillLevel])
 
@@ -194,7 +184,7 @@ export default ({ surprised, surprisedCallback, skillLevel, timerOn, timerTime, 
 
   //When Mines are reset, generate numbers around those mines
   useEffect(() => {
-    setNumbers(generateNumbers(mines, verticalDimension, horizontalDimension));
+    setNumbers(generateNumbers(mines, dimensions.verticalDimension, dimensions.horizontalDimension));
   }, [mines])
 
   useEffect(() => {
@@ -258,9 +248,9 @@ export default ({ surprised, surprisedCallback, skillLevel, timerOn, timerTime, 
           setFlippers((prevFlippers) => {
             prevFlippers.splice(tile, 1, true);
 
-            const evalU = tile => (tile - horizontalDimension);
+            const evalU = tile => (tile - dimensions.horizontalDimension);
             const evalR = tile => (tile + 1);
-            const evalD = tile => (tile + horizontalDimension);
+            const evalD = tile => (tile + dimensions.horizontalDimension);
             const evalL = tile => (tile - 1);
 
             const testTile = (tile, test) => {
@@ -269,7 +259,7 @@ export default ({ surprised, surprisedCallback, skillLevel, timerOn, timerTime, 
                 && !mines.includes(test(tile))
                 && prevFlippers[test(tile)] === false
                 && test(tile) >= 0
-                && test(tile) <= (verticalDimension * horizontalDimension)
+                && test(tile) <= (dimensions.verticalDimension * dimensions.horizontalDimension)
               )
             }
             // ***********
@@ -288,8 +278,8 @@ export default ({ surprised, surprisedCallback, skillLevel, timerOn, timerTime, 
 
             if (
               testTile(tile, evalR)
-              && (evalR(tile) % horizontalDimension !== 0
-                || (evalR(tile) % horizontalDimension === 0 && tile % horizontalDimension === 0))
+              && (evalR(tile) % dimensions.horizontalDimension !== 0
+                || (evalR(tile) % dimensions.horizontalDimension === 0 && tile % dimensions.horizontalDimension === 0))
             ) {
               tileRecurse(evalR(tile))
             }
@@ -310,8 +300,8 @@ export default ({ surprised, surprisedCallback, skillLevel, timerOn, timerTime, 
 
             if (
               testTile(tile, evalL)
-              && ((evalL(tile + 1)) % horizontalDimension !== 0
-                || (evalL(tile + 1) % horizontalDimension === 0 && evalL(tile) % horizontalDimension === 0))
+              && ((evalL(tile + 1)) % dimensions.horizontalDimension !== 0
+                || (evalL(tile + 1) % dimensions.horizontalDimension === 0 && evalL(tile) % dimensions.horizontalDimension === 0))
             ) {
               tileRecurse(evalL(tile));
             };
@@ -330,36 +320,38 @@ export default ({ surprised, surprisedCallback, skillLevel, timerOn, timerTime, 
   }, [surprised])
 
   return (
-    [...new Array(verticalDimension)].map((row, rowIndex) => {
-      return (
-        <div key={rowIndex} className={'sweep-row'}>
-          {[...new Array(horizontalDimension)].map((sqr, sqrIndex) => {
-            const currCanidate = ((rowIndex * horizontalDimension) + sqrIndex);
-            return (
-              <Square
-                sqrIndex={sqrIndex}
-                flippers={flippers}
-                currCanidate={currCanidate}
-                definedUserName={definedUserName}
+    <div>
+      {[...new Array(dimensions.verticalDimension)].map((row, rowIndex) => {
+        return (
+          <div key={rowIndex} className={'sweep-row'}>
+            {[...new Array(dimensions.horizontalDimension)].map((sqr, sqrIndex) => {
+              const currCanidate = ((rowIndex * dimensions.horizontalDimension) + sqrIndex);
+              return (
+                <Square
+                  sqrIndex={sqrIndex}
+                  flippers={flippers}
+                  currCanidate={currCanidate}
+                  definedUserName={definedUserName}
 
-                mines={mines}
-                numbers={numbers}
-                colors={colors}
-                surprised={surprised}
-                timerOn={timerOn}
+                  mines={mines}
+                  numbers={numbers}
+                  colors={colors}
+                  surprised={surprised}
+                  timerOn={timerOn}
 
-                flagsRemainingCallback={flagsRemainingCallback}
-                surprisedCallback={surprisedCallback}
-                timerOnCallback={timerOnCallback}
-                generateColors={generateColors}
-                genLoginMessage={genLoginMessage}
-                handleClick={handleClick}
-              />
-            )
-          })
-          }
-        </div >
-      )
-    })
+                  flagsRemainingCallback={flagsRemainingCallback}
+                  surprisedCallback={surprisedCallback}
+                  timerOnCallback={timerOnCallback}
+                  generateColors={generateColors}
+                  genLoginMessage={genLoginMessage}
+                  handleClick={handleClick}
+                />
+              )
+            })
+            }
+          </div >
+        )
+      })}
+    </div>
   );
 };

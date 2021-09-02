@@ -1,4 +1,4 @@
-require('dotenv').config(require('path').resolve('.env'))
+require('dotenv').config({ path: require('path').resolve('.env') })
 module.exports =
 {
   "development": {

@@ -1,16 +1,15 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import regeneratorRuntime from "regenerator-runtime";
-import Board from './Board.jsx';
-import MilliSecondTimer from './MillisecondTimer.jsx';
-import SkillLevelSelector from './skillLevel.jsx';
-import LeaderBoard from './LeaderBoard.jsx';
-import SmileyBar from './SmileyBar.jsx';
-import UserNameEntry from './UserNameEntry.jsx';
-import useInterval from './useInterval.jsx';
-import { pure } from 'recompose';
+import Board from 'Components/Board/Board.js';
+import MilliSecondTimer from 'Components/MillisecondTimer/MillisecondTimer.js';
+import SkillLevelSelector from 'Components/SkillLevelSelector/SkillLevelSelector.js';
+import LeaderBoard from 'Components/Leaderboard/LeaderBoard.js';
+import SmileyBar from 'Components/SmileyBar/SmileyBar.js';
+import UserNameEntry from 'Components/LoginForm/UserNameEntry.js';
+import useInterval from 'Components/useInterval.js';
 
-import '../minesweeper.css';
+import './minesweeper.scss';
 
 export default () => {
   const [skillLevel, setSkillLevel] = useState('beginner');
@@ -26,19 +25,16 @@ export default () => {
 
   // If Delay is null, clear the timer
   useEffect(() => {
-    if (delay === null) {
-      setTimerTime(0);
-    };
+    if (delay === null) setTimerTime(0);
   }, [delay]);
 
   // If Timer is changed to true, start the timer.
   useEffect(async () => {
     if (Array.isArray(timerOn)) {
       const result = await postResult(timerOn[0]);
-      setDelay(-1);
-    } else {
-      setDelay(() => (timerOn && timerOn !== 'bombed') ? 10 : null)
+      return setDelay(-1);
     }
+    setDelay(() => (timerOn && timerOn !== 'bombed') ? 10 : null)
   }, [timerOn]);
 
   useInterval(() => {
@@ -67,9 +63,8 @@ export default () => {
     };
   }, []);
 
-  const skillCallback = ({ target: { id } }) => {
-    setSkillLevel(id);
-  };
+  const skillCallback = useCallback(({ target: { id } }) => setSkillLevel(id), []);
+
 
   const flagsRemainingCallback = useCallback((indicator) => {
     if (indicator === true) {
@@ -80,10 +75,10 @@ export default () => {
     }
   }, []);
 
-  const resetCallback = () => {
+  const resetCallback = useCallback(() => {
     setSurprised(false);
     setTimerOn(false);
-  };
+  }, []);
 
   const surprisedCallback = useCallback((indicator) => {
     if (indicator === 'victory') {
@@ -99,7 +94,6 @@ export default () => {
 
   const handleSubmit = async () => {
     event.preventDefault();
-
     const { data: result } = await axios('/minesweeper-validateUser', { params: { userName, userPass } });
 
     if (result === 'does not exist') {
@@ -115,19 +109,14 @@ export default () => {
     };
   };
 
-  const userPassCallback = ({ target: { value } }) => {
-    setUserPass(value);
-  };
-
-  const userNameCallback = ({ target: { value } }) => {
-    setUserName(value);
-  };
+  const userPassCallback = ({ target: { value } }) => setUserPass(value);
+  const userNameCallback = ({ target: { value } }) => setUserName(value);
 
   return (
-    <div>
+    <div className='space-containers'>
       <UserNameEntry userName={userName} userPassCallback={userPassCallback} userPass={userPass} handleSubmit={handleSubmit} userNameCallback={userNameCallback} definedUserName={definedUserName} skillLevel={skillLevel} />
 
-      <div style={{ display: 'flex' }}>
+      <div className='space-containers' style={{ justifyContent: 'center' }}>
         <div id='total-board' className={skillLevel}>
           <SmileyBar surprised={surprised} skillLevel={skillLevel} flagsRemaining={flagsRemaining} resetCallback={resetCallback} />
           <Board
@@ -145,7 +134,7 @@ export default () => {
         </div>
         <LeaderBoard definedUserName={definedUserName} skillLevel={skillLevel} surprised={surprised} />
       </div>
-      <div>
+      <div className='space-containers'>
         <MilliSecondTimer skillLevel={skillLevel} timerTime={timerTime} />
 
         <SkillLevelSelector skillLevel={skillLevel} skillCallback={skillCallback} />

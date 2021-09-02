@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import squareUtils from './squareUtils.js';
+import './sweepsquarestyles.scss';
 
 const { genNumberClassNames, genEmptyClassNames, genMineClassNames } = squareUtils;
 
