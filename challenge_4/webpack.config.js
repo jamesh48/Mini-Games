@@ -3,7 +3,7 @@ const SRC_DIR = path.resolve('src');
 const DIST_DIR = path.resolve('public');
 
 module.exports = {
-  mode: 'production',
+  mode: 'development',
   // watch: true,
   entry: path.join(SRC_DIR, 'index.js'),
   module: {
