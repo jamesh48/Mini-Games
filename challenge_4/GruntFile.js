@@ -69,7 +69,7 @@ module.exports = function (grunt) {
     gitcommit: {
       task: {
         options: {
-          message: 'Working on setting up pm2 deploy script to run seamlessly with grunt build process, take 1'
+          message: 'Working on setting up pm2 deploy script to run seamlessly with grunt build process, take 2'
         }
       }
     },
@@ -89,8 +89,9 @@ module.exports = function (grunt) {
   grunt.registerTask('bucketDeploy', 'aws_s3:dist');
   grunt.registerTask('build', 'webpack');
 
+
+  // Deploy To AWS First
+  grunt.registerTask('deploy', ['build', 'uglify', 'cssmin', 'bucketDeploy']);
   // Push to Github
   grunt.registerTask('git', ['gitadd', 'gitcommit', 'gitpush']);
-  // Deploy To AWS
-  grunt.registerTask('deploy', ['build', 'uglify', 'cssmin', 'bucketDeploy']);
 };
