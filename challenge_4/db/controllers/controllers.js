@@ -14,7 +14,6 @@ module.exports = {
 
   validateUser: async (userName, userPass) => {
     try {
-      console.log(userName, userPass)
       const { userLogins } = sequelize.models;
 
       const loginTest = await userLogins.findAll({

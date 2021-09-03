@@ -1,13 +1,19 @@
 const nodeExternals = require("webpack-node-externals");
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require("path");
+require('dotenv').config({ path: './.env' });
 
 const css = {
   test: /\.(css|scss)$/,
   include: path.resolve(__dirname, 'src'),
   exclude: /node_modules/,
-  use: [MiniCssExtractPlugin.loader, "css-loader", {
-    loader: "sass-loader"
+  use: [MiniCssExtractPlugin.loader, {
+    loader: "css-loader"
+  }, {
+    loader: "sass-loader",
+    options: {
+      additionalData: process.env.CloudfrontCSS
+    }
   }]
 }
 
@@ -41,6 +47,7 @@ const serverConfig = {
       Components: path.resolve(__dirname, 'src/components'),
       Database: path.resolve(__dirname, 'db'),
       Public: path.resolve(__dirname, 'dist/public'),
+      Cloudfront: [process.env.Cloudfront],
     },
   },
   externals: [nodeExternals()],
@@ -68,7 +75,8 @@ const clientConfig = {
     extensions: ['*', '.js', '.jsx'],
     // https://betterprogramming.pub/use-absolute-paths-with-react-51ced66f119f
     alias: {
-      Components: path.resolve(__dirname, 'src/components')
+            Components: path.resolve(__dirname, 'src/components'),
+      // Public: path.resolve(__dirname, 'dist/public')
     },
   },
 

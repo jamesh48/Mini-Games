@@ -18,16 +18,16 @@
     padding: 2.5px 12.5px 2.5px 12.5px;
   }
   #smiley-guy {
-    background-image: url(https://d1y3bjxf7c78hf.cloudfront.net/mine-images/smiley-face.jpg);
+    background-image: url(#{$Cloudfront}/mine-images/smiley-face.jpg);
   }
   #surprised-guy {
-    background-image: url(https://d1y3bjxf7c78hf.cloudfront.net/mine-images/surprise-face.jpg);
+    background-image: url(#{$Cloudfront}/mine-images/surprise-face.jpg);
   }
   #dead-guy {
-    background-image: url(https://d1y3bjxf7c78hf.cloudfront.net/mine-images/dead-face.jpg);
+    background-image: url(#{$Cloudfront}/mine-images/dead-face.jpg);
   }
   #victory-guy {
-    background-image: url(https://d1y3bjxf7c78hf.cloudfront.net/mine-images/victory-face.jpg);
+    background-image: url(#{$Cloudfront}/mine-images/victory-face.jpg);
   }
   #flags-remaining {
     padding-left: 10px;

@@ -20,7 +20,7 @@
 .flag {
   // Important overrides the default sweep-square:hover behavior
   background-color: greenyellow !important;
-  background-image: url(https://d1y3bjxf7c78hf.cloudfront.net/mine-images/flag_icon.png);
+  background-image: url(#{$Cloudfront}/mine-images/flag_icon.png);
   background-repeat: no-repeat;
   background-size: 25px;
   background-position: center;

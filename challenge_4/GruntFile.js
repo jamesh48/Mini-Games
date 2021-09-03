@@ -25,6 +25,12 @@ module.exports = function (grunt) {
             cwd: 'dist/server/aws',
             src: ['server.min.css', 'server-bundle.js'],
             dest: 'build/server'
+          },
+          {
+            expand: true,
+            cwd: 'dist/public/images',
+            src: ['*.png'],
+            dest: 'mine-images'
           }
         ]
       }
@@ -69,7 +75,7 @@ module.exports = function (grunt) {
     gitcommit: {
       task: {
         options: {
-          message: 'Should be set up now'
+          message: 'changed cloudfront handles to process.env files both in scss and js/react'
         }
       }
     },
