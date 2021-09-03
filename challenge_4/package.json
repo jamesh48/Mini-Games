@@ -5,11 +5,12 @@
   "main": "server.js",
   "scripts": {
     "test": "jest",
-    "start": "nodemon ./server/index.js",
+    "start": "nodemon dist/server/server.js",
+    "build": "grunt webpack",
     "database": "npx sequelize db:drop && npx sequelize db:create && npx sequelize db:migrate",
     "dev:build": "webpack && concurrently \"webpack --watch\" \"nodemon dist/server/server.js\"",
-    "build": "webpack",
-    "deploy": "pm2 deploy ./server/ecosystem.config.js production"
+    "deploy": "grunt deploy",
+    "postdeploy": "pm2 deploy ./server/ecosystem.config.js production"
   },
   "keywords": [
     "Minesweeper",
@@ -45,7 +46,6 @@
     "global-jsdom": "^8.1.0",
     "grunt": "^1.4.1",
     "grunt-aws-s3": "^2.0.2",
-    "grunt-browserify": "^6.0.0",
     "grunt-contrib-cssmin": "^4.0.0",
     "grunt-contrib-uglify": "^5.0.1",
     "grunt-git": "^1.1.1",

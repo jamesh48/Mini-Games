@@ -1,7 +1,7 @@
 module.exports = {
   apps: [{
     name: 'minesweeper',
-    script: './server/index.js'
+    script: '../dist/server/server.js'
   }],
   deploy: {
     production: {

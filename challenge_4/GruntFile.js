@@ -65,6 +65,18 @@ module.exports = function (grunt) {
           all: true
         }
       }
+    },
+    gitcommit: {
+      task: {
+        options: {
+          message: 'Working on setting up pm2 deploy script to run seamlessly with grunt build process, take 1'
+        }
+      }
+    },
+    gitpush: {
+      your_target: {
+
+      }
     }
   });
 
@@ -77,6 +89,8 @@ module.exports = function (grunt) {
   grunt.registerTask('bucketDeploy', 'aws_s3:dist');
   grunt.registerTask('build', 'webpack');
 
-  // First Webpack, then uglify (js/css), then deploy to aws
+  // Push to Github
+  grunt.registerTask('git', ['gitadd', 'gitcommit', 'gitpush']);
+  // Deploy To AWS
   grunt.registerTask('deploy', ['build', 'uglify', 'cssmin', 'bucketDeploy']);
 };
