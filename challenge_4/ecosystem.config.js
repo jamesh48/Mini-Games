@@ -1,7 +1,7 @@
 module.exports = {
   apps: [{
     name: 'minesweeper',
-    script: '../dist/server/server.js'
+    script: 'dist/server/server.js'
   }],
   deploy: {
     production: {
@@ -11,7 +11,7 @@ module.exports = {
       ref: 'origin/master',
       repo: 'git@github.com:jamesh48/mini-apps-2.git',
       path: '/home/ubuntu/minesweeper',
-      'post-deploy': 'cd /home/ubuntu/minesweeper/source/challenge_4 && npm install && npm run build && pm2 startOrRestart ./server/ecosystem.config.js && pm2 save'
+      'post-deploy': 'cd /home/ubuntu/minesweeper/source/challenge_4 && npm install && npm run build && pm2 startOrRestart ecosystem.config.js && pm2 save'
     }
   }
 }
