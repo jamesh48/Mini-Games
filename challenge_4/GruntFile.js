@@ -69,7 +69,7 @@ module.exports = function (grunt) {
     gitcommit: {
       task: {
         options: {
-          message: 'Working on setting up pm2 deploy script to run seamlessly with grunt build process, take 2'
+          message: 'Working on setting up pm2 deploy script to run seamlessly with grunt build process, take 3'
         }
       }
     },
