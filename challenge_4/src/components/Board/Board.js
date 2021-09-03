@@ -328,6 +328,7 @@ export default ({ surprised, surprisedCallback, skillLevel, timerOn, timerTime, 
               const currCanidate = ((rowIndex * dimensions.horizontalDimension) + sqrIndex);
               return (
                 <Square
+                key={sqrIndex}
                   sqrIndex={sqrIndex}
                   flippers={flippers}
                   currCanidate={currCanidate}

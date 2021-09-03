@@ -1,5 +1,4 @@
-const path = require('path');
-const sequelize = require(path.resolve('db/config/config.js'));
+const sequelize = require('Database/config/config.js');
 
 module.exports = {
 

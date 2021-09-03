@@ -6,3 +6,4 @@ challenge_4/minesweeper-login.sh
 *.pem
 public
 challenge_4/public
+aws-keys.json

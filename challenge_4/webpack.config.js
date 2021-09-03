@@ -1,68 +1,97 @@
-const path = require('path');
-const SRC_DIR = path.resolve('src');
-const DIST_DIR = path.resolve('public');
+const nodeExternals = require("webpack-node-externals");
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const path = require("path");
 
-module.exports = {
-  mode: 'development',
-  // watch: true,
-  entry: path.join(SRC_DIR, 'index.js'),
-  module: {
-    rules: [
-      {
-        test: /\.(js|jsx)$/,
-        exclude: /node_modules/,
-        loader: "babel-loader",
-        options: {
-          presets: ["@babel/preset-react"]
-        },
-      },
-      {
-        test: /\.(css|scss)$/,
-        include: path.resolve('src'),
-        use: [
-          {
-            loader: 'style-loader',
-          },
-          {
-            loader: 'css-loader',
-            options: {
-              // discardDuplicates: true,
-              importLoaders: 1,
-              // modules: {
-              //   localIdentName: '[name]__[local]___[hash:base64:5]',
-              // },
-              sourceMap: process.env.NODE_ENV !== 'production',
-            },
-          },
-          {
-            loader: 'sass-loader'
-          }
-        ]
-      },
-      {
-        test: /\.(png)$/,
-        include: path.resolve('src/images'),
-        use: [
-          {
-            loader: 'file-loader',
-            options: {
-              name: '[name].[ext]',
-              outputPath: 'images/'
-            }
-          }
-        ]
-      }
-    ],
+const css = {
+  test: /\.(css|scss)$/,
+  include: path.resolve(__dirname, 'src'),
+  exclude: /node_modules/,
+  use: [MiniCssExtractPlugin.loader, "css-loader", {
+    loader: "sass-loader"
+  }]
+}
+
+const js = {
+  test: /\.(js|jsx)$/,
+  exclude: /node_modules/,
+  use: {
+    loader: "babel-loader",
+    options: {
+      presets: ["@babel/preset-env", "@babel/preset-react"],
+    },
+  },
+};
+
+const serverConfig = {
+  mode: "development",
+  target: "node",
+  plugins: [new MiniCssExtractPlugin()],
+  node: {
+    __dirname: false,
   },
   resolve: {
+    //   fallback: {
+    //     "fs": false,
+    //     "path": false,
+    //     "os": false
+    //   }
     extensions: ['*', '.js', '.jsx'],
     // https://betterprogramming.pub/use-absolute-paths-with-react-51ced66f119f
     alias: {
-      Components: path.resolve(__dirname, 'src/components/')
-    }
+      Components: path.resolve(__dirname, 'src/components'),
+      Database: path.resolve(__dirname, 'db'),
+      Public: path.resolve(__dirname, 'dist/public'),
+    },
+  },
+  externals: [nodeExternals()],
+  entry: {
+    "server": path.resolve(__dirname, "src/ssr-server/index.js"),
+  },
+  module: {
+    rules: [js, css],
   },
   output: {
-    path: DIST_DIR,
-    filename: 'bundle.js',
+    path: path.resolve(__dirname, "dist/server"),
+    filename: "[name].js",
   },
 };
+
+const clientConfig = {
+  mode: "development",
+  // Req by webpack 5/ala dotenv-environment variables
+  resolve: {
+    //   fallback: {
+    //     "fs": false,
+    //     "path": false,
+    //     "os": false
+    //   }
+    extensions: ['*', '.js', '.jsx'],
+    // https://betterprogramming.pub/use-absolute-paths-with-react-51ced66f119f
+    alias: {
+      Components: path.resolve(__dirname, 'src/components')
+    },
+  },
+
+  target: "web",
+  plugins: [new MiniCssExtractPlugin()],
+  entry: {
+    "index": path.resolve(
+      __dirname,
+      "src/index.js"
+    ),
+  },
+  module: {
+    rules: [js, css],
+  },
+  // optimization: {
+  //   splitChunks: {
+  //     chunks: "all",
+  //   },
+  // },
+  output: {
+    path: path.resolve(__dirname, "dist/public"),
+    filename: "[name].js",
+  },
+};
+
+module.exports = [serverConfig, clientConfig];

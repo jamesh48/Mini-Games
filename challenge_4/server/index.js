@@ -3,6 +3,7 @@ const path = require('path');
 const app = express();
 const { getResults, postResult, postNewUser, validateUser } = require(path.resolve('db/controllers/controllers.js'));
 const cors = require('cors');
+const port = 3500;
 
 app.use(cors());
 
@@ -41,7 +42,7 @@ app.post('/minesweeper-createUser', async ({ query: { userName, userPass } }, re
   } catch (err) {
     res.send(err);
   }
-})
+});
 
 app.post('/minesweeper-topTimes', async ({ query: { skillLevel, resultTime: timerTime, definedUserName } }, res) => {
   try {
@@ -50,8 +51,9 @@ app.post('/minesweeper-topTimes', async ({ query: { skillLevel, resultTime: time
   } catch (err) {
     res.send(err);
   }
-})
-app.listen(3500, () => {
-  console.log('Minesweeper listening on port 3500');
-})
+});
+
+app.listen(port, () => {
+  console.log(`Minesweeper listening on port ${port}`);
+});
 

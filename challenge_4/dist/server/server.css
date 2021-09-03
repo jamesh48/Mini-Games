@@ -1,0 +1,217 @@
+/*!**********************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/components/Board/Squares/sweepsquarestyles.scss ***!
+  \**********************************************************************************************************************************************/
+.sweep-square {
+  display: flex;
+  position: relative;
+  width: 100%;
+  font-weight: 700;
+  height: 2.5em;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid darkslategray;
+  background-color: lightslategray; }
+  .sweep-square:hover {
+    background-color: lightgrey; }
+
+.disabled {
+  pointer-events: none; }
+
+.flag {
+  background-color: greenyellow !important;
+  background-image: url(https://d1y3bjxf7c78hf.cloudfront.net/mine-images/flag_icon.png);
+  background-repeat: no-repeat;
+  background-size: 25px;
+  background-position: center; }
+
+.mine {
+  background-color: red !important;
+  color: white; }
+
+.dark-square {
+  background-color: darkslategray !important; }
+
+/* 1 */
+.blue-num {
+  color: blue; }
+
+/* 2 */
+.green-num {
+  color: green; }
+
+/* 3 */
+.red-num {
+  color: red; }
+
+/* 4 */
+.purple-num {
+  color: purple; }
+
+/* 5 */
+.maroon-num {
+  color: maroon; }
+
+/* 6 */
+.turquoise-num {
+  color: turquoise; }
+
+/* 7 */
+.black-num {
+  color: black; }
+
+/* 8 */
+.grey-num {
+  color: darkslategray; }
+
+/*!********************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/components/Board/boardstyles.scss ***!
+  \********************************************************************************************************************************/
+.sweep-row {
+  display: flex;
+  border-left: 2px solid darkslategrey;
+  border-right: 2px solid darkslategrey; }
+
+/*!*************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/components/MillisecondTimer/millisecondstyles.scss ***!
+  \*************************************************************************************************************************************************/
+#milli-second-timer {
+  color: ivory;
+  display: flex;
+  justify-content: center;
+  border: 1px solid ivory;
+  padding: .5% 0; }
+
+/*!*********************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/components/SkillLevelSelector/skillstyles.scss ***!
+  \*********************************************************************************************************************************************/
+#skill-level-selector {
+  display: flex;
+  justify-content: center;
+  align-self: center;
+  margin-top: .5%; }
+  #skill-level-selector > * {
+    background-color: ivory;
+    width: 30%;
+    margin: 0px 1.6%; }
+    #skill-level-selector > *:hover {
+      background-color: darkslateblue;
+      color: ivory; }
+
+/*!**************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/components/Leaderboard/leaderboard.scss ***!
+  \**************************************************************************************************************************************/
+/* Leader Board */
+#leaderboard {
+  position: relative;
+  left: 5%;
+  border: 1px solid darkslategray;
+  background-color: steelblue; }
+  #leaderboard #leaderboard-header {
+    text-decoration: underline;
+    text-align: center;
+    color: gold;
+    text-transform: capitalize; }
+  #leaderboard .scores-list {
+    padding: 5px 40px 5px 40px; }
+    #leaderboard .scores-list:hover * {
+      color: aqua;
+      cursor: pointer; }
+    #leaderboard .scores-list .scores-user,
+    #leaderboard .scores-list .scores-time {
+      display: inline;
+      color: ivory; }
+  #leaderboard .golden {
+    color: gold !important; }
+  #leaderboard .personalized:hover * {
+    color: aqua;
+    cursor: default; }
+  #leaderboard #return-to-leaderboard {
+    position: absolute;
+    bottom: 1%;
+    left: 22.5%;
+    border-radius: 10px;
+    background-color: ivory;
+    color: darkslategray; }
+    #leaderboard #return-to-leaderboard:hover {
+      background-color: darkslateblue;
+      color: ivory;
+      cursor: pointer; }
+
+/*!*************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/components/SmileyBar/smileystyles.scss ***!
+  \*************************************************************************************************************************************/
+/* Smiley Bar */
+#smiley-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background-color: darkslategray;
+  color: ivory;
+  border: 2px solid black;
+  height: 25px;
+  vertical-align: auto; }
+  #smiley-bar .smiley-guy {
+    background-repeat: no-repeat;
+    background-size: 25px;
+    background-position: center;
+    display: inline-block;
+    height: 20px;
+    padding: 2.5px 12.5px 2.5px 12.5px; }
+  #smiley-bar #smiley-guy {
+    background-image: url(https://d1y3bjxf7c78hf.cloudfront.net/mine-images/smiley-face.jpg); }
+  #smiley-bar #surprised-guy {
+    background-image: url(https://d1y3bjxf7c78hf.cloudfront.net/mine-images/surprise-face.jpg); }
+  #smiley-bar #dead-guy {
+    background-image: url(https://d1y3bjxf7c78hf.cloudfront.net/mine-images/dead-face.jpg); }
+  #smiley-bar #victory-guy {
+    background-image: url(https://d1y3bjxf7c78hf.cloudfront.net/mine-images/victory-face.jpg); }
+  #smiley-bar #flags-remaining {
+    padding-left: 10px;
+    position: relative; }
+
+/*!************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/components/LoginForm/loginstyles.scss ***!
+  \************************************************************************************************************************************/
+#login-form {
+  display: flex;
+  justify-content: center; }
+  #login-form .login-header {
+    color: ivory;
+    display: inline;
+    background-color: #1f2124;
+    margin-bottom: .5%; }
+  #login-form > input {
+    width: 40%;
+    padding: 1.5%;
+    border: 1px solid ivory; }
+    #login-form > input:not(:nth-child(1)) {
+      margin-left: 1.5%; }
+
+/*!******************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/components/App/minesweeper.scss ***!
+  \******************************************************************************************************************************/
+html {
+  background-color: #1f2124;
+  min-height: 100%; }
+
+/* Global Styles */
+.beginner {
+  width: 40%; }
+
+.intermediate {
+  width: 55%; }
+
+.advanced {
+  width: 80%; }
+
+.space-containers {
+  width: 100%;
+  display: flex;
+  margin-top: 5%; }
+  .space-containers:nth-child(1) {
+    flex-direction: column;
+    align-items: center; }
+  .space-containers:last-child {
+    flex-direction: column; }
+
