@@ -19,7 +19,7 @@
 
 .flag {
   background-color: greenyellow !important;
-  background-image: url(https://d1y3bjxf7c78hf.cloudfront.net/mine-images/flag_icon.png);
+  background-image: url(https://d1y3bjxf7c78hf.cloudfront.net/mines/mines/mine-images/flag_icon.png);
   background-repeat: no-repeat;
   background-size: 25px;
   background-position: center; }
@@ -159,13 +159,13 @@
     height: 20px;
     padding: 2.5px 12.5px 2.5px 12.5px; }
   #smiley-bar #smiley-guy {
-    background-image: url(https://d1y3bjxf7c78hf.cloudfront.net/mine-images/smiley-face.jpg); }
+    background-image: url(https://d1y3bjxf7c78hf.cloudfront.net/mines/mines/mine-images/smiley-face.jpg); }
   #smiley-bar #surprised-guy {
-    background-image: url(https://d1y3bjxf7c78hf.cloudfront.net/mine-images/surprise-face.jpg); }
+    background-image: url(https://d1y3bjxf7c78hf.cloudfront.net/mines/mines/mine-images/surprise-face.jpg); }
   #smiley-bar #dead-guy {
-    background-image: url(https://d1y3bjxf7c78hf.cloudfront.net/mine-images/dead-face.jpg); }
+    background-image: url(https://d1y3bjxf7c78hf.cloudfront.net/mines/mines/mine-images/dead-face.jpg); }
   #smiley-bar #victory-guy {
-    background-image: url(https://d1y3bjxf7c78hf.cloudfront.net/mine-images/victory-face.jpg); }
+    background-image: url(https://d1y3bjxf7c78hf.cloudfront.net/mines/mines/mine-images/victory-face.jpg); }
   #smiley-bar #flags-remaining {
     padding-left: 10px;
     position: relative; }

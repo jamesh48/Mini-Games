@@ -28,8 +28,8 @@ module.exports = function (grunt) {
           },
           {
             expand: true,
-            cwd: 'dist/public/images',
-            src: ['*.png'],
+            cwd: 'src/images',
+            src: ['*.png', '*.jpg'],
             dest: 'mine-images'
           }
         ]
@@ -47,6 +47,13 @@ module.exports = function (grunt) {
       }
     },
     cssmin: {
+      options: {
+        level: {
+          1: {
+            specialComments: 0
+          }
+        }
+      },
       target: {
         files: [
           {
@@ -75,11 +82,11 @@ module.exports = function (grunt) {
     gitcommit: {
       task: {
         options: {
-          message: 'changed cloudfront handles to process.env files both in scss and js/react'
+          message: 'seeing if I can hydrate by proxy'
         }
       }
     },
-    gitpush: {your_target: {}}
+    gitpush: { your_target: {} }
   });
 
   grunt.loadNpmTasks('grunt-webpack');

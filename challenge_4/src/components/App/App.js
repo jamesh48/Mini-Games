@@ -11,7 +11,9 @@ import useInterval from 'Components/useInterval.js';
 
 import './minesweeper.scss';
 
-export default () => {
+export default (props) => {
+  console.log(props);
+  console.log(props.topTimes)
   const [skillLevel, setSkillLevel] = useState('beginner');
   const [timerOn, setTimerOn] = useState(false);
   const [timerTime, setTimerTime] = useState(0);
