@@ -4,7 +4,7 @@ import LeaderBoardEntry from './LeaderBoardEntry.js';
 import './leaderboard.scss';
 
 export default
-  React.memo(({ skillLevel, surprised, definedUserName }) => {
+  React.memo(({ ssrTopTimes, skillLevel, surprised, definedUserName }) => {
     const [topScores, setTopScores] = useState([]);
     const [personalized, setPersonalized] = useState(false);
 
@@ -59,8 +59,8 @@ export default
     return (
       <div id='leaderboard'>
         <h3 className='scores-list' id='leaderboard-header'>{makeTitle(personalized, skillLevel)}</h3>
-        {topScores.map((entry, index) => {
-          return entry ? <LeaderBoardEntry definedUserName={definedUserName} personalized={personalized} index={index} entry={entry} handleClick={handleClick} formatTime={formatTime} /> : null;
+        {(ssrTopTimes || topScores).map((entry, index) => {
+          return entry ? <LeaderBoardEntry key={index} definedUserName={definedUserName} personalized={personalized} index={index} entry={entry} handleClick={handleClick} formatTime={formatTime} /> : null;
         })}
         {personalized ? <input type='button' onClick={handleClick} id='return-to-leaderboard' value={`return to ${skillLevel} LeaderBoard`}>
         </input> : null}

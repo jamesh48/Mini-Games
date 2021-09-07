@@ -35,6 +35,7 @@ module.exports = {
   },
 
   getResults: async (skillLevel, username) => {
+
     try {
       const { beginnerScores, intermediateScores, advancedScores } = sequelize.models;
 
@@ -42,7 +43,7 @@ module.exports = {
       if (username) whereStatement.username = username
 
       const determinedSkillLevel =
-        skillLevel === 'beginner' ? beginnerScores
+        skillLevel === 'beginner' || !skillLevel ? beginnerScores
           : skillLevel === 'intermediate' ? intermediateScores
             : advancedScores;
 
