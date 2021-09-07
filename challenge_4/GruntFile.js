@@ -19,18 +19,18 @@ module.exports = function (grunt) {
             expand: true,
             cwd: 'dist/public/aws',
             src: ['index.min.css', 'public-bundle.js'],
-            dest: 'build/public'
+            dest: 'mines/build/public'
           }, {
             expand: true,
             cwd: 'dist/server/aws',
             src: ['server.min.css', 'server-bundle.js'],
-            dest: 'build/server'
+            dest: 'mines/build/server'
           },
           {
             expand: true,
             cwd: 'src/images',
             src: ['*.png', '*.jpg'],
-            dest: 'mine-images'
+            dest: 'mines/mine-images'
           }
         ]
       }
