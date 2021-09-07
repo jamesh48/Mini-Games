@@ -82,7 +82,7 @@ module.exports = function (grunt) {
     gitcommit: {
       task: {
         options: {
-          message: 'seeing if I can hydrate by proxy'
+          message: 'refining some routes...'
         }
       }
     },
