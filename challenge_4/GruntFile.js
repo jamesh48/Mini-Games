@@ -104,6 +104,6 @@ module.exports = function (grunt) {
   grunt.registerTask('git', ['gitadd', 'gitcommit', 'gitpush']);
 
   // Nuclear Option
-  grunt.registerTasks('deploy-all', ['deploy', 'git'])
+  grunt.registerTask('deploy-all', ['deploy', 'git'])
 
 };
