@@ -82,7 +82,7 @@ module.exports = function (grunt) {
     gitcommit: {
       task: {
         options: {
-          message: 'Leaderboard is now ssr'
+          message: 'Updating links to use https instead of http'
         }
       }
     },
@@ -99,7 +99,7 @@ module.exports = function (grunt) {
   grunt.registerTask('build', 'webpack');
 
   // Deploy To AWS First
-  grunt.registerTask('deploy-all', ['build', 'uglify', 'cssmin', 'bucketDeploy']);
+  grunt.registerTask('deploy', ['build', 'uglify', 'cssmin', 'bucketDeploy']);
   // Push to Github
   grunt.registerTask('git', ['gitadd', 'gitcommit', 'gitpush']);
 
