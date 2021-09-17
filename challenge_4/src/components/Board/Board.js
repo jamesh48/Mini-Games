@@ -111,7 +111,7 @@ export default ({ surprised, surprisedCallback, skillLevel, timerOn, timerTime, 
 
   useEffect(() => {
     setDimensions(skillLevel === 'beginner' ?
-      { verticalDimension: 9, horizontalDimension: 9, numberOfMines: 10 }
+      { verticalDimension: 4, horizontalDimension: 4, numberOfMines: 1 }
       : skillLevel === 'intermediate' ?
         { verticalDimension: 16, horizontalDimension: 16, numberOfMines: 40 }
         // Advanced

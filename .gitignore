@@ -2,7 +2,7 @@ node_modules
 *.DS_Store
 .env
 config.json
-challenge_4/minesweeper-login.sh
+*.sh
 *.pem
 public
 challenge_4/dist

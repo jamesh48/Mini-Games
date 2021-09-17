@@ -132,7 +132,7 @@ export default (props) => {
             flagsRemaining={flagsRemaining}
           />
         </div>
-        <LeaderBoard ssrTopTimes={props.topTimes} definedUserName={definedUserName} skillLevel={skillLevel} surprised={surprised} />
+        <LeaderBoard ssrTopTimes={props.ssrTopTimes} definedUserName={definedUserName} skillLevel={skillLevel} surprised={surprised} />
       </div>
       <div className='space-containers'>
         <MilliSecondTimer skillLevel={skillLevel} timerTime={timerTime} />

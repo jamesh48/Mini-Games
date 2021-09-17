@@ -32,6 +32,7 @@ const serverConfig = {
   mode: "development",
   target: "node",
   plugins: [new MiniCssExtractPlugin()],
+  devtool: "source-map",
   node: {
     __dirname: false,
   },

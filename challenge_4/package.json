@@ -9,7 +9,7 @@
     "build": "webpack",
     "database": "npx sequelize db:drop && npx sequelize db:create && npx sequelize db:migrate",
     "dev:build": "webpack && concurrently \"webpack --watch\" \"nodemon dist/server/server.js\"",
-    "deploy": "grunt deploy",
+    "deploy": "grunt deploy-all",
     "postdeploy": "pm2 deploy ecosystem.config.js production"
   },
   "keywords": [
