@@ -94,7 +94,7 @@ module.exports = function (grunt) {
     gitcommit: {
       task: {
         options: {
-          message: 'End of a long day commit and its a big one! Complete refactor to use Redux Hooks, no more props! no more callbacks! Hope it sticks online :P'
+          message: 'Only one fix tonight! had to update the post route for a new top time'
         }
       }
     },

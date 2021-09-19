@@ -73,7 +73,7 @@ const freezeScrollBoardEffect = (scrollBoard) => {
 const revealFlipperEffect = (mines, flippers, numbers, timerTime, skillLevel, definedUserName, dispatch) => {
 
   const postResult = async () => {
-    const { data: results } = await axios.post('/minesweeper-topTimes', null, { params: { skillLevel, definedUserName, timerTime: resultTime } });
+    const { data: results } = await axios.post('/minesweeper-topTimes', null, { params: { skillLevel, definedUserName, timerTime } });
   };
 
   useEffect(async () => {

@@ -1166,7 +1166,7 @@ var revealFlipperEffect = function revealFlipperEffect(mines, flippers, numbers,
                 params: {
                   skillLevel: skillLevel,
                   definedUserName: definedUserName,
-                  timerTime: resultTime
+                  timerTime: timerTime
                 }
               });
 
@@ -2215,7 +2215,7 @@ minesweeper.post('/minesweeper-topTimes', /*#__PURE__*/function () {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
-            _ref7$query = _ref7.query, skillLevel = _ref7$query.skillLevel, timerTime = _ref7$query.resultTime, definedUserName = _ref7$query.definedUserName;
+            _ref7$query = _ref7.query, skillLevel = _ref7$query.skillLevel, timerTime = _ref7$query.timerTime, definedUserName = _ref7$query.definedUserName;
             _context4.prev = 1;
             _context4.next = 4;
             return (0,Database_controllers_controllers_js__WEBPACK_IMPORTED_MODULE_2__.postResult)(skillLevel, timerTime, definedUserName);
