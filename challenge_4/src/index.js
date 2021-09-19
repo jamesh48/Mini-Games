@@ -1,5 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './components/App/App.js';
+import Minesweeper from './components/Minesweeper/Minesweeper.js';
+import { StoreProvider } from './store/store.js';
 
-ReactDOM.hydrate(<App ssrTopTimes={window.__INITIAL__DATA__.topTimes}/>, document.getElementById('minesweeper-root'));
+ReactDOM.hydrate(
+  (
+    <StoreProvider>
+      <Minesweeper ssrTopTimes={window.__INITIAL__DATA__.topTimes} />
+    </StoreProvider>
+  ),
+  document.getElementById('minesweeper-root')
+);

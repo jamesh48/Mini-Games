@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import LeaderBoardEntry from './LeaderBoardEntry.js';
+import useStoreContext from 'Store/useStoreContext.js';
 import './leaderboard.scss';
 
 export default
-  React.memo(({ ssrTopTimes, skillLevel, surprised, definedUserName }) => {
+  React.memo(({ ssrTopTimes }) => {
+
+    const [{ dimensions: { skillLevel }, definedUserName, surprised }, dispatch] = useStoreContext();
+
     const [topScores, setTopScores] = useState([]);
     const [personalized, setPersonalized] = useState(false);
 
@@ -60,7 +64,7 @@ export default
       <div id='leaderboard'>
         <h3 className='scores-list' id='leaderboard-header'>{makeTitle(personalized, skillLevel)}</h3>
         {(topScores || ssrTopTimes).map((entry, index) => {
-          return entry ? <LeaderBoardEntry key={index} definedUserName={definedUserName} personalized={personalized} index={index} entry={entry} handleClick={handleClick} formatTime={formatTime} /> : null;
+          return entry ? <LeaderBoardEntry key={index} personalized={personalized} index={index} entry={entry} handleClick={handleClick} formatTime={formatTime} /> : null;
         })}
         {personalized ? <input type='button' onClick={handleClick} id='return-to-leaderboard' value={`return to ${skillLevel} LeaderBoard`}>
         </input> : null}

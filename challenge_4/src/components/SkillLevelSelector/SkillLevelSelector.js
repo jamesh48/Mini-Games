@@ -1,12 +1,14 @@
 import React from 'react';
+import useStoreContext from 'Store/useStoreContext.js';
 import './skillstyles.scss';
 
-export default React.memo(({ skillCallback, skillLevel }) => {
+export default React.memo(() => {
+  const [{ dimensions: { skillLevel } }, dispatch] = useStoreContext();
   return (
     <div className={skillLevel} id='skill-level-selector'>
-      <button id='beginner' onClick={skillCallback}>Beginner</button>
-      <button id='intermediate' onClick={skillCallback}>Intermediate</button>
-      <button id='advanced' onClick={skillCallback}>Expert</button>
-    </div>
+      <button onClick={_ => dispatch({ type: 'SET BEGINNER DIMENSIONS' })}>Beginner</button>
+      <button onClick={_ => dispatch({ type: 'SET INTERMEDIATE DIMENSIONS' })}>Intermediate</button>
+      <button onClick={_ => dispatch({ type: 'SET ADVANCED DIMENSIONS' })}>Expert</button>
+    </div >
   )
 })

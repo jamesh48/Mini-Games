@@ -59,6 +59,9 @@
 .black-num {
   color: black; }
 
+.gold-num {
+  color: goldenrod; }
+
 /* 8 */
 .grey-num {
   color: darkslategray; }
@@ -170,9 +173,9 @@
     padding-left: 10px;
     position: relative; }
 
-/*!****************************************************************************************************************************************************************!*\
-  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[1].use[2]!./src/components/LoginForm/loginstyles.scss ***!
-  \****************************************************************************************************************************************************************/
+/*!********************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[1].use[2]!./src/components/UserNameEntry/loginstyles.scss ***!
+  \********************************************************************************************************************************************************************/
 #login-form {
   display: flex;
   justify-content: center; }
@@ -188,12 +191,15 @@
     #login-form > input:not(:nth-child(1)) {
       margin-left: 1.5%; }
 
-/*!**********************************************************************************************************************************************************!*\
-  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[1].use[2]!./src/components/App/minesweeper.scss ***!
-  \**********************************************************************************************************************************************************/
+/*!******************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[1].use[2]!./src/components/Minesweeper/minesweeper.scss ***!
+  \******************************************************************************************************************************************************************/
 html {
   background-color: #1f2124;
   min-height: 100%; }
+
+.golden-background {
+  background-color: goldenrod; }
 
 /* Global Styles */
 .beginner {
@@ -214,6 +220,9 @@ html {
     align-items: center; }
   .space-containers:last-child {
     flex-direction: column; }
+
+#main-space-container {
+  justify-content: center; }
 
 
 /*# sourceMappingURL=server.css.map*/

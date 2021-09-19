@@ -1,7 +1,16 @@
 import React, { useState, useEffect } from 'react';
+import useStoreContext from 'Store/useStoreContext.js';
 import './smileystyles.scss'
 
-export default React.memo(({ surprised, flagsRemaining, resetCallback }) => {
+export default React.memo(() => {
+
+  const [{ surprised, flagsRemaining }, dispatch] = useStoreContext();
+
+  const resetCallback = () => {
+    dispatch({ type: 'RESET SMILES' });
+    dispatch({ type: 'SWITCH TIMER OFF' });
+  }
+
   return (
     <div id='smiley-bar'>
       <div className='smiley-guy'
@@ -15,4 +24,4 @@ export default React.memo(({ surprised, flagsRemaining, resetCallback }) => {
       <div id='flags-remaining'>{flagsRemaining}</div>
     </div>
   );
-})
+});

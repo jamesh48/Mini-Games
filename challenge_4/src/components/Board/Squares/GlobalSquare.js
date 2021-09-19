@@ -1,104 +1,79 @@
-import React, { useEffect } from 'react';
-import squareUtils from './squareUtils.js';
+import React, { useEffect, useContext } from 'react';
+import { generateLoginMessage } from './squareUtils.js';
+import { genNumberClassNames, genEmptyClassNames, genMineClassNames, handleClick } from './squareUtils.js';
+import useStoreContext from 'Store/useStoreContext.js';
 import './sweepsquarestyles.scss';
 
-const { genNumberClassNames, genEmptyClassNames, genMineClassNames } = squareUtils;
 
-export default
+export default React.memo(({ currCanidate }) => {
+  const [globalState, dispatch] = useStoreContext();
 
-  React.memo(({
-    // Variables...
-    sqrIndex,
-    colors,
-    surprised,
-    currCanidate,
-    definedUserName,
-    // Boards
-    flippers,
-    mines,
-    numbers,
-    // Functions
-    generateColors,
-    genLoginMessage,
-    handleClick,
-    surprisedCallback,
-    flagsRemainingCallback,
-    // Timer
-    timerOnCallback,
-    timerOn,
-  }) => {
+  return (
+    <div
 
-    // useEffect(() => {
-    //   console.log('updated!');
-    // })
+      data-testid={`test-${currCanidate}`}
 
-    return (
-      <div
-        key={sqrIndex}
-        data-testid={`test-${currCanidate}`}
-
-        onClick={
-          () => {
-            // If tile is a bomb...
-            if (mines.includes(currCanidate)) {
-              timerOnCallback('bomb');
-              return handleClick(currCanidate, 'dead');
-            };
-            // Is a Number or a Empty Square
-            // If an empty space is revealed under a flag, increment remaining flags
-            if (flippers[currCanidate] === 'flag') flagsRemainingCallback(false);
-            // Start the timer and reveal the tile
-            if (timerOn === false) {
-              timerOnCallback();
-              handleClick(currCanidate);
-            };
-            // Normal Play
-            return handleClick(currCanidate);
-          }
+      onClick={
+        () => {
+          // If tile is a bomb...
+          if (globalState.mines.includes(currCanidate)) {
+            dispatch({ type: 'SWITCH TIMER BOMBED' });
+            return handleClick({ ...globalState, currCanidate, indicator: 'dead', dispatch });
+          };
+          // Is a Number or a Empty Square
+          // If an empty space is revealed under a flag, increment remaining flags
+          if (globalState.flippers[currCanidate] === 'flag') dispatch({ type: 'INCREMENT FLAGS REMAINING' });
+          // Start the timer and reveal the tile
+          if (globalState.timerOn === false) {
+            dispatch({ type: 'SWITCH TIMER ON' });
+            return handleClick({ ...globalState, currCanidate, indicator: null, dispatch });
+          };
+          // Normal Play
+          return handleClick({ ...globalState, currCanidate, indicator: null, dispatch });
         }
+      }
 
-        onMouseDown={
-          () => {
-            if (!flippers[currCanidate]) surprisedCallback();
-          }
+      onMouseDown={
+        () => {
+          if (!globalState.flippers[currCanidate]) dispatch({ type: 'SURPRISED SMILES' })
         }
+      }
 
-        onMouseUp={
-          () => {
-            // Mine- Death Sequence XD
-            if (mines.includes(currCanidate) && event.button === 0 && !event.ctrlKey) {
-              return surprisedCallback('dead');
-            };
-            surprisedCallback('reset');
-          }
+      onMouseUp={
+        () => {
+          // Mine- Death Sequence XD
+          if (globalState.mines.includes(currCanidate) && event.button === 0 && !event.ctrlKey) {
+            return dispatch({ type: 'DEAD SMILES' });
+          };
+          return dispatch({ type: 'RESET SMILES' });
         }
+      }
 
-        onContextMenu={
-          () => {
-            //If number is already revealed- prevent user from putting a flag on it
-            if (flippers[currCanidate] !== true) {
-              // if the flag is false (-1), pass true, otherwise pass false(+1)
-              flagsRemainingCallback(flippers[currCanidate] === false || false)
-              return handleClick(currCanidate)
-            };
-            // Prevent context menu if user accidentally presses context menu
-            event.preventDefault();
-          }
+      onContextMenu={
+        () => {
+          //If number is already revealed- prevent user from putting a flag on it
+          if (globalState.flippers[currCanidate] !== true) {
+            dispatch({ type: globalState.flippers[currCanidate] === false ? 'DECREMENT FLAGS REMAINING' : 'INCREMENT FLAGS REMAINING' });
+            return handleClick({ ...globalState, currCanidate, indicator: null, dispatch });
+          };
+          // Prevent context menu if user accidentally presses context menu
+          event.preventDefault();
         }
+      }
 
-        className={
-          mines.includes(currCanidate) ? genMineClassNames(currCanidate, colors, generateColors, surprised, flippers, definedUserName)
-            : numbers[currCanidate] ? genNumberClassNames(currCanidate, numbers, flippers, colors, generateColors, surprised, definedUserName)
-              : genEmptyClassNames(currCanidate, colors, generateColors, surprised, flippers, definedUserName)
-        }
-      >
-        {
-          !definedUserName ?
-            genLoginMessage(currCanidate)
-            : flippers[currCanidate] && flippers[currCanidate] !== 'flag' && numbers[currCanidate] ? numbers[currCanidate]
-              : mines.includes(currCanidate) && flippers[currCanidate] && flippers[currCanidate] !== 'flag' ? '*'
-                : null
-        }
-      </div >
-    )
-  });
+      className={
+        globalState.mines.includes(currCanidate) ? genMineClassNames({ ...globalState, currCanidate })
+          : globalState.numbers[currCanidate] ? genNumberClassNames({ ...globalState, currCanidate })
+            : genEmptyClassNames({ ...globalState, currCanidate })
+      }
+    >
+      {
+        !globalState.definedUserName ?
+          generateLoginMessage({ currCanidate, skillLevel: globalState.dimensions.skillLevel })
+          : globalState.flippers[currCanidate] && globalState.flippers[currCanidate] !== 'flag' && globalState.numbers[currCanidate] ? globalState.numbers[currCanidate]
+            : globalState.mines.includes(currCanidate) && globalState.flippers[currCanidate] && globalState.flippers[currCanidate] !== 'flag' ? '*'
+              : null
+      }
+    </div >
+  );
+});

@@ -1,8 +1,10 @@
+const webpack = require('webpack');
 const nodeExternals = require("webpack-node-externals");
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require("path");
 require('dotenv').config({ path: './.env' });
 
+console.log(path.resolve(__dirname, 'src/store'))
 const css = {
   test: /\.(css|scss)$/,
   include: path.resolve(__dirname, 'src'),
@@ -31,7 +33,12 @@ const js = {
 const serverConfig = {
   mode: "development",
   target: "node",
-  plugins: [new MiniCssExtractPlugin()],
+  plugins: [
+    new MiniCssExtractPlugin(),
+    new webpack.DefinePlugin({
+      'process.env.DEV_ENV': process.env.DEV_ENV
+    }),
+  ],
   devtool: "source-map",
   node: {
     __dirname: false,
@@ -49,6 +56,7 @@ const serverConfig = {
       Database: path.resolve(__dirname, 'db'),
       Public: path.resolve(__dirname, 'dist/public'),
       Cloudfront: [process.env.Cloudfront],
+      Store: path.resolve(__dirname, 'src/store')
     },
   },
   externals: [nodeExternals()],
@@ -77,13 +85,19 @@ const clientConfig = {
     extensions: ['*', '.js', '.jsx'],
     // https://betterprogramming.pub/use-absolute-paths-with-react-51ced66f119f
     alias: {
-            Components: path.resolve(__dirname, 'src/components'),
+      Components: path.resolve(__dirname, 'src/components'),
+      Store: path.resolve(__dirname, 'src/store')
       // Public: path.resolve(__dirname, 'dist/public')
     },
   },
 
   target: "web",
-  plugins: [new MiniCssExtractPlugin()],
+  plugins: [
+    new MiniCssExtractPlugin(),
+    new webpack.DefinePlugin({
+      'process.env.DEV_ENV': process.env.DEV_ENV
+    }),
+  ],
   entry: {
     "index": path.resolve(
       __dirname,
