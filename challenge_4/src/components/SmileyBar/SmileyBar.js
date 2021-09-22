@@ -1,22 +1,26 @@
 import React, { useState, useEffect } from 'react';
-import useStoreContext from 'Store/useStoreContext.js';
+import { useBoardContext } from 'BoardStore';
+import { useGlobalContext } from 'GlobalStore'
 import './smileystyles.scss'
 
 export default React.memo(() => {
 
-  const [{ surprised, flagsRemaining }, dispatch] = useStoreContext();
+  const [{ dimensions: { numberOfMines }, timerOn }, globalDispatch] = useGlobalContext();
+
+  const [{ surprised, flagsRemaining }, boardDispatch] = useBoardContext();
 
   const resetCallback = () => {
-    dispatch({ type: 'RESET SMILES' });
-    dispatch({ type: 'SWITCH TIMER OFF' });
-  }
+    boardDispatch({ type: 'RESET SMILES' });
+    boardDispatch({ type: 'SET FLAGS REMAINING', payload: numberOfMines });
+    globalDispatch({ type: 'SWITCH TIMER OFF' });
+  };
 
   return (
     <div id='smiley-bar'>
       <div className='smiley-guy'
         id={
           surprised === 'dead' ? 'dead-guy'
-            : surprised === 'victory' ? 'victory-guy'
+            : timerOn === 'VICTORY' ? 'victory-guy'
               : surprised === true ? 'surprised-guy'
                 : 'smiley-guy'
         }

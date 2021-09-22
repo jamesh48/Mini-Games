@@ -1,22 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import LeaderBoardEntry from './LeaderBoardEntry.js';
-import useStoreContext from 'Store/useStoreContext.js';
+import { useGlobalContext } from 'GlobalStore';
 import './leaderboard.scss';
 
 export default
   React.memo(({ ssrTopTimes }) => {
+    const [{ dimensions: { skillLevel }, topTimes }, globalDispatch] = useGlobalContext();
 
-    const [{ dimensions: { skillLevel }, definedUserName, surprised }, dispatch] = useStoreContext();
-
-    const [topScores, setTopScores] = useState([]);
     const [personalized, setPersonalized] = useState(false);
 
     // Axios Utils--------------------------------
     const getAllResults = async () => {
       try {
-        const { data: topScores } = await axios('/minesweeper-topTimes', { params: { skillLevel } });
-        setTopScores(topScores);
+        const { data: initTopScores } = await axios('/minesweeper-topTimes', { params: { skillLevel } });
+
+        globalDispatch({ type: 'SET TOP TIMES', payload: { topTimes: initTopScores } });
+
       } catch (err) {
         console.error(err);
       };
@@ -25,23 +25,19 @@ export default
     const getPersonalizedResults = async () => {
       try {
         const { data: personalizedResults } = await axios('/minesweeper-topTimes', { params: { skillLevel, username: personalized } });
-        setTopScores(personalizedResults);
+        globalDispatch({ type: 'SET TOP TIMES', payload: { topTimes: personalizedResults } });
       } catch (err) {
         console.error(err);
       };
     };
 
-    //  Use Effect Section-------------------------
     useEffect(() => {
-      if (
-        //Get all results on a win.
-        surprised === 'victory'
-      ) {
-        return personalized ? getPersonalizedResults() : getAllResults();
+      if (personalized) {
+        getPersonalizedResults()
+      } else {
+        getAllResults()
       }
-    }, [surprised, definedUserName])
-
-    useEffect(() => personalized ? getPersonalizedResults() : getAllResults(), [personalized, skillLevel]);
+    }, [personalized, skillLevel]);
 
     const formatTime = (resultTime) => {
       const centiseconds = ("0" + (Math.floor(resultTime / 10) % 100)).slice(-2);
@@ -63,7 +59,7 @@ export default
     return (
       <div id='leaderboard'>
         <h3 className='scores-list' id='leaderboard-header'>{makeTitle(personalized, skillLevel)}</h3>
-        {(topScores || ssrTopTimes).map((entry, index) => {
+        {(topTimes || ssrTopTimes).map((entry, index) => {
           return entry ? <LeaderBoardEntry key={index} personalized={personalized} index={index} entry={entry} handleClick={handleClick} formatTime={formatTime} /> : null;
         })}
         {personalized ? <input type='button' onClick={handleClick} id='return-to-leaderboard' value={`return to ${skillLevel} LeaderBoard`}>

@@ -1,8 +1,8 @@
 import React from 'react';
-import useStoreContext from 'Store/useStoreContext.js';
+import { useGlobalContext } from 'GlobalStore';
 
 export default ({ personalized, handleClick, entry: { username, time }, index, formatTime }) => {
-  const [{ definedUserName }] = useStoreContext();
+  const [{ definedUserName }] = useGlobalContext();
 
   const golden = (definedUserName === username);
 

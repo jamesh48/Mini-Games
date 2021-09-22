@@ -94,7 +94,7 @@ module.exports = function (grunt) {
     gitcommit: {
       task: {
         options: {
-          message: 'Only one fix tonight! had to update the post route for a new top time'
+          message: 'Improvments to redux- using localContexts instead of a single global context'
         }
       }
     },

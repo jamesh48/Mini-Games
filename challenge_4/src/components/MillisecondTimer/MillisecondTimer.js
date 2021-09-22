@@ -1,30 +1,34 @@
 import React, { useState, useEffect } from 'react';
-import useStoreContext from 'Store/useStoreContext.js';
+import postResult from './postResult.js';
+import { useGlobalContext } from 'GlobalStore';
 import { useInterval } from 'Components/customHooks.js';
-
+import { useTimerContext } from './TimerStore/timerStore.js';
 import './millisecondstyles.scss';
 
 export default () => {
-  const [{ dimensions: { skillLevel }, timerOn, timerTime, timerDelay }, dispatch] = useStoreContext();
+  const [{ dimensions: { skillLevel }, definedUserName, timerOn }, globalDispatch] = useGlobalContext();
 
-  // If Delay is null, clear the timer
-  useEffect(() => {
-    if (timerDelay === null) dispatch({ type: 'CLEAR TIMER TIME' })
-  }, [timerDelay]);
-
+  const [{ timerTime }, timerDispatch] = useTimerContext();
 
   useInterval(() => {
-    dispatch({ type: 'ITERATE TIMER TIME', payload: timerDelay });
-  }, timerDelay);
+    timerDispatch({ type: 'ITERATE TIMER TIME', payload: 10 });
+  }, timerOn === true ? 10 : timerOn === 'FREEZE' || timerOn === 'VICTORY' ? -1 : null);
 
 
   // If Timer is changed to true, start the timer.
   useEffect(async () => {
-    if (timerOn && timerOn !== 'bombed') {
-      dispatch({ type: 'INIT TIMER DELAY' });
-    } else {
-      dispatch({ type: 'UNSET TIMER DELAY' });
+    if (timerOn === false) {
+      timerDispatch({ type: 'CLEAR TIMER TIME' });
     };
+
+    if (timerOn === 'VICTORY') {
+      const newTopTimes = await postResult(skillLevel, definedUserName, timerTime);
+
+      globalDispatch({ type: 'SET TOP TIMES', payload: { topTimes: newTopTimes } });
+    };
+
+
+
   }, [timerOn]);
 
   const centiseconds = ("0" + (Math.floor(timerTime / 10) % 100)).slice(-2);

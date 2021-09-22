@@ -1,9 +1,9 @@
 import React from 'react';
-import useStoreContext from 'Store/useStoreContext.js';
+import { useGlobalContext } from 'GlobalStore';
 import './skillstyles.scss';
 
 export default React.memo(() => {
-  const [{ dimensions: { skillLevel } }, dispatch] = useStoreContext();
+  const [{ dimensions: { skillLevel } }, dispatch] = useGlobalContext();
   return (
     <div className={skillLevel} id='skill-level-selector'>
       <button onClick={_ => dispatch({ type: 'SET BEGINNER DIMENSIONS' })}>Beginner</button>

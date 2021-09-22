@@ -238,7 +238,7 @@ module.exports = {
   }(),
   postResult: function () {
     var _postResult = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(skillLevel, time, definedUserName) {
-      var _sequelize$models2, beginnerScores, intermediateScores, advancedScores, determinedSkillLevel;
+      var _sequelize$models2, beginnerScores, intermediateScores, advancedScores, determinedSkillLevel, newTopTimes;
 
       return regeneratorRuntime.wrap(function _callee4$(_context4) {
         while (1) {
@@ -254,20 +254,25 @@ module.exports = {
               });
 
             case 5:
-              return _context4.abrupt("return", 'ok');
+              _context4.next = 7;
+              return determinedSkillLevel.findAll({});
 
-            case 8:
-              _context4.prev = 8;
+            case 7:
+              newTopTimes = _context4.sent;
+              return _context4.abrupt("return", newTopTimes);
+
+            case 11:
+              _context4.prev = 11;
               _context4.t0 = _context4["catch"](2);
               console.log(_context4.t0);
               throw _context4.t0;
 
-            case 12:
+            case 15:
             case "end":
               return _context4.stop();
           }
         }
-      }, _callee4, null, [[2, 8]]);
+      }, _callee4, null, [[2, 11]]);
     }));
 
     function postResult(_x7, _x8, _x9) {
@@ -381,11 +386,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _Squares_GlobalSquare_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Squares/GlobalSquare.js */ "./src/components/Board/Squares/GlobalSquare.js");
+/* harmony import */ var _Squares_BoardSquare_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Squares/BoardSquare.js */ "./src/components/Board/Squares/BoardSquare.js");
 /* harmony import */ var Components_customHooks_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! Components/customHooks.js */ "./src/components/customHooks.js");
 /* harmony import */ var _useEffectBoardHooks_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./useEffectBoardHooks.js */ "./src/components/Board/useEffectBoardHooks.js");
-/* harmony import */ var Store_useStoreContext_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! Store/useStoreContext.js */ "./src/store/useStoreContext.js");
-/* harmony import */ var _boardHandlers_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./boardHandlers.js */ "./src/components/Board/boardHandlers.js");
+/* harmony import */ var GlobalStore__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! GlobalStore */ "./src/store/GlobalStore.js");
+/* harmony import */ var BoardStore__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! BoardStore */ "./src/components/Board/BoardStore/boardStore.js");
 /* harmony import */ var _boardstyles_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./boardstyles.scss */ "./src/components/Board/boardstyles.scss");
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
@@ -415,49 +420,51 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (function () {
-  var _useStoreContext = (0,Store_useStoreContext_js__WEBPACK_IMPORTED_MODULE_4__.default)(),
-      _useStoreContext2 = _slicedToArray(_useStoreContext, 2),
-      globalState = _useStoreContext2[0],
-      dispatch = _useStoreContext2[1];
+  var _useGlobalContext = (0,GlobalStore__WEBPACK_IMPORTED_MODULE_4__.useGlobalContext)(),
+      _useGlobalContext2 = _slicedToArray(_useGlobalContext, 2),
+      globalState = _useGlobalContext2[0],
+      globalDispatch = _useGlobalContext2[1];
 
-  var surprised = globalState.surprised,
-      colorDelay = globalState.colorDelay,
-      colors = globalState.colors,
-      dimensions = globalState.dimensions,
-      mines = globalState.mines,
-      numbers = globalState.numbers,
-      flippers = globalState.flippers,
-      scrollBoard = globalState.scrollBoard,
+  var _useBoardContext = (0,BoardStore__WEBPACK_IMPORTED_MODULE_5__.useBoardContext)(),
+      _useBoardContext2 = _slicedToArray(_useBoardContext, 2),
+      _useBoardContext2$ = _useBoardContext2[0],
+      flippers = _useBoardContext2$.flippers,
+      mines = _useBoardContext2$.mines,
+      numbers = _useBoardContext2$.numbers,
+      scrollBoard = _useBoardContext2$.scrollBoard,
+      colorDelay = _useBoardContext2$.colorDelay,
+      boardDispatch = _useBoardContext2[1];
+
+  var dimensions = globalState.dimensions,
+      skillLevel = globalState.dimensions.skillLevel,
       timerOn = globalState.timerOn,
-      definedUserName = globalState.definedUserName,
-      timerTime = globalState.timerTime; // useEffects
+      definedUserName = globalState.definedUserName; // Board Specific useEffects && actions.
 
-  (0,_useEffectBoardHooks_js__WEBPACK_IMPORTED_MODULE_3__.generateMinesEffect)(dimensions, dispatch); // changeSkillLevelEffect(dimensions.skillLevel, dispatch);
-
-  (0,_useEffectBoardHooks_js__WEBPACK_IMPORTED_MODULE_3__.freezeColorDelayEffect)(definedUserName, dispatch);
-  (0,_useEffectBoardHooks_js__WEBPACK_IMPORTED_MODULE_3__.stopColorIterationEffect)(colorDelay, dispatch);
-  (0,_useEffectBoardHooks_js__WEBPACK_IMPORTED_MODULE_3__.freezeScrollBoardEffect)(scrollBoard);
-  (0,_useEffectBoardHooks_js__WEBPACK_IMPORTED_MODULE_3__.resetOnSkillLevelChangeEffect)(dimensions.skillLevel, dispatch);
-  (0,_useEffectBoardHooks_js__WEBPACK_IMPORTED_MODULE_3__.resetGameEffectOnSmileyOrSkill)(timerOn, dimensions.skillLevel, dimensions, dispatch);
-  (0,_useEffectBoardHooks_js__WEBPACK_IMPORTED_MODULE_3__.generateNumberEffect)(mines, dimensions, dispatch);
-  (0,_useEffectBoardHooks_js__WEBPACK_IMPORTED_MODULE_3__.resetFlagsRemainingOnSkillChangeOrTimerOn)(timerOn, dimensions.skillLevel, dispatch);
-  (0,_useEffectBoardHooks_js__WEBPACK_IMPORTED_MODULE_3__.revealFlipperEffect)(mines, flippers, numbers, timerTime, dimensions.skillLevel, definedUserName, dispatch); // Callbacks and Utils
-
-  var onHandleClick = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(function () {
-    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    return _boardHandlers_js__WEBPACK_IMPORTED_MODULE_5__.default.call.apply(_boardHandlers_js__WEBPACK_IMPORTED_MODULE_5__.default, [[globalState, dispatch]].concat(args));
-  }, [surprised]);
+  _useEffectBoardHooks_js__WEBPACK_IMPORTED_MODULE_3__.default.freezeColorDelayEffect(definedUserName, boardDispatch);
+  _useEffectBoardHooks_js__WEBPACK_IMPORTED_MODULE_3__.default.stopColorIterationEffect(colorDelay, boardDispatch);
+  _useEffectBoardHooks_js__WEBPACK_IMPORTED_MODULE_3__.default.freezeScrollBoardEffect(scrollBoard);
+  _useEffectBoardHooks_js__WEBPACK_IMPORTED_MODULE_3__.default.generateMinesEffect(dimensions, boardDispatch);
+  _useEffectBoardHooks_js__WEBPACK_IMPORTED_MODULE_3__.default.generateNumberEffect(mines, dimensions, boardDispatch);
+  _useEffectBoardHooks_js__WEBPACK_IMPORTED_MODULE_3__.default.resetGameEffectOnSmileyOrSkill(timerOn, skillLevel, dimensions, boardDispatch);
+  _useEffectBoardHooks_js__WEBPACK_IMPORTED_MODULE_3__.default.resetFlagsRemainingOnSkillChangeOrTimerOn(timerOn, skillLevel, boardDispatch);
   var setScrollBoardCallback = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(function () {
-    return dispatch({
+    return boardDispatch({
       type: 'TOGGLE SCROLLBOARD'
     });
-  }, []);
+  }, []); // Mixed!
+
+  _useEffectBoardHooks_js__WEBPACK_IMPORTED_MODULE_3__.default.revealFlipperEffect({
+    mines: mines,
+    flippers: flippers,
+    numbers: numbers,
+    globalDispatch: globalDispatch,
+    boardDispatch: boardDispatch
+  }); // Global Board useEffects
+
+  _useEffectBoardHooks_js__WEBPACK_IMPORTED_MODULE_3__.default.resetOnSkillLevelChangeEffect(skillLevel, globalDispatch);
 
   var handleScroll = function handleScroll(_) {
-    return dispatch({
+    return boardDispatch({
       type: 'MODULATE COLOR DELAY',
       payload: {
         newColorDelay: event.deltaY
@@ -466,8 +473,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
   };
 
   (0,Components_customHooks_js__WEBPACK_IMPORTED_MODULE_2__.useInterval)(function () {
-    return dispatch({
-      type: 'ITERATE'
+    return boardDispatch({
+      type: 'ITERATE COLORS'
     });
   }, colorDelay);
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
@@ -477,12 +484,12 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
   }, _toConsumableArray(new Array(dimensions.verticalDimension)).map(function (row, rowIndex) {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
       key: rowIndex,
-      className: 'sweep-row'
+      className: "sweep-row"
     }, _toConsumableArray(new Array(dimensions.horizontalDimension)).map(function (sqr, sqrIndex) {
-      var currCanidate = rowIndex * dimensions.horizontalDimension + sqrIndex;
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Squares_GlobalSquare_js__WEBPACK_IMPORTED_MODULE_1__.default, {
+      var currTile = rowIndex * dimensions.horizontalDimension + sqrIndex;
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Squares_BoardSquare_js__WEBPACK_IMPORTED_MODULE_1__.default, {
         key: sqrIndex,
-        currCanidate: currCanidate
+        currTile: currTile
       });
     }));
   }));
@@ -490,10 +497,499 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 /***/ }),
 
-/***/ "./src/components/Board/Squares/GlobalSquare.js":
-/*!******************************************************!*\
-  !*** ./src/components/Board/Squares/GlobalSquare.js ***!
-  \******************************************************/
+/***/ "./src/components/Board/BoardStore/boardActions.js":
+/*!*********************************************************!*\
+  !*** ./src/components/Board/BoardStore/boardActions.js ***!
+  \*********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "iterateColors": () => (/* binding */ iterateColors),
+/* harmony export */   "modulateColorDelay": () => (/* binding */ modulateColorDelay),
+/* harmony export */   "revealFlippers": () => (/* binding */ revealFlippers),
+/* harmony export */   "flipNormalTile": () => (/* binding */ flipNormalTile),
+/* harmony export */   "flipRecursedTiles": () => (/* binding */ flipRecursedTiles),
+/* harmony export */   "revealDeadFlippers": () => (/* binding */ revealDeadFlippers),
+/* harmony export */   "setFlagFlipped": () => (/* binding */ setFlagFlipped),
+/* harmony export */   "generateMines": () => (/* binding */ generateMines),
+/* harmony export */   "generateNumbers": () => (/* binding */ generateNumbers)
+/* harmony export */ });
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+var iterateColors = function iterateColors(existingColors) {
+  var lastColor = existingColors.pop();
+  existingColors.unshift(lastColor);
+  return _toConsumableArray(existingColors);
+};
+
+var modulateColorDelay = function modulateColorDelay(existing, newColorDelay) {
+  if (existing + newColorDelay > 25) {
+    // If Increasing the Color Delay- do so at a rate of 1, otherwise when decreasing do so at 2.5 rate- full rate is less enjoyable
+    newColorDelay = newColorDelay < 0 && existing < 200 ? newColorDelay / 5 : newColorDelay < 0 ? newColorDelay / 2.5 : 1;
+    return existing + newColorDelay;
+  }
+
+  return existing;
+};
+
+var revealFlippers = function revealFlippers(existingFlippers, mines) {
+  existingFlippers = existingFlippers.map(function (flipper, index) {
+    if (flipper === 'flag' || mines.includes(index)) {
+      return 'flag';
+    } else {
+      return true;
+    }
+  });
+  return _toConsumableArray(existingFlippers);
+};
+
+var flipNormalTile = function flipNormalTile(existingFlippers, flippedTile) {
+  existingFlippers.splice(flippedTile, 1, true);
+  return _toConsumableArray(existingFlippers);
+};
+
+var flipRecursedTiles = function flipRecursedTiles(existingFlippers, recursedTiles) {
+  for (var i = 0; i < recursedTiles.length; i++) {
+    existingFlippers.splice(recursedTiles[i], 1, true);
+  }
+
+  return _toConsumableArray(existingFlippers);
+};
+
+var revealDeadFlippers = function revealDeadFlippers(existingFlippers) {
+  existingFlippers = existingFlippers.map(function (flipper, index) {
+    if (index === 0) {
+      return 'dead';
+    } else {
+      return true;
+    }
+  });
+  return _toConsumableArray(existingFlippers);
+};
+
+var setFlagFlipped = function setFlagFlipped(existingFlippers, flagFlipped) {
+  if (existingFlippers[flagFlipped] === 'flag') {
+    existingFlippers.splice(flagFlipped, 1, false);
+  } else {
+    existingFlippers.splice(flagFlipped, 1, 'flag');
+  }
+
+  return _toConsumableArray(existingFlippers);
+};
+
+var generateMines = function generateMines(_ref) {
+  var numberOfMines = _ref.numberOfMines,
+      verticalDimension = _ref.verticalDimension,
+      horizontalDimension = _ref.horizontalDimension;
+  var mineArr = [];
+
+  while (mineArr.length < numberOfMines) {
+    var mineCanidate = Math.floor(Math.random() * (verticalDimension * horizontalDimension));
+
+    if (!mineArr.includes(mineCanidate)) {
+      mineArr.push(mineCanidate);
+    }
+  }
+
+  ;
+  return mineArr;
+};
+
+var generateNumbers = function generateNumbers(_ref2) {
+  var mines = _ref2.mines,
+      verticalDimension = _ref2.verticalDimension,
+      horizontalDimension = _ref2.horizontalDimension;
+
+  var board = _toConsumableArray(Array(verticalDimension * horizontalDimension).keys());
+
+  var numBoard = {};
+  mines.forEach(function (mine, index, mineArr) {
+    // Number is Top Left Diagonal
+    var tLD = horizontalDimension + 1;
+
+    if (board.includes(mine - tLD) && (mine - tLD + 1) % horizontalDimension !== 0 && !mineArr.includes(mine - tLD)) {
+      if (numBoard[mine - tLD]) {
+        numBoard[mine - tLD] = numBoard[mine - tLD] + 1;
+      } else {
+        numBoard[mine - tLD] = 1;
+      }
+    } // Number is Above
+
+
+    var tD = horizontalDimension;
+
+    if (board.includes(mine - tD) && !mineArr.includes(mine - tD)) {
+      if (numBoard[mine - tD]) {
+        numBoard[mine - tD] = numBoard[mine - tD] + 1;
+      } else {
+        numBoard[mine - tD] = 1;
+      }
+    } //Number is Top Right Diagonal
+
+
+    var tRD = horizontalDimension - 1;
+
+    if (board.includes(mine - tRD) && (mine - tRD) % horizontalDimension !== 0 && !mineArr.includes(mine - tRD)) {
+      if (numBoard[mine - tRD]) {
+        numBoard[mine - tRD] = numBoard[mine - tRD] + 1;
+      } else {
+        numBoard[mine - tRD] = 1;
+      }
+    } // Number to the right
+
+
+    if (board.includes(mine + 1) && (mine + 1) % horizontalDimension !== 0 && !mineArr.includes(mine + 1)) {
+      if (numBoard[mine + 1]) {
+        numBoard[mine + 1] = numBoard[mine + 1] + 1;
+      } else {
+        numBoard[mine + 1] = 1;
+      }
+    } // Number is Bottom Right Diagonal
+
+
+    var bRD = horizontalDimension + 1;
+
+    if (board.includes(mine + bRD) && (mine + bRD) % horizontalDimension !== 0 && !mineArr.includes(mine + bRD)) {
+      if (numBoard[mine + bRD]) {
+        numBoard[mine + bRD] = numBoard[mine + bRD] + 1;
+      } else {
+        numBoard[mine + bRD] = 1;
+      }
+    } // Number is Below
+
+
+    var bD = horizontalDimension;
+
+    if (board.includes(mine + bD) && !mineArr.includes(mine + bD)) {
+      if (numBoard[mine + bD]) {
+        numBoard[mine + bD] = numBoard[mine + bD] + 1;
+      } else {
+        numBoard[mine + bD] = 1;
+      }
+    } //Number is Bottom Left Diagonal
+
+
+    var bLD = horizontalDimension - 1;
+
+    if (board.includes(mine + bLD) && (mine + bLD + 1) % horizontalDimension !== 0 && !mineArr.includes(mine + bLD)) {
+      if (numBoard[mine + bLD]) {
+        numBoard[mine + bLD] = numBoard[mine + bLD] + 1;
+      } else {
+        numBoard[mine + bLD] = 1;
+      }
+    } // Number to the left
+
+
+    if (board.includes(mine - 1) && mine % horizontalDimension !== 0 && !mineArr.includes(mine - 1)) {
+      if (numBoard[mine - 1]) {
+        numBoard[mine - 1] = numBoard[mine - 1] + 1;
+      } else {
+        numBoard[mine - 1] = 1;
+      }
+    }
+  });
+  return numBoard;
+};
+
+
+
+/***/ }),
+
+/***/ "./src/components/Board/BoardStore/boardReducers.js":
+/*!**********************************************************!*\
+  !*** ./src/components/Board/BoardStore/boardReducers.js ***!
+  \**********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _boardActions_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./boardActions.js */ "./src/components/Board/BoardStore/boardActions.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+var combineReducers = function combineReducers(slices) {
+  return function (state, action) {
+    return Object.keys(slices).reduce(function (acc, prop) {
+      return _objectSpread(_objectSpread({}, acc), {}, _defineProperty({}, prop, slices[prop](acc[prop], action)));
+    }, state);
+  };
+};
+
+var scrollBoard = function scrollBoard() {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+  var action = arguments.length > 1 ? arguments[1] : undefined;
+
+  switch (action.type) {
+    case 'TOGGLE SCROLLBOARD':
+      return !state;
+
+    default:
+      return state;
+  }
+};
+
+var colorDelay = function colorDelay() {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1000;
+
+  var _ref = arguments.length > 1 ? arguments[1] : undefined,
+      type = _ref.type,
+      _ref$payload = _ref.payload;
+
+  _ref$payload = _ref$payload === void 0 ? {} : _ref$payload;
+  var newColorDelay = _ref$payload.newColorDelay;
+
+  switch (type) {
+    case "UNSET COLOR DELAY":
+      return null;
+
+    case "MODULATE COLOR DELAY":
+      return (0,_boardActions_js__WEBPACK_IMPORTED_MODULE_0__.modulateColorDelay)(state, newColorDelay);
+
+    default:
+      return state;
+  }
+
+  ;
+};
+
+var colors = function colors() {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : ['blue-num', 'green-num', 'red-num', 'gold-num', 'purple-num', 'maroon-num', 'turquoise-num', 'grey-num'];
+  var action = arguments.length > 1 ? arguments[1] : undefined;
+
+  switch (action.type) {
+    case "ITERATE COLORS":
+      return (0,_boardActions_js__WEBPACK_IMPORTED_MODULE_0__.iterateColors)(state.slice());
+
+    case "STOP COLOR ITERATION":
+      return null;
+
+    default:
+      return state;
+  }
+};
+
+var flippers = function flippers(state, _ref2) {
+  var type = _ref2.type,
+      payload = _ref2.payload,
+      _ref2$payload = _ref2.payload;
+  _ref2$payload = _ref2$payload === void 0 ? {} : _ref2$payload;
+  var flagFlipped = _ref2$payload.flagFlipped,
+      flippedTile = _ref2$payload.flippedTile,
+      mines = _ref2$payload.mines;
+
+  switch (type) {
+    case "RESET FLIPPERS":
+      return payload;
+
+    case "SET FLAG FLIPPED":
+      return (0,_boardActions_js__WEBPACK_IMPORTED_MODULE_0__.setFlagFlipped)(state.slice(), flagFlipped);
+
+    case "FLIP NORMAL TILE":
+      return (0,_boardActions_js__WEBPACK_IMPORTED_MODULE_0__.flipNormalTile)(state.slice(), flippedTile);
+
+    case "FLIP RECURSED TILES":
+      return (0,_boardActions_js__WEBPACK_IMPORTED_MODULE_0__.flipRecursedTiles)(state.slice(), payload);
+
+    case "REVEAL DEAD FLIPPERS":
+      return (0,_boardActions_js__WEBPACK_IMPORTED_MODULE_0__.revealDeadFlippers)(state.slice());
+
+    case "REVEAL FLIPPERS":
+      return (0,_boardActions_js__WEBPACK_IMPORTED_MODULE_0__.revealFlippers)(state.slice(), mines);
+
+    default:
+      return state;
+  }
+
+  ;
+}; // preloaded default state prevents an automatic win by default
+
+
+var mines = function mines() {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [1, 2, 3];
+
+  var _ref3 = arguments.length > 1 ? arguments[1] : undefined,
+      type = _ref3.type,
+      payload = _ref3.payload;
+
+  switch (type) {
+    case "GENERATE MINES":
+      return (0,_boardActions_js__WEBPACK_IMPORTED_MODULE_0__.generateMines)(payload);
+
+    default:
+      return state;
+  }
+};
+
+var numbers = function numbers() {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [4, 5, 6];
+
+  var _ref4 = arguments.length > 1 ? arguments[1] : undefined,
+      type = _ref4.type,
+      payload = _ref4.payload;
+
+  switch (type) {
+    case "GENERATE NUMBERS":
+      return (0,_boardActions_js__WEBPACK_IMPORTED_MODULE_0__.generateNumbers)(payload);
+
+    default:
+      return state;
+  }
+
+  ;
+};
+
+var surprised = function surprised(state, action) {
+  switch (action.type) {
+    case 'SURPRISED SMILES':
+      return true;
+
+    case 'RESET SMILES':
+      return false;
+
+    case 'DEAD SMILES':
+      return 'dead';
+
+    case 'VICTORY SMILES':
+      return 'victory';
+
+    default:
+      return state;
+  }
+
+  ;
+};
+
+var flagsRemaining = function flagsRemaining() {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 10;
+
+  var _ref5 = arguments.length > 1 ? arguments[1] : undefined,
+      type = _ref5.type,
+      payload = _ref5.payload;
+
+  switch (type) {
+    case "DECREMENT FLAGS REMAINING":
+      return state - 1;
+
+    case "INCREMENT FLAGS REMAINING":
+      return state + 1;
+
+    case "SET FLAGS REMAINING":
+      return payload;
+
+    default:
+      return state;
+  }
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (combineReducers({
+  flippers: flippers,
+  mines: mines,
+  numbers: numbers,
+  scrollBoard: scrollBoard,
+  colors: colors,
+  colorDelay: colorDelay,
+  surprised: surprised,
+  flagsRemaining: flagsRemaining
+}));
+
+/***/ }),
+
+/***/ "./src/components/Board/BoardStore/boardStore.js":
+/*!*******************************************************!*\
+  !*** ./src/components/Board/BoardStore/boardStore.js ***!
+  \*******************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "useBoardContext": () => (/* binding */ useBoardContext),
+/* harmony export */   "BoardStoreProvider": () => (/* binding */ BoardStoreProvider)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _boardReducers_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./boardReducers.js */ "./src/components/Board/BoardStore/boardReducers.js");
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
+
+var BoardContext = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createContext();
+var initialState = {
+  scrollBoard: false,
+  colorDelay: 1000,
+  flippers: [],
+  mines: [1, 2, 3],
+  numbers: [4, 5, 6],
+  surprised: false,
+  flagsRemaining: 10,
+  colors: ['blue-num', 'green-num', 'red-num', 'gold-num', 'purple-num', 'maroon-num', 'turquoise-num', 'grey-num']
+};
+
+var BoardStoreProvider = function BoardStoreProvider(_ref) {
+  var children = _ref.children;
+
+  var _React$useReducer = react__WEBPACK_IMPORTED_MODULE_0___default().useReducer(_boardReducers_js__WEBPACK_IMPORTED_MODULE_1__.default, initialState),
+      _React$useReducer2 = _slicedToArray(_React$useReducer, 2),
+      state = _React$useReducer2[0],
+      dispatch = _React$useReducer2[1];
+
+  var store = react__WEBPACK_IMPORTED_MODULE_0___default().useMemo(function () {
+    return [state, dispatch];
+  }, [state]);
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(BoardContext.Provider, {
+    value: store
+  }, children);
+};
+
+function useBoardContext() {
+  var context = react__WEBPACK_IMPORTED_MODULE_0___default().useContext(BoardContext);
+
+  if (context === undefined) {
+    throw new Error('useBoardContext must be used within a CountProvider');
+  }
+
+  ;
+  return context;
+}
+
+
+
+/***/ }),
+
+/***/ "./src/components/Board/Squares/BoardSquare.js":
+/*!*****************************************************!*\
+  !*** ./src/components/Board/Squares/BoardSquare.js ***!
+  \*****************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -504,14 +1000,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _squareUtils_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./squareUtils.js */ "./src/components/Board/Squares/squareUtils.js");
-/* harmony import */ var Store_useStoreContext_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! Store/useStoreContext.js */ "./src/store/useStoreContext.js");
-/* harmony import */ var _sweepsquarestyles_scss__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./sweepsquarestyles.scss */ "./src/components/Board/Squares/sweepsquarestyles.scss");
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
+/* harmony import */ var GlobalStore__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! GlobalStore */ "./src/store/GlobalStore.js");
+/* harmony import */ var BoardStore__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! BoardStore */ "./src/components/Board/BoardStore/boardStore.js");
+/* harmony import */ var _sweepsquarestyles_scss__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./sweepsquarestyles.scss */ "./src/components/Board/Squares/sweepsquarestyles.scss");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -529,101 +1020,153 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (/*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().memo(function (_ref) {
-  var currCanidate = _ref.currCanidate;
+  var currTile = _ref.currTile;
 
-  var _useStoreContext = (0,Store_useStoreContext_js__WEBPACK_IMPORTED_MODULE_2__.default)(),
-      _useStoreContext2 = _slicedToArray(_useStoreContext, 2),
-      globalState = _useStoreContext2[0],
-      dispatch = _useStoreContext2[1];
+  var _useGlobalContext = (0,GlobalStore__WEBPACK_IMPORTED_MODULE_2__.useGlobalContext)(),
+      _useGlobalContext2 = _slicedToArray(_useGlobalContext, 2),
+      _useGlobalContext2$ = _useGlobalContext2[0],
+      skillLevel = _useGlobalContext2$.dimensions.skillLevel,
+      definedUserName = _useGlobalContext2$.definedUserName,
+      dimensions = _useGlobalContext2$.dimensions,
+      timerOn = _useGlobalContext2$.timerOn,
+      globalDispatch = _useGlobalContext2[1];
 
+  var _useBoardContext = (0,BoardStore__WEBPACK_IMPORTED_MODULE_3__.useBoardContext)(),
+      _useBoardContext2 = _slicedToArray(_useBoardContext, 2),
+      _useBoardContext2$ = _useBoardContext2[0],
+      surprised = _useBoardContext2$.surprised,
+      flagsRemaining = _useBoardContext2$.flagsRemaining,
+      colors = _useBoardContext2$.colors,
+      mines = _useBoardContext2$.mines,
+      flippers = _useBoardContext2$.flippers,
+      numbers = _useBoardContext2$.numbers,
+      boardDispatch = _useBoardContext2[1];
+
+  var tileIsAMine = mines.includes(currTile) && flippers[currTile] && flippers[currTile] !== 'flag';
+  var tileIsANumber = flippers[currTile] && flippers[currTile] !== 'flag' && numbers[currTile];
+  var userNotLoggedIn = !definedUserName;
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    "data-testid": "test-".concat(currCanidate),
+    "data-testid": "test-".concat(currTile),
     onClick: function onClick() {
       // If tile is a bomb...
-      if (globalState.mines.includes(currCanidate)) {
-        dispatch({
-          type: 'SWITCH TIMER BOMBED'
+      if (mines.includes(currTile)) {
+        globalDispatch({
+          type: 'FREEZE TIMER STATE'
         });
-        return (0,_squareUtils_js__WEBPACK_IMPORTED_MODULE_1__.handleClick)(_objectSpread(_objectSpread({}, globalState), {}, {
-          currCanidate: currCanidate,
+        return (0,_squareUtils_js__WEBPACK_IMPORTED_MODULE_1__.handleClick)({
+          skillLevel: skillLevel,
+          dimensions: dimensions,
+          mines: mines,
+          numbers: numbers,
+          currTile: currTile,
           indicator: 'dead',
-          dispatch: dispatch
-        }));
+          boardDispatch: boardDispatch
+        });
       }
 
       ; // Is a Number or a Empty Square
       // If an empty space is revealed under a flag, increment remaining flags
 
-      if (globalState.flippers[currCanidate] === 'flag') dispatch({
+      if (flippers[currTile] === 'flag') boardDispatch({
         type: 'INCREMENT FLAGS REMAINING'
       }); // Start the timer and reveal the tile
 
-      if (globalState.timerOn === false) {
-        dispatch({
+      if (!timerOn) {
+        globalDispatch({
           type: 'SWITCH TIMER ON'
         });
-        return (0,_squareUtils_js__WEBPACK_IMPORTED_MODULE_1__.handleClick)(_objectSpread(_objectSpread({}, globalState), {}, {
-          currCanidate: currCanidate,
-          indicator: null,
-          dispatch: dispatch
-        }));
+        return (0,_squareUtils_js__WEBPACK_IMPORTED_MODULE_1__.handleClick)({
+          skillLevel: skillLevel,
+          dimensions: dimensions,
+          mines: mines,
+          numbers: numbers,
+          currTile: currTile,
+          boardDispatch: boardDispatch
+        });
       }
 
       ; // Normal Play
 
-      return (0,_squareUtils_js__WEBPACK_IMPORTED_MODULE_1__.handleClick)(_objectSpread(_objectSpread({}, globalState), {}, {
-        currCanidate: currCanidate,
+      return (0,_squareUtils_js__WEBPACK_IMPORTED_MODULE_1__.handleClick)({
+        skillLevel: skillLevel,
+        dimensions: dimensions,
+        numbers: numbers,
+        mines: mines,
+        currTile: currTile,
         indicator: null,
-        dispatch: dispatch
-      }));
+        boardDispatch: boardDispatch
+      });
     },
     onMouseDown: function onMouseDown() {
-      if (!globalState.flippers[currCanidate]) dispatch({
+      if (!flippers[currTile]) boardDispatch({
         type: 'SURPRISED SMILES'
       });
     },
     onMouseUp: function onMouseUp() {
       // Mine- Death Sequence XD
-      if (globalState.mines.includes(currCanidate) && event.button === 0 && !event.ctrlKey) {
-        return dispatch({
+      if (mines.includes(currTile) && event.button === 0 && !event.ctrlKey) {
+        return boardDispatch({
           type: 'DEAD SMILES'
         });
       }
 
       ;
-      return dispatch({
+      return boardDispatch({
         type: 'RESET SMILES'
       });
     },
     onContextMenu: function onContextMenu() {
       //If number is already revealed- prevent user from putting a flag on it
-      if (globalState.flippers[currCanidate] !== true) {
-        dispatch({
-          type: globalState.flippers[currCanidate] === false ? 'DECREMENT FLAGS REMAINING' : 'INCREMENT FLAGS REMAINING'
+      if (flippers[currTile] !== true) {
+        boardDispatch({
+          type: flippers[currTile] === false ? 'DECREMENT FLAGS REMAINING' : 'INCREMENT FLAGS REMAINING'
         });
-        return (0,_squareUtils_js__WEBPACK_IMPORTED_MODULE_1__.handleClick)(_objectSpread(_objectSpread({}, globalState), {}, {
-          currCanidate: currCanidate,
-          indicator: null,
-          dispatch: dispatch
-        }));
+        return (0,_squareUtils_js__WEBPACK_IMPORTED_MODULE_1__.handleClick)({
+          skillLevel: skillLevel,
+          dimensions: dimensions,
+          mines: mines,
+          numbers: numbers,
+          currTile: currTile,
+          boardDispatch: boardDispatch
+        });
       }
 
       ; // Prevent context menu if user accidentally presses context menu
 
       event.preventDefault();
     },
-    className: globalState.mines.includes(currCanidate) ? (0,_squareUtils_js__WEBPACK_IMPORTED_MODULE_1__.genMineClassNames)(_objectSpread(_objectSpread({}, globalState), {}, {
-      currCanidate: currCanidate
-    })) : globalState.numbers[currCanidate] ? (0,_squareUtils_js__WEBPACK_IMPORTED_MODULE_1__.genNumberClassNames)(_objectSpread(_objectSpread({}, globalState), {}, {
-      currCanidate: currCanidate
-    })) : (0,_squareUtils_js__WEBPACK_IMPORTED_MODULE_1__.genEmptyClassNames)(_objectSpread(_objectSpread({}, globalState), {}, {
-      currCanidate: currCanidate
-    }))
-  }, !globalState.definedUserName ? (0,_squareUtils_js__WEBPACK_IMPORTED_MODULE_1__.generateLoginMessage)({
-    currCanidate: currCanidate,
-    skillLevel: globalState.dimensions.skillLevel
-  }) : globalState.flippers[currCanidate] && globalState.flippers[currCanidate] !== 'flag' && globalState.numbers[currCanidate] ? globalState.numbers[currCanidate] : globalState.mines.includes(currCanidate) && globalState.flippers[currCanidate] && globalState.flippers[currCanidate] !== 'flag' ? '*' : null);
+    className: mines.includes(currTile) ? (0,_squareUtils_js__WEBPACK_IMPORTED_MODULE_1__.genMineClassNames)({
+      timerOn: timerOn,
+      skillLevel: skillLevel,
+      definedUserName: definedUserName,
+      flippers: flippers,
+      colors: colors,
+      currTile: currTile
+    }) : numbers[currTile] ? (0,_squareUtils_js__WEBPACK_IMPORTED_MODULE_1__.genNumberClassNames)({
+      skillLevel: skillLevel,
+      definedUserName: definedUserName,
+      timerOn: timerOn,
+      flippers: flippers,
+      numbers: numbers,
+      colors: colors,
+      currTile: currTile
+    }) : (0,_squareUtils_js__WEBPACK_IMPORTED_MODULE_1__.genEmptyClassNames)({
+      // Global
+      skillLevel: skillLevel,
+      definedUserName: definedUserName,
+      timerOn: timerOn,
+      // Board & passed in
+      flippers: flippers,
+      colors: colors,
+      currTile: currTile
+    })
+  }, userNotLoggedIn ? (0,_squareUtils_js__WEBPACK_IMPORTED_MODULE_1__.generateLoginMessage)({
+    currTile: currTile,
+    skillLevel: skillLevel,
+    flippers: flippers
+  }) : tileIsANumber ? numbers[currTile] : tileIsAMine ? '*' : null);
 }));
 
 /***/ }),
@@ -644,7 +1187,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "handleClick": () => (/* binding */ handleClick)
 /* harmony export */ });
 var generateLoginMessage = function generateLoginMessage(_ref) {
-  var t = _ref.currCanidate,
+  var t = _ref.currTile,
       skillLevel = _ref.skillLevel;
   var beginnerMessages = {
     '1': 'Please',
@@ -688,7 +1231,7 @@ var generateLoginMessage = function generateLoginMessage(_ref) {
 };
 
 var generateColors = function generateColors(_ref2) {
-  var t = _ref2.currCanidate,
+  var t = _ref2.currTile,
       colors = _ref2.colors,
       skillLevel = _ref2.skillLevel;
 
@@ -712,18 +1255,18 @@ var generateColors = function generateColors(_ref2) {
 };
 
 var genNumberClassNames = function genNumberClassNames(_ref3) {
-  var currCanidate = _ref3.currCanidate,
+  var timerOn = _ref3.timerOn,
+      definedUserName = _ref3.definedUserName,
+      skillLevel = _ref3.skillLevel,
+      currTile = _ref3.currTile,
       numbers = _ref3.numbers,
       flippers = _ref3.flippers,
-      colors = _ref3.colors,
-      surprised = _ref3.surprised,
-      definedUserName = _ref3.definedUserName,
-      skillLevel = _ref3.dimensions.skillLevel;
+      colors = _ref3.colors;
   var classNameArr = ['sweep-square'];
 
   if (colors !== null) {
     classNameArr.push(generateColors({
-      currCanidate: currCanidate,
+      currTile: currTile,
       colors: colors,
       skillLevel: skillLevel
     }), 'disabled');
@@ -731,25 +1274,27 @@ var genNumberClassNames = function genNumberClassNames(_ref3) {
   }
 
   ;
-  classNameArr.push(surprised === 'victory' || surprised === 'dead' || !definedUserName ? 'disabled' : flippers[currCanidate] === 'flag' ? 'flag' : 'number'); // Color Determination
+  var numberTileOnVictoryDeadOrNotLoggedIn = timerOn === 'VICTORY' || timerOn === 'FREEZE' || !definedUserName;
+  var flagOnNumberTileGamePlay = flippers[currTile] === 'flag';
+  classNameArr.push(numberTileOnVictoryDeadOrNotLoggedIn ? 'disabled' : flagOnNumberTileGamePlay ? 'flag' : 'number'); // Color Determination
 
-  var currNum = numbers[currCanidate];
+  var currNum = numbers[currTile];
   classNameArr.push(currNum === 1 ? 'blue-num' : currNum === 2 ? 'green-num' : currNum === 3 ? 'red-num' : currNum === 4 ? 'purple-num' : currNum === 5 ? 'maroon-num' : currNum === 6 ? 'turquoise-num' : currNum === 7 ? 'black-num' : currNum === 8 ? 'grey-num' : null);
   return classNameArr.join(' ');
 };
 
 var genEmptyClassNames = function genEmptyClassNames(_ref4) {
-  var currCanidate = _ref4.currCanidate,
-      colors = _ref4.colors,
-      surprised = _ref4.surprised,
-      flippers = _ref4.flippers,
+  var skillLevel = _ref4.skillLevel,
       definedUserName = _ref4.definedUserName,
-      skillLevel = _ref4.dimensions.skillLevel;
+      timerOn = _ref4.timerOn,
+      currTile = _ref4.currTile,
+      colors = _ref4.colors,
+      flippers = _ref4.flippers;
   var classNameArr = ['sweep-square'];
 
   if (colors !== null) {
     classNameArr.push(generateColors({
-      currCanidate: currCanidate,
+      currTile: currTile,
       colors: colors,
       skillLevel: skillLevel
     }), 'disabled');
@@ -757,22 +1302,26 @@ var genEmptyClassNames = function genEmptyClassNames(_ref4) {
   }
 
   ;
-  classNameArr.push(surprised === 'victory' || surprised === 'dead' ? 'disabled dark-square' : !definedUserName ? 'disabled' : flippers[currCanidate] === 'flag' ? 'flag' : flippers[currCanidate] === true ? 'dark-square' : null);
+  var emptyTileOnVictoryOrDead = timerOn === 'VICTORY' || timerOn === 'FREEZE';
+  var emptyTileOnNotLoggedIn = !definedUserName;
+  var flagOnEmptyTileGameplay = flippers[currTile] === 'flag';
+  var emptyTileRevealedGameplay = flippers[currTile] === true;
+  classNameArr.push(emptyTileOnVictoryOrDead ? 'disabled dark-square' : emptyTileOnNotLoggedIn ? 'disabled' : flagOnEmptyTileGameplay ? 'flag' : emptyTileRevealedGameplay ? 'dark-square' : null);
   return classNameArr.join(' ');
 };
 
 var genMineClassNames = function genMineClassNames(_ref5) {
-  var currCanidate = _ref5.currCanidate,
-      colors = _ref5.colors,
-      surprised = _ref5.surprised,
-      flippers = _ref5.flippers,
+  var timerOn = _ref5.timerOn,
       definedUserName = _ref5.definedUserName,
-      skillLevel = _ref5.skillLevel;
+      skillLevel = _ref5.skillLevel,
+      currTile = _ref5.currTile,
+      colors = _ref5.colors,
+      flippers = _ref5.flippers;
   var classNameArr = ['sweep-square'];
 
   if (colors !== null) {
     classNameArr.push(generateColors({
-      currCanidate: currCanidate,
+      currTile: currTile,
       colors: colors,
       skillLevel: skillLevel
     }), 'disabled');
@@ -780,12 +1329,17 @@ var genMineClassNames = function genMineClassNames(_ref5) {
   }
 
   ;
-  classNameArr.push(surprised === 'victory' && flippers[currCanidate] === 'flag' ? 'flag disabled' : surprised === 'victory' && !definedUserName ? 'disabled' : surprised === 'dead' ? 'disabled mine' : flippers[currCanidate] === 'flag' ? 'flag' : flippers[currCanidate] === true ? 'mine' : null);
+  var flagOnMineTileAfterVictory = timerOn === 'VICTORY' && flippers[currTile] === 'flag';
+  var mineTileAfterDead = timerOn === 'FREEZE';
+  var tileIsFlaggedGamePlay = flippers[currTile] === 'flag';
+  var mineTileOnDead = flippers[currTile] === true;
+  classNameArr.push(flagOnMineTileAfterVictory ? 'flag disabled' // : (surprised === 'victory' && !definedUserName) ? 'disabled'
+  : mineTileAfterDead ? 'disabled mine' : tileIsFlaggedGamePlay ? 'flag' : mineTileOnDead ? 'mine' : null);
   return classNameArr.join(' ');
 };
 
 var tileRecurse = function tileRecurse(_ref6) {
-  var tile = _ref6.currCanidate,
+  var tile = _ref6.currTile,
       dimensions = _ref6.dimensions,
       numbers = _ref6.numbers,
       mines = _ref6.mines,
@@ -818,7 +1372,7 @@ var tileRecurse = function tileRecurse(_ref6) {
 
   if (testTile(tile, evalU)) {
     tileRecurse({
-      currCanidate: evalU(tile),
+      currTile: evalU(tile),
       dimensions: dimensions,
       numbers: numbers,
       mines: mines,
@@ -831,7 +1385,7 @@ var tileRecurse = function tileRecurse(_ref6) {
 
   if (testTile(tile, evalR) && (evalR(tile) % dimensions.horizontalDimension !== 0 || evalR(tile) % dimensions.horizontalDimension === 0 && tile % dimensions.horizontalDimension === 0)) {
     tileRecurse({
-      currCanidate: evalR(tile),
+      currTile: evalR(tile),
       dimensions: dimensions,
       numbers: numbers,
       mines: mines,
@@ -844,7 +1398,7 @@ var tileRecurse = function tileRecurse(_ref6) {
 
   if (testTile(tile, evalD)) {
     tileRecurse({
-      currCanidate: evalD(tile),
+      currTile: evalD(tile),
       dimensions: dimensions,
       numbers: numbers,
       mines: mines,
@@ -857,7 +1411,7 @@ var tileRecurse = function tileRecurse(_ref6) {
 
   if (testTile(tile, evalL) && (evalL(tile + 1) % dimensions.horizontalDimension !== 0 || evalL(tile + 1) % dimensions.horizontalDimension === 0 && evalL(tile) % dimensions.horizontalDimension === 0)) {
     tileRecurse({
-      currCanidate: evalL(tile),
+      currTile: evalL(tile),
       dimensions: dimensions,
       numbers: numbers,
       mines: mines,
@@ -870,31 +1424,31 @@ var tileRecurse = function tileRecurse(_ref6) {
 };
 
 var handleClick = function handleClick(_ref7) {
-  var tile = _ref7.currCanidate,
+  var tile = _ref7.currTile,
       indicator = _ref7.indicator,
       dimensions = _ref7.dimensions,
       mines = _ref7.mines,
       numbers = _ref7.numbers,
       surprised = _ref7.surprised,
-      dispatch = _ref7.dispatch;
+      boardDispatch = _ref7.boardDispatch;
   event.preventDefault();
-  return indicator === 'dead' ? dispatch({
+  return indicator === 'dead' ? boardDispatch({
     type: 'REVEAL DEAD FLIPPERS'
-  }) : event.type === 'contextmenu' ? dispatch({
+  }) : event.type === 'contextmenu' ? boardDispatch({
     type: 'SET FLAG FLIPPED',
     payload: {
       flagFlipped: tile
     }
-  }) : event.type === 'click' && indicator !== 'dead' && !numbers[tile] && !mines.includes(tile) ? dispatch({
+  }) : event.type === 'click' && indicator !== 'dead' && !numbers[tile] && !mines.includes(tile) ? boardDispatch({
     type: 'FLIP RECURSED TILES',
     payload: tileRecurse({
-      currCanidate: tile,
+      currTile: tile,
       dimensions: dimensions,
       numbers: numbers,
       mines: mines,
       resultArr: []
     })
-  }) : event.type === 'click' && indicator !== 'dead' ? dispatch({
+  }) : event.type === 'click' && indicator !== 'dead' ? boardDispatch({
     type: 'FLIP NORMAL TILE',
     payload: {
       flippedTile: tile
@@ -903,136 +1457,6 @@ var handleClick = function handleClick(_ref7) {
 };
 
 
-
-/***/ }),
-
-/***/ "./src/components/Board/boardHandlers.js":
-/*!***********************************************!*\
-  !*** ./src/components/Board/boardHandlers.js ***!
-  \***********************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* export default binding */ __WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
-
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
-
-/* harmony default export */ function __WEBPACK_DEFAULT_EXPORT__(tile, indicator) {
-  event.preventDefault();
-
-  var _this = _slicedToArray(this, 2),
-      _this$ = _this[0],
-      dimensions = _this$.dimensions,
-      numbers = _this$.numbers,
-      mines = _this$.mines,
-      surprised = _this$.surprised,
-      dispatch = _this[1];
-
-  if (indicator === 'dead') {
-    // Reveal all Flippers
-    dispatch({
-      type: 'REVEAL DEAD FLIPPERS'
-    });
-  } else if (event.type === 'contextmenu') {
-    dispatch({
-      type: 'SET FLAG FLIPPED',
-      payload: {
-        flagFlipped: tile
-      }
-    });
-  }
-
-  if (event.type === 'click' && indicator !== 'dead') {
-    // Dark Tiles
-    if (!numbers[tile] && !mines.includes(tile)) {
-      var tileRecurse = function tileRecurse(tile, resultArr) {
-        resultArr.push(tile);
-
-        var evalU = function evalU(tile) {
-          return tile - dimensions.horizontalDimension;
-        };
-
-        var evalR = function evalR(tile) {
-          return tile + 1;
-        };
-
-        var evalD = function evalD(tile) {
-          return tile + dimensions.horizontalDimension;
-        };
-
-        var evalL = function evalL(tile) {
-          return tile - 1;
-        };
-
-        var testTile = function testTile(tile, testFunc) {
-          return !numbers[testFunc(tile)] && !mines.includes(testFunc(tile)) // && prevFlippers[testFunc(tile)] === false
-          && !resultArr.includes(testFunc(tile)) && testFunc(tile) >= 0 && testFunc(tile) <= dimensions.verticalDimension * dimensions.horizontalDimension;
-        }; // ***********
-        //  Going Up
-        // ***********
-
-
-        if (testTile(tile, evalU)) {
-          tileRecurse(evalU(tile), resultArr);
-        } // ***********
-        //  Going Right
-        // ***********
-
-
-        if (testTile(tile, evalR) && (evalR(tile) % dimensions.horizontalDimension !== 0 || evalR(tile) % dimensions.horizontalDimension === 0 && tile % dimensions.horizontalDimension === 0)) {
-          tileRecurse(evalR(tile), resultArr);
-        } // ***********
-        //  Going Down
-        // ***********
-
-
-        if (testTile(tile, evalD)) {
-          tileRecurse(evalD(tile), resultArr);
-        } // ***********
-        //  Going Left
-        // ***********
-
-
-        if (testTile(tile, evalL) && (evalL(tile + 1) % dimensions.horizontalDimension !== 0 || evalL(tile + 1) % dimensions.horizontalDimension === 0 && evalL(tile) % dimensions.horizontalDimension === 0)) {
-          tileRecurse(evalL(tile), resultArr);
-        }
-
-        ;
-        return resultArr;
-      };
-
-      var recursedTiles = tileRecurse(tile, []);
-      dispatch({
-        type: 'FLIP RECURSED TILES',
-        payload: {
-          recursedTiles: recursedTiles
-        }
-      });
-    } else {
-      dispatch({
-        type: 'FLIP NORMAL TILE',
-        payload: {
-          flippedTile: tile
-        }
-      });
-    }
-  }
-}
 
 /***/ }),
 
@@ -1045,78 +1469,47 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "generateMinesEffect": () => (/* binding */ generateMinesEffect),
-/* harmony export */   "stopColorIterationEffect": () => (/* binding */ stopColorIterationEffect),
-/* harmony export */   "freezeColorDelayEffect": () => (/* binding */ freezeColorDelayEffect),
-/* harmony export */   "resetGameEffectOnSmileyOrSkill": () => (/* binding */ resetGameEffectOnSmileyOrSkill),
-/* harmony export */   "freezeScrollBoardEffect": () => (/* binding */ freezeScrollBoardEffect),
-/* harmony export */   "revealFlipperEffect": () => (/* binding */ revealFlipperEffect),
-/* harmony export */   "generateNumberEffect": () => (/* binding */ generateNumberEffect),
-/* harmony export */   "resetOnSkillLevelChangeEffect": () => (/* binding */ resetOnSkillLevelChangeEffect),
-/* harmony export */   "resetFlagsRemainingOnSkillChangeOrTimerOn": () => (/* binding */ resetFlagsRemainingOnSkillChangeOrTimerOn)
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "axios");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var regenerator_runtime__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! regenerator-runtime */ "regenerator-runtime");
-/* harmony import */ var regenerator_runtime__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(regenerator_runtime__WEBPACK_IMPORTED_MODULE_2__);
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
-
-function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
 
-
-
-
-var generateMinesEffect = function generateMinesEffect(dimensions, dispatch) {
+var generateMinesEffect = function generateMinesEffect(dimensions, boardDispatch) {
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
-    dispatch({
+    boardDispatch({
       type: 'GENERATE MINES',
       payload: dimensions
     });
   }, []);
-}; // const changeSkillLevelEffect = (skillLevel, dispatch) => {
-//   useEffect(() => {
-//     if (skillLevel === 'beginner') {
-//       return dispatch({ type: 'SET BEGINNER DIMENSIONS' })
-//     };
-//     if (skillLevel === 'intermediate') {
-//       return dispatch({ type: 'SET INTERMEDIATE DIMENSIONS' });
-//     };
-//     if (skillLevel === 'advanced') {
-//       return dispatch({ type: 'SET ADVANCED DIMENSIONS' });
-//     };
-//   }, [skillLevel]);
-// };
+};
 
-
-var stopColorIterationEffect = function stopColorIterationEffect(colorDelay, dispatch) {
+var stopColorIterationEffect = function stopColorIterationEffect(colorDelay, boardDispatch) {
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     if (colorDelay === null) {
-      dispatch({
-        type: 'STOP ITERATION'
+      boardDispatch({
+        type: 'STOP COLOR ITERATION'
       });
     }
+
+    ;
   }, [colorDelay]);
 };
 
-var freezeColorDelayEffect = function freezeColorDelayEffect(definedUserName, dispatch) {
+var freezeColorDelayEffect = function freezeColorDelayEffect(definedUserName, boardDispatch) {
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
-    if (definedUserName) {
-      dispatch({
-        type: 'UNSET COLOR DELAY'
-      });
-    }
+    if (definedUserName) boardDispatch({
+      type: 'UNSET COLOR DELAY'
+    });
   }, [definedUserName]);
 }; // This condition resets the board when the smiley face is punched or the skillLevel is changed because timerOn is set to false. It also resets the board if the user changes the skillLevel before playing, which is most likely.
 
 
-var resetGameEffectOnSmileyOrSkill = function resetGameEffectOnSmileyOrSkill(timerOn, skillLevel, dimensions, dispatch) {
+var resetGameEffectOnSmileyOrSkill = function resetGameEffectOnSmileyOrSkill(timerOn, skillLevel, dimensions, boardDispatch) {
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     if (timerOn === false) {
       // Set all Tiles to False (hidden)
-      dispatch({
+      boardDispatch({
         type: 'RESET FLIPPERS',
         payload: Array.from({
           length: dimensions.horizontalDimension * dimensions.verticalDimension
@@ -1125,7 +1518,7 @@ var resetGameEffectOnSmileyOrSkill = function resetGameEffectOnSmileyOrSkill(tim
         })
       }); // Generate Mines
 
-      dispatch({
+      boardDispatch({
         type: 'GENERATE MINES',
         payload: dimensions
       });
@@ -1152,102 +1545,42 @@ var freezeScrollBoardEffect = function freezeScrollBoardEffect(scrollBoard) {
   }, [scrollBoard]);
 };
 
-var revealFlipperEffect = function revealFlipperEffect(mines, flippers, numbers, timerTime, skillLevel, definedUserName, dispatch) {
-  var postResult = /*#__PURE__*/function () {
-    var _ref = _asyncToGenerator( /*#__PURE__*/regenerator_runtime__WEBPACK_IMPORTED_MODULE_2___default().mark(function _callee() {
-      var _yield$axios$post, results;
-
-      return regenerator_runtime__WEBPACK_IMPORTED_MODULE_2___default().wrap(function _callee$(_context) {
-        while (1) {
-          switch (_context.prev = _context.next) {
-            case 0:
-              _context.next = 2;
-              return axios__WEBPACK_IMPORTED_MODULE_1___default().post('/minesweeper-topTimes', null, {
-                params: {
-                  skillLevel: skillLevel,
-                  definedUserName: definedUserName,
-                  timerTime: timerTime
-                }
-              });
-
-            case 2:
-              _yield$axios$post = _context.sent;
-              results = _yield$axios$post.data;
-
-            case 4:
-            case "end":
-              return _context.stop();
+var revealFlipperEffect = function revealFlipperEffect(_ref) {
+  var mines = _ref.mines,
+      flippers = _ref.flippers,
+      numbers = _ref.numbers,
+      globalDispatch = _ref.globalDispatch,
+      boardDispatch = _ref.boardDispatch;
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+    if (mines.length && flippers.length && flippers[0] !== 'dead') {
+      // Only store score when all flippers have been flipped (ends recursive loop)
+      if (flippers.every(function (flipper) {
+        return flipper === true || flipper === 'flag' || mines[flipper];
+      })) {
+        // Stop the clock and indicate a win
+        globalDispatch({
+          type: 'FREEZE TIMER STATE VICTORY'
+        }); // If a victory is detected by all numbers being revealed, flip all the empty squares
+      } else if (Object.keys(numbers).every(function (num) {
+        return flippers[num] === true;
+      })) {
+        boardDispatch({
+          type: 'REVEAL FLIPPERS',
+          payload: {
+            mines: mines
           }
-        }
-      }, _callee);
-    }));
-
-    return function postResult() {
-      return _ref.apply(this, arguments);
-    };
-  }();
-
-  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regenerator_runtime__WEBPACK_IMPORTED_MODULE_2___default().mark(function _callee2() {
-    return regenerator_runtime__WEBPACK_IMPORTED_MODULE_2___default().wrap(function _callee2$(_context2) {
-      while (1) {
-        switch (_context2.prev = _context2.next) {
-          case 0:
-            if (!(mines.length && flippers.length && flippers[0] !== 'dead')) {
-              _context2.next = 9;
-              break;
-            }
-
-            if (!flippers.every(function (flipper) {
-              return flipper === true || flipper === 'flag' || mines[flipper];
-            })) {
-              _context2.next = 8;
-              break;
-            }
-
-            // Stop The Timer Immediately
-            dispatch({
-              type: 'FREEZE TIMER DELAY'
-            }); // Post Result
-
-            _context2.next = 5;
-            return postResult();
-
-          case 5:
-            // This Gets the posted result
-            dispatch({
-              type: 'VICTORY SMILES'
-            }); // If a victory is detected by all numbers being revealed, flip all the empty squares
-
-            _context2.next = 9;
-            break;
-
-          case 8:
-            if (Object.keys(numbers).every(function (num) {
-              return flippers[num] === true;
-            })) {
-              dispatch({
-                type: 'REVEAL FLIPPERS',
-                payload: {
-                  mines: mines
-                }
-              });
-            }
-
-          case 9:
-          case "end":
-            return _context2.stop();
-        }
+        });
       }
-    }, _callee2);
-  })), [flippers]);
+    }
+  }, [flippers]);
 };
 
-var generateNumberEffect = function generateNumberEffect(mines, _ref3, dispatch) {
-  var verticalDimension = _ref3.verticalDimension,
-      horizontalDimension = _ref3.horizontalDimension;
+var generateNumberEffect = function generateNumberEffect(mines, _ref2, boardDispatch) {
+  var verticalDimension = _ref2.verticalDimension,
+      horizontalDimension = _ref2.horizontalDimension;
   //When Mines are reset, generate numbers around those mines
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
-    dispatch({
+    boardDispatch({
       type: 'GENERATE NUMBERS',
       payload: {
         mines: mines,
@@ -1258,20 +1591,20 @@ var generateNumberEffect = function generateNumberEffect(mines, _ref3, dispatch)
   }, [mines]);
 };
 
-var resetOnSkillLevelChangeEffect = function resetOnSkillLevelChangeEffect(skillLevel, dispatch) {
+var resetOnSkillLevelChangeEffect = function resetOnSkillLevelChangeEffect(skillLevel, globalDispatch) {
   // If Skill Level is changed, reset the board.
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
-    dispatch({
+    globalDispatch({
       type: 'SWITCH TIMER OFF'
     });
   }, [skillLevel]);
 };
 
-var resetFlagsRemainingOnSkillChangeOrTimerOn = function resetFlagsRemainingOnSkillChangeOrTimerOn(timerOn, skillLevel, dispatch) {
+var resetFlagsRemainingOnSkillChangeOrTimerOn = function resetFlagsRemainingOnSkillChangeOrTimerOn(timerOn, skillLevel, boardDispatch) {
   // This resets the flags whenever the skillLevel is changed or game is reset
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     if (timerOn === false) {
-      dispatch({
+      boardDispatch({
         type: 'SET FLAGS REMAINING',
         payload: skillLevel === 'beginner' ? 10 : skillLevel === 'intermediate' ? 40 : 99
       });
@@ -1281,7 +1614,17 @@ var resetFlagsRemainingOnSkillChangeOrTimerOn = function resetFlagsRemainingOnSk
   }, [skillLevel, timerOn]);
 };
 
-
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  generateMinesEffect: generateMinesEffect,
+  stopColorIterationEffect: stopColorIterationEffect,
+  freezeColorDelayEffect: freezeColorDelayEffect,
+  resetGameEffectOnSmileyOrSkill: resetGameEffectOnSmileyOrSkill,
+  freezeScrollBoardEffect: freezeScrollBoardEffect,
+  revealFlipperEffect: revealFlipperEffect,
+  generateNumberEffect: generateNumberEffect,
+  resetOnSkillLevelChangeEffect: resetOnSkillLevelChangeEffect,
+  resetFlagsRemainingOnSkillChangeOrTimerOn: resetFlagsRemainingOnSkillChangeOrTimerOn
+});
 
 /***/ }),
 
@@ -1301,7 +1644,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "axios");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _LeaderBoardEntry_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./LeaderBoardEntry.js */ "./src/components/Leaderboard/LeaderBoardEntry.js");
-/* harmony import */ var Store_useStoreContext_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! Store/useStoreContext.js */ "./src/store/useStoreContext.js");
+/* harmony import */ var GlobalStore__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! GlobalStore */ "./src/store/GlobalStore.js");
 /* harmony import */ var _leaderboard_scss__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./leaderboard.scss */ "./src/components/Leaderboard/leaderboard.scss");
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
@@ -1327,28 +1670,22 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (/*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().memo(function (_ref) {
   var ssrTopTimes = _ref.ssrTopTimes;
 
-  var _useStoreContext = (0,Store_useStoreContext_js__WEBPACK_IMPORTED_MODULE_3__.default)(),
-      _useStoreContext2 = _slicedToArray(_useStoreContext, 2),
-      _useStoreContext2$ = _useStoreContext2[0],
-      skillLevel = _useStoreContext2$.dimensions.skillLevel,
-      definedUserName = _useStoreContext2$.definedUserName,
-      surprised = _useStoreContext2$.surprised,
-      dispatch = _useStoreContext2[1];
+  var _useGlobalContext = (0,GlobalStore__WEBPACK_IMPORTED_MODULE_3__.useGlobalContext)(),
+      _useGlobalContext2 = _slicedToArray(_useGlobalContext, 2),
+      _useGlobalContext2$ = _useGlobalContext2[0],
+      skillLevel = _useGlobalContext2$.dimensions.skillLevel,
+      topTimes = _useGlobalContext2$.topTimes,
+      globalDispatch = _useGlobalContext2[1];
 
-  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
       _useState2 = _slicedToArray(_useState, 2),
-      topScores = _useState2[0],
-      setTopScores = _useState2[1];
-
-  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
-      _useState4 = _slicedToArray(_useState3, 2),
-      personalized = _useState4[0],
-      setPersonalized = _useState4[1]; // Axios Utils--------------------------------
+      personalized = _useState2[0],
+      setPersonalized = _useState2[1]; // Axios Utils--------------------------------
 
 
   var getAllResults = /*#__PURE__*/function () {
     var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-      var _yield$axios, _topScores;
+      var _yield$axios, initTopScores;
 
       return regeneratorRuntime.wrap(function _callee$(_context) {
         while (1) {
@@ -1364,8 +1701,13 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
             case 3:
               _yield$axios = _context.sent;
-              _topScores = _yield$axios.data;
-              setTopScores(_topScores);
+              initTopScores = _yield$axios.data;
+              globalDispatch({
+                type: 'SET TOP TIMES',
+                payload: {
+                  topTimes: initTopScores
+                }
+              });
               _context.next = 11;
               break;
 
@@ -1410,7 +1752,12 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             case 3:
               _yield$axios2 = _context2.sent;
               personalizedResults = _yield$axios2.data;
-              setTopScores(personalizedResults);
+              globalDispatch({
+                type: 'SET TOP TIMES',
+                payload: {
+                  topTimes: personalizedResults
+                }
+              });
               _context2.next = 11;
               break;
 
@@ -1433,17 +1780,14 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     return function getPersonalizedResults() {
       return _ref3.apply(this, arguments);
     };
-  }(); //  Use Effect Section-------------------------
-
+  }();
 
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
-    if ( //Get all results on a win.
-    surprised === 'victory') {
-      return personalized ? getPersonalizedResults() : getAllResults();
+    if (personalized) {
+      getPersonalizedResults();
+    } else {
+      getAllResults();
     }
-  }, [surprised, definedUserName]);
-  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
-    return personalized ? getPersonalizedResults() : getAllResults();
   }, [personalized, skillLevel]);
 
   var formatTime = function formatTime(resultTime) {
@@ -1468,7 +1812,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h3", {
     className: "scores-list",
     id: "leaderboard-header"
-  }, makeTitle(personalized, skillLevel)), (topScores || ssrTopTimes).map(function (entry, index) {
+  }, makeTitle(personalized, skillLevel)), (topTimes || ssrTopTimes).map(function (entry, index) {
     return entry ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_LeaderBoardEntry_js__WEBPACK_IMPORTED_MODULE_2__.default, {
       key: index,
       personalized: personalized,
@@ -1500,7 +1844,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var Store_useStoreContext_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! Store/useStoreContext.js */ "./src/store/useStoreContext.js");
+/* harmony import */ var GlobalStore__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! GlobalStore */ "./src/store/GlobalStore.js");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -1524,9 +1868,9 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       index = _ref.index,
       formatTime = _ref.formatTime;
 
-  var _useStoreContext = (0,Store_useStoreContext_js__WEBPACK_IMPORTED_MODULE_1__.default)(),
-      _useStoreContext2 = _slicedToArray(_useStoreContext, 1),
-      definedUserName = _useStoreContext2[0].definedUserName;
+  var _useGlobalContext = (0,GlobalStore__WEBPACK_IMPORTED_MODULE_1__.useGlobalContext)(),
+      _useGlobalContext2 = _slicedToArray(_useGlobalContext, 1),
+      definedUserName = _useGlobalContext2[0].definedUserName;
 
   var golden = definedUserName === username;
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
@@ -1562,9 +1906,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var Store_useStoreContext_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! Store/useStoreContext.js */ "./src/store/useStoreContext.js");
-/* harmony import */ var Components_customHooks_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! Components/customHooks.js */ "./src/components/customHooks.js");
-/* harmony import */ var _millisecondstyles_scss__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./millisecondstyles.scss */ "./src/components/MillisecondTimer/millisecondstyles.scss");
+/* harmony import */ var _postResult_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./postResult.js */ "./src/components/MillisecondTimer/postResult.js");
+/* harmony import */ var GlobalStore__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! GlobalStore */ "./src/store/GlobalStore.js");
+/* harmony import */ var Components_customHooks_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! Components/customHooks.js */ "./src/components/customHooks.js");
+/* harmony import */ var _TimerStore_timerStore_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./TimerStore/timerStore.js */ "./src/components/MillisecondTimer/TimerStore/timerStore.js");
+/* harmony import */ var _millisecondstyles_scss__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./millisecondstyles.scss */ "./src/components/MillisecondTimer/millisecondstyles.scss");
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
@@ -1585,47 +1931,64 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
+
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (function () {
-  var _useStoreContext = (0,Store_useStoreContext_js__WEBPACK_IMPORTED_MODULE_1__.default)(),
-      _useStoreContext2 = _slicedToArray(_useStoreContext, 2),
-      _useStoreContext2$ = _useStoreContext2[0],
-      skillLevel = _useStoreContext2$.dimensions.skillLevel,
-      timerOn = _useStoreContext2$.timerOn,
-      timerTime = _useStoreContext2$.timerTime,
-      timerDelay = _useStoreContext2$.timerDelay,
-      dispatch = _useStoreContext2[1]; // If Delay is null, clear the timer
+  var _useGlobalContext = (0,GlobalStore__WEBPACK_IMPORTED_MODULE_2__.useGlobalContext)(),
+      _useGlobalContext2 = _slicedToArray(_useGlobalContext, 2),
+      _useGlobalContext2$ = _useGlobalContext2[0],
+      skillLevel = _useGlobalContext2$.dimensions.skillLevel,
+      definedUserName = _useGlobalContext2$.definedUserName,
+      timerOn = _useGlobalContext2$.timerOn,
+      globalDispatch = _useGlobalContext2[1];
 
+  var _useTimerContext = (0,_TimerStore_timerStore_js__WEBPACK_IMPORTED_MODULE_4__.useTimerContext)(),
+      _useTimerContext2 = _slicedToArray(_useTimerContext, 2),
+      timerTime = _useTimerContext2[0].timerTime,
+      timerDispatch = _useTimerContext2[1];
 
-  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
-    if (timerDelay === null) dispatch({
-      type: 'CLEAR TIMER TIME'
-    });
-  }, [timerDelay]);
-  (0,Components_customHooks_js__WEBPACK_IMPORTED_MODULE_2__.useInterval)(function () {
-    dispatch({
+  (0,Components_customHooks_js__WEBPACK_IMPORTED_MODULE_3__.useInterval)(function () {
+    timerDispatch({
       type: 'ITERATE TIMER TIME',
-      payload: timerDelay
+      payload: 10
     });
-  }, timerDelay); // If Timer is changed to true, start the timer.
+  }, timerOn === true ? 10 : timerOn === 'FREEZE' || timerOn === 'VICTORY' ? -1 : null); // If Timer is changed to true, start the timer.
 
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+    var newTopTimes;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            if (timerOn && timerOn !== 'bombed') {
-              dispatch({
-                type: 'INIT TIMER DELAY'
-              });
-            } else {
-              dispatch({
-                type: 'UNSET TIMER DELAY'
+            if (timerOn === false) {
+              timerDispatch({
+                type: 'CLEAR TIMER TIME'
               });
             }
 
             ;
 
-          case 2:
+            if (!(timerOn === 'VICTORY')) {
+              _context.next = 7;
+              break;
+            }
+
+            _context.next = 5;
+            return (0,_postResult_js__WEBPACK_IMPORTED_MODULE_1__.default)(skillLevel, definedUserName, timerTime);
+
+          case 5:
+            newTopTimes = _context.sent;
+            globalDispatch({
+              type: 'SET TOP TIMES',
+              payload: {
+                topTimes: newTopTimes
+              }
+            });
+
+          case 7:
+            ;
+
+          case 8:
           case "end":
             return _context.stop();
         }
@@ -1650,6 +2013,182 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 /***/ }),
 
+/***/ "./src/components/MillisecondTimer/TimerStore/timerReducers.js":
+/*!*********************************************************************!*\
+  !*** ./src/components/MillisecondTimer/TimerStore/timerReducers.js ***!
+  \*********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+// import { } from './timerActions.js';
+var combineReducers = function combineReducers(slices) {
+  return function (state, action) {
+    return Object.keys(slices).reduce(function (acc, prop) {
+      return _objectSpread(_objectSpread({}, acc), {}, _defineProperty({}, prop, slices[prop](acc[prop], action)));
+    }, state);
+  };
+};
+
+var timerTime = function timerTime() {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+
+  var _ref = arguments.length > 1 ? arguments[1] : undefined,
+      type = _ref.type,
+      payload = _ref.payload;
+
+  switch (type) {
+    case "ITERATE TIMER TIME":
+      return state += payload;
+
+    case "CLEAR TIMER TIME":
+      return 0;
+
+    default:
+      return state;
+  }
+
+  ;
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (combineReducers({
+  timerTime: timerTime
+}));
+
+/***/ }),
+
+/***/ "./src/components/MillisecondTimer/TimerStore/timerStore.js":
+/*!******************************************************************!*\
+  !*** ./src/components/MillisecondTimer/TimerStore/timerStore.js ***!
+  \******************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "useTimerContext": () => (/* binding */ useTimerContext),
+/* harmony export */   "TimerStoreProvider": () => (/* binding */ TimerStoreProvider)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _timerReducers_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./timerReducers.js */ "./src/components/MillisecondTimer/TimerStore/timerReducers.js");
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+// https://stackoverflow.com/questions/59200785/react-usereducer-how-to-combine-multiple-reducers
+
+
+var TimerStoreContext = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createContext();
+var initialState = {
+  timerTime: 0
+};
+
+var TimerStoreProvider = function TimerStoreProvider(_ref) {
+  var children = _ref.children;
+
+  var _React$useReducer = react__WEBPACK_IMPORTED_MODULE_0___default().useReducer(_timerReducers_js__WEBPACK_IMPORTED_MODULE_1__.default, initialState),
+      _React$useReducer2 = _slicedToArray(_React$useReducer, 2),
+      state = _React$useReducer2[0],
+      dispatch = _React$useReducer2[1];
+
+  var store = react__WEBPACK_IMPORTED_MODULE_0___default().useMemo(function () {
+    return [state, dispatch];
+  }, [state]);
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(TimerStoreContext.Provider, {
+    value: store
+  }, children);
+};
+
+var useTimerContext = function useTimerContext() {
+  var context = react__WEBPACK_IMPORTED_MODULE_0___default().useContext(TimerStoreContext);
+
+  if (context === undefined) {
+    throw new Error('useCount must be used within a CountProvider');
+  }
+
+  return context;
+};
+
+
+
+/***/ }),
+
+/***/ "./src/components/MillisecondTimer/postResult.js":
+/*!*******************************************************!*\
+  !*** ./src/components/MillisecondTimer/postResult.js ***!
+  \*******************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "axios");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var regenerator_runtime__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! regenerator-runtime */ "regenerator-runtime");
+/* harmony import */ var regenerator_runtime__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(regenerator_runtime__WEBPACK_IMPORTED_MODULE_1__);
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (/*#__PURE__*/(function () {
+  var _ref = _asyncToGenerator( /*#__PURE__*/regenerator_runtime__WEBPACK_IMPORTED_MODULE_1___default().mark(function _callee(skillLevel, definedUserName, timerTime) {
+    var _yield$axios$post, newTopTimes;
+
+    return regenerator_runtime__WEBPACK_IMPORTED_MODULE_1___default().wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            _context.next = 2;
+            return axios__WEBPACK_IMPORTED_MODULE_0___default().post('/minesweeper-topTimes', null, {
+              params: {
+                skillLevel: skillLevel,
+                definedUserName: definedUserName,
+                timerTime: timerTime
+              }
+            });
+
+          case 2:
+            _yield$axios$post = _context.sent;
+            newTopTimes = _yield$axios$post.data;
+            return _context.abrupt("return", newTopTimes);
+
+          case 5:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee);
+  }));
+
+  return function (_x, _x2, _x3) {
+    return _ref.apply(this, arguments);
+  };
+})());
+
+/***/ }),
+
 /***/ "./src/components/Minesweeper/Minesweeper.js":
 /*!***************************************************!*\
   !*** ./src/components/Minesweeper/Minesweeper.js ***!
@@ -1668,9 +2207,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var Components_SkillLevelSelector_SkillLevelSelector_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! Components/SkillLevelSelector/SkillLevelSelector.js */ "./src/components/SkillLevelSelector/SkillLevelSelector.js");
 /* harmony import */ var Components_Leaderboard_LeaderBoard_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! Components/Leaderboard/LeaderBoard.js */ "./src/components/Leaderboard/LeaderBoard.js");
 /* harmony import */ var Components_SmileyBar_SmileyBar_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! Components/SmileyBar/SmileyBar.js */ "./src/components/SmileyBar/SmileyBar.js");
-/* harmony import */ var Components_UserNameEntry_UserNameEntry_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! Components/UserNameEntry/UserNameEntry.js */ "./src/components/UserNameEntry/UserNameEntry.js");
-/* harmony import */ var Store_useStoreContext_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! Store/useStoreContext.js */ "./src/store/useStoreContext.js");
-/* harmony import */ var _minesweeper_scss__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./minesweeper.scss */ "./src/components/Minesweeper/minesweeper.scss");
+/* harmony import */ var UserNameStore__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! UserNameStore */ "./src/components/UserNameEntry/UserNameStore/userNameStore.js");
+/* harmony import */ var BoardStore__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! BoardStore */ "./src/components/Board/BoardStore/boardStore.js");
+/* harmony import */ var TimerStore__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! TimerStore */ "./src/components/MillisecondTimer/TimerStore/timerStore.js");
+/* harmony import */ var Components_UserNameEntry_UserNameEntry_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! Components/UserNameEntry/UserNameEntry.js */ "./src/components/UserNameEntry/UserNameEntry.js");
+/* harmony import */ var GlobalStore__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! GlobalStore */ "./src/store/GlobalStore.js");
+/* harmony import */ var _minesweeper_scss__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./minesweeper.scss */ "./src/components/Minesweeper/minesweeper.scss");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -1693,26 +2235,29 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
+
+
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (function (_ref) {
   var ssrTopTimes = _ref.ssrTopTimes;
 
-  var _useStoreContext = (0,Store_useStoreContext_js__WEBPACK_IMPORTED_MODULE_7__.default)(),
-      _useStoreContext2 = _slicedToArray(_useStoreContext, 1),
-      skillLevel = _useStoreContext2[0].dimensions.skillLevel;
+  var _useGlobalContext = (0,GlobalStore__WEBPACK_IMPORTED_MODULE_10__.useGlobalContext)(),
+      _useGlobalContext2 = _slicedToArray(_useGlobalContext, 1),
+      skillLevel = _useGlobalContext2[0].dimensions.skillLevel;
 
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "space-containers"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Components_UserNameEntry_UserNameEntry_js__WEBPACK_IMPORTED_MODULE_6__.default, null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(UserNameStore__WEBPACK_IMPORTED_MODULE_6__.UserNameStoreProvider, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Components_UserNameEntry_UserNameEntry_js__WEBPACK_IMPORTED_MODULE_9__.default, null)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "space-containers",
     id: "main-space-container"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     id: "total-board",
     className: skillLevel
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Components_SmileyBar_SmileyBar_js__WEBPACK_IMPORTED_MODULE_5__.default, null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Components_Board_Board_js__WEBPACK_IMPORTED_MODULE_1__.default, null)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Components_Leaderboard_LeaderBoard_js__WEBPACK_IMPORTED_MODULE_4__.default, {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(BoardStore__WEBPACK_IMPORTED_MODULE_7__.BoardStoreProvider, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Components_SmileyBar_SmileyBar_js__WEBPACK_IMPORTED_MODULE_5__.default, null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Components_Board_Board_js__WEBPACK_IMPORTED_MODULE_1__.default, null))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Components_Leaderboard_LeaderBoard_js__WEBPACK_IMPORTED_MODULE_4__.default, {
     ssrTopTimes: ssrTopTimes
   })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "space-containers"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Components_MillisecondTimer_MillisecondTimer_js__WEBPACK_IMPORTED_MODULE_2__.default, null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Components_SkillLevelSelector_SkillLevelSelector_js__WEBPACK_IMPORTED_MODULE_3__.default, null)));
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(TimerStore__WEBPACK_IMPORTED_MODULE_8__.TimerStoreProvider, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Components_MillisecondTimer_MillisecondTimer_js__WEBPACK_IMPORTED_MODULE_2__.default, null)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Components_SkillLevelSelector_SkillLevelSelector_js__WEBPACK_IMPORTED_MODULE_3__.default, null)));
 });
 
 /***/ }),
@@ -1730,7 +2275,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var Store_useStoreContext_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! Store/useStoreContext.js */ "./src/store/useStoreContext.js");
+/* harmony import */ var GlobalStore__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! GlobalStore */ "./src/store/GlobalStore.js");
 /* harmony import */ var _skillstyles_scss__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./skillstyles.scss */ "./src/components/SkillLevelSelector/skillstyles.scss");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
@@ -1748,10 +2293,10 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (/*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().memo(function () {
-  var _useStoreContext = (0,Store_useStoreContext_js__WEBPACK_IMPORTED_MODULE_1__.default)(),
-      _useStoreContext2 = _slicedToArray(_useStoreContext, 2),
-      skillLevel = _useStoreContext2[0].dimensions.skillLevel,
-      dispatch = _useStoreContext2[1];
+  var _useGlobalContext = (0,GlobalStore__WEBPACK_IMPORTED_MODULE_1__.useGlobalContext)(),
+      _useGlobalContext2 = _slicedToArray(_useGlobalContext, 2),
+      skillLevel = _useGlobalContext2[0].dimensions.skillLevel,
+      dispatch = _useGlobalContext2[1];
 
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: skillLevel,
@@ -1792,8 +2337,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var Store_useStoreContext_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! Store/useStoreContext.js */ "./src/store/useStoreContext.js");
-/* harmony import */ var _smileystyles_scss__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./smileystyles.scss */ "./src/components/SmileyBar/smileystyles.scss");
+/* harmony import */ var BoardStore__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! BoardStore */ "./src/components/Board/BoardStore/boardStore.js");
+/* harmony import */ var GlobalStore__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! GlobalStore */ "./src/store/GlobalStore.js");
+/* harmony import */ var _smileystyles_scss__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./smileystyles.scss */ "./src/components/SmileyBar/smileystyles.scss");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -1809,19 +2355,31 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (/*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().memo(function () {
-  var _useStoreContext = (0,Store_useStoreContext_js__WEBPACK_IMPORTED_MODULE_1__.default)(),
-      _useStoreContext2 = _slicedToArray(_useStoreContext, 2),
-      _useStoreContext2$ = _useStoreContext2[0],
-      surprised = _useStoreContext2$.surprised,
-      flagsRemaining = _useStoreContext2$.flagsRemaining,
-      dispatch = _useStoreContext2[1];
+  var _useGlobalContext = (0,GlobalStore__WEBPACK_IMPORTED_MODULE_2__.useGlobalContext)(),
+      _useGlobalContext2 = _slicedToArray(_useGlobalContext, 2),
+      _useGlobalContext2$ = _useGlobalContext2[0],
+      numberOfMines = _useGlobalContext2$.dimensions.numberOfMines,
+      timerOn = _useGlobalContext2$.timerOn,
+      globalDispatch = _useGlobalContext2[1];
+
+  var _useBoardContext = (0,BoardStore__WEBPACK_IMPORTED_MODULE_1__.useBoardContext)(),
+      _useBoardContext2 = _slicedToArray(_useBoardContext, 2),
+      _useBoardContext2$ = _useBoardContext2[0],
+      surprised = _useBoardContext2$.surprised,
+      flagsRemaining = _useBoardContext2$.flagsRemaining,
+      boardDispatch = _useBoardContext2[1];
 
   var resetCallback = function resetCallback() {
-    dispatch({
+    boardDispatch({
       type: 'RESET SMILES'
     });
-    dispatch({
+    boardDispatch({
+      type: 'SET FLAGS REMAINING',
+      payload: numberOfMines
+    });
+    globalDispatch({
       type: 'SWITCH TIMER OFF'
     });
   };
@@ -1830,7 +2388,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     id: "smiley-bar"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "smiley-guy",
-    id: surprised === 'dead' ? 'dead-guy' : surprised === 'victory' ? 'victory-guy' : surprised === true ? 'surprised-guy' : 'smiley-guy',
+    id: surprised === 'dead' ? 'dead-guy' : timerOn === 'VICTORY' ? 'victory-guy' : surprised === true ? 'surprised-guy' : 'smiley-guy',
     onClick: resetCallback
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     id: "flags-remaining"
@@ -1856,8 +2414,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var regenerator_runtime__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! regenerator-runtime */ "regenerator-runtime");
 /* harmony import */ var regenerator_runtime__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(regenerator_runtime__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var Store_useStoreContext_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! Store/useStoreContext.js */ "./src/store/useStoreContext.js");
-/* harmony import */ var _loginstyles_scss__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./loginstyles.scss */ "./src/components/UserNameEntry/loginstyles.scss");
+/* harmony import */ var GlobalStore__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! GlobalStore */ "./src/store/GlobalStore.js");
+/* harmony import */ var UserNameStore__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! UserNameStore */ "./src/components/UserNameEntry/UserNameStore/userNameStore.js");
+/* harmony import */ var _loginstyles_scss__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./loginstyles.scss */ "./src/components/UserNameEntry/loginstyles.scss");
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
@@ -1879,15 +2438,23 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (function () {
-  var _useStoreContext = (0,Store_useStoreContext_js__WEBPACK_IMPORTED_MODULE_3__.default)(),
-      _useStoreContext2 = _slicedToArray(_useStoreContext, 2),
-      _useStoreContext2$ = _useStoreContext2[0],
-      skillLevel = _useStoreContext2$.dimensions.skillLevel,
-      definedUserName = _useStoreContext2$.definedUserName,
-      userName = _useStoreContext2$.userName,
-      userPass = _useStoreContext2$.userPass,
-      dispatch = _useStoreContext2[1];
+  var _useGlobalContext = (0,GlobalStore__WEBPACK_IMPORTED_MODULE_3__.useGlobalContext)(),
+      _useGlobalContext2 = _slicedToArray(_useGlobalContext, 2),
+      _useGlobalContext2$ = _useGlobalContext2[0],
+      skillLevel = _useGlobalContext2$.dimensions.skillLevel,
+      definedUserName = _useGlobalContext2$.definedUserName,
+      globalDispatch = _useGlobalContext2[1];
+
+  var _useUserNameContext = (0,UserNameStore__WEBPACK_IMPORTED_MODULE_4__.useUserNameContext)(),
+      _useUserNameContext2 = _slicedToArray(_useUserNameContext, 2),
+      _useUserNameContext2$ = _useUserNameContext2[0],
+      userPass = _useUserNameContext2$.userPass,
+      userName = _useUserNameContext2$.userName,
+      userNameDispatch = _useUserNameContext2[1]; // React.useEffect(() => {
+  // }, [userPass, userName, skillLevel, definedUserName]);
+
 
   var handleSubmit = /*#__PURE__*/function () {
     var _ref = _asyncToGenerator( /*#__PURE__*/regenerator_runtime__WEBPACK_IMPORTED_MODULE_2___default().mark(function _callee() {
@@ -1933,7 +2500,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             case 10:
               _yield$axios$post = _context.sent;
               posted = _yield$axios$post.data;
-              dispatch({
+              globalDispatch({
                 type: 'SET DEFINED USERNAME',
                 payload: {
                   userName: userName
@@ -1949,7 +2516,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
               if (result === 'wrong password') {
                 alert('Wrong Password, try again...');
               } else {
-                dispatch({
+                globalDispatch({
                   type: 'SET DEFINED USERNAME',
                   payload: {
                     userName: userName
@@ -1974,6 +2541,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
   }();
 
   var generateForm = function generateForm() {
+    // const [{ userName, userPass }, userNameDispatch] = useUserNameContext();
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("form", {
       id: "login-form",
       className: skillLevel,
@@ -1990,7 +2558,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       type: "text",
       disabled: definedUserName ? true : false,
       onChange: function onChange(_) {
-        dispatch({
+        userNameDispatch({
           type: 'UPDATE USERNAME',
           payload: event.target.value
         });
@@ -2002,7 +2570,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       placeholder: "password",
       value: userPass,
       onChange: function onChange(_) {
-        return dispatch({
+        return userNameDispatch({
           type: 'UPDATE USERPASS',
           payload: event.target.value
         });
@@ -2012,6 +2580,140 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
   return generateForm();
 });
+
+/***/ }),
+
+/***/ "./src/components/UserNameEntry/UserNameStore/userNameReducers.js":
+/*!************************************************************************!*\
+  !*** ./src/components/UserNameEntry/UserNameStore/userNameReducers.js ***!
+  \************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+var combineReducers = function combineReducers(slices) {
+  return function (state, action) {
+    return Object.keys(slices).reduce(function (acc, prop) {
+      return _objectSpread(_objectSpread({}, acc), {}, _defineProperty({}, prop, slices[prop](acc[prop], action)));
+    }, state);
+  };
+};
+
+var userName = function userName() {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+
+  var _ref = arguments.length > 1 ? arguments[1] : undefined,
+      type = _ref.type,
+      payload = _ref.payload;
+
+  switch (type) {
+    case "UPDATE USERNAME":
+      return payload;
+
+    default:
+      return state;
+  }
+
+  ;
+};
+
+var userPass = function userPass() {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+
+  var _ref2 = arguments.length > 1 ? arguments[1] : undefined,
+      type = _ref2.type,
+      payload = _ref2.payload;
+
+  switch (type) {
+    case "UPDATE USERPASS":
+      return payload;
+
+    default:
+      return state;
+  }
+
+  ;
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (combineReducers({
+  userName: userName,
+  userPass: userPass
+}));
+
+/***/ }),
+
+/***/ "./src/components/UserNameEntry/UserNameStore/userNameStore.js":
+/*!*********************************************************************!*\
+  !*** ./src/components/UserNameEntry/UserNameStore/userNameStore.js ***!
+  \*********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "useUserNameContext": () => (/* binding */ useUserNameContext),
+/* harmony export */   "UserNameStoreProvider": () => (/* binding */ UserNameStoreProvider)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _userNameReducers_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./userNameReducers.js */ "./src/components/UserNameEntry/UserNameStore/userNameReducers.js");
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
+
+var UserNameContext = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createContext();
+var initialState = {
+  userName: '',
+  userPass: ''
+};
+
+var UserNameStoreProvider = function UserNameStoreProvider(_ref) {
+  var children = _ref.children;
+
+  var _React$useReducer = react__WEBPACK_IMPORTED_MODULE_0___default().useReducer(_userNameReducers_js__WEBPACK_IMPORTED_MODULE_1__.default, initialState),
+      _React$useReducer2 = _slicedToArray(_React$useReducer, 2),
+      state = _React$useReducer2[0],
+      dispatch = _React$useReducer2[1];
+
+  var store = react__WEBPACK_IMPORTED_MODULE_0___default().useMemo(function () {
+    return [state, dispatch];
+  }, [state]);
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(UserNameContext.Provider, {
+    value: store
+  }, children);
+};
+
+function useUserNameContext() {
+  var context = react__WEBPACK_IMPORTED_MODULE_0___default().useContext(UserNameContext);
+
+  if (context === undefined) {
+    throw new Error('useCount must be used within a CountProvider');
+  }
+
+  ;
+  return context;
+}
+
+
 
 /***/ }),
 
@@ -2041,7 +2743,7 @@ var useInterval = function useInterval(callback, delay) {
   react__WEBPACK_IMPORTED_MODULE_0___default().useEffect(function () {
     function tick() {
       savedCallback.current();
-    } // If victory is declared stop the timer...
+    } // If victory is declared or bomb stop the timer...
 
 
     if (delay === -1) {
@@ -2209,7 +2911,7 @@ minesweeper.post('/minesweeper-createUser', /*#__PURE__*/function () {
 }());
 minesweeper.post('/minesweeper-topTimes', /*#__PURE__*/function () {
   var _ref8 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(_ref7, res) {
-    var _ref7$query, skillLevel, timerTime, definedUserName;
+    var _ref7$query, skillLevel, timerTime, definedUserName, newTopTimes;
 
     return regeneratorRuntime.wrap(function _callee4$(_context4) {
       while (1) {
@@ -2221,21 +2923,22 @@ minesweeper.post('/minesweeper-topTimes', /*#__PURE__*/function () {
             return (0,Database_controllers_controllers_js__WEBPACK_IMPORTED_MODULE_2__.postResult)(skillLevel, timerTime, definedUserName);
 
           case 4:
-            res.send('ok');
-            _context4.next = 10;
+            newTopTimes = _context4.sent;
+            res.send(newTopTimes);
+            _context4.next = 11;
             break;
 
-          case 7:
-            _context4.prev = 7;
+          case 8:
+            _context4.prev = 8;
             _context4.t0 = _context4["catch"](1);
             res.send(_context4.t0);
 
-          case 10:
+          case 11:
           case "end":
             return _context4.stop();
         }
       }
-    }, _callee4, null, [[1, 7]]);
+    }, _callee4, null, [[1, 8]]);
   }));
 
   return function (_x7, _x8) {
@@ -2274,41 +2977,83 @@ var htmlEnd = function htmlEnd() {
 
 /***/ }),
 
-/***/ "./src/store/actions/colorActions.js":
-/*!*******************************************!*\
-  !*** ./src/store/actions/colorActions.js ***!
-  \*******************************************/
+/***/ "./src/store/GlobalStore.js":
+/*!**********************************!*\
+  !*** ./src/store/GlobalStore.js ***!
+  \**********************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   "useGlobalContext": () => (/* binding */ useGlobalContext),
+/* harmony export */   "GlobalStoreProvider": () => (/* binding */ GlobalStoreProvider)
 /* harmony export */ });
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _globalReducers_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./globalReducers.js */ "./src/store/globalReducers.js");
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 
-function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
-
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
-
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (function (existingColors) {
-  var lastColor = existingColors.pop();
-  existingColors.unshift(lastColor);
-  return _toConsumableArray(existingColors);
-});
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+// https://stackoverflow.com/questions/59200785/react-usereducer-how-to-combine-multiple-reducers
+
+
+var GlobalStoreContext = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createContext();
+var initialState = {
+  dimensions: {
+    skillLevel: 'beginner',
+    verticalDimension: 9,
+    horizontalDimension: 9,
+    numberOfMines: 10
+  },
+  topTimes: [],
+  definedUserName: null,
+  timerOn: false
+};
+
+var GlobalStoreProvider = function GlobalStoreProvider(_ref) {
+  var children = _ref.children;
+
+  var _React$useReducer = react__WEBPACK_IMPORTED_MODULE_0___default().useReducer(_globalReducers_js__WEBPACK_IMPORTED_MODULE_1__.default, initialState),
+      _React$useReducer2 = _slicedToArray(_React$useReducer, 2),
+      state = _React$useReducer2[0],
+      dispatch = _React$useReducer2[1];
+
+  var store = react__WEBPACK_IMPORTED_MODULE_0___default().useMemo(function () {
+    return [state, dispatch];
+  }, [state]);
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(GlobalStoreContext.Provider, {
+    value: store
+  }, children);
+};
+
+var useGlobalContext = function useGlobalContext() {
+  var context = react__WEBPACK_IMPORTED_MODULE_0___default().useContext(GlobalStoreContext);
+
+  if (context === undefined) {
+    throw new Error('useCount must be used within a CountProvider');
+  }
+
+  return context;
+};
+
+
 
 /***/ }),
 
-/***/ "./src/store/actions/colorDelayActions.js":
-/*!************************************************!*\
-  !*** ./src/store/actions/colorDelayActions.js ***!
-  \************************************************/
+/***/ "./src/store/globalReducers.js":
+/*!*************************************!*\
+  !*** ./src/store/globalReducers.js ***!
+  \*************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -2316,451 +3061,31 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (function (existing, newColorDelay) {
-  if (existing + newColorDelay > 25) {
-    // If Increasing the Color Delay- do so at a rate of 1, otherwise when decreasing do so at 2.5 rate- full rate is less enjoyable
-    newColorDelay = newColorDelay < 0 && existing < 200 ? newColorDelay / 5 : newColorDelay < 0 ? newColorDelay / 2.5 : 1;
-    return existing + newColorDelay;
-  }
-
-  return existing;
-});
-
-/***/ }),
-
-/***/ "./src/store/actions/flipperActions.js":
-/*!*********************************************!*\
-  !*** ./src/store/actions/flipperActions.js ***!
-  \*********************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "revealFlippers": () => (/* binding */ revealFlippers),
-/* harmony export */   "flipNormalTile": () => (/* binding */ flipNormalTile),
-/* harmony export */   "flipRecursedTiles": () => (/* binding */ flipRecursedTiles),
-/* harmony export */   "revealDeadFlippers": () => (/* binding */ revealDeadFlippers),
-/* harmony export */   "setFlagFlipped": () => (/* binding */ setFlagFlipped)
-/* harmony export */ });
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
-
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
-
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-var revealFlippers = function revealFlippers(existingFlippers, mines) {
-  existingFlippers = existingFlippers.map(function (flipper, index) {
-    if (flipper === 'flag' || mines.includes(index)) {
-      return 'flag';
-    } else {
-      return true;
-    }
-  });
-  return _toConsumableArray(existingFlippers);
-};
-
-var flipNormalTile = function flipNormalTile(existingFlippers, flippedTile) {
-  existingFlippers.splice(flippedTile, 1, true);
-  return _toConsumableArray(existingFlippers);
-};
-
-var flipRecursedTiles = function flipRecursedTiles(existingFlippers, recursedTiles) {
-  for (var i = 0; i < recursedTiles.length; i++) {
-    existingFlippers.splice(recursedTiles[i], 1, true);
-  }
-
-  return _toConsumableArray(existingFlippers);
-};
-
-var revealDeadFlippers = function revealDeadFlippers(existingFlippers) {
-  existingFlippers = existingFlippers.map(function (flipper, index) {
-    if (index === 0) {
-      return 'dead';
-    } else {
-      return true;
-    }
-  });
-  return _toConsumableArray(existingFlippers);
-};
-
-var setFlagFlipped = function setFlagFlipped(existingFlippers, flagFlipped) {
-  if (existingFlippers[flagFlipped] === 'flag') {
-    existingFlippers.splice(flagFlipped, 1, false);
-  } else {
-    existingFlippers.splice(flagFlipped, 1, 'flag');
-  }
-
-  return _toConsumableArray(existingFlippers);
-};
-
-
-
-/***/ }),
-
-/***/ "./src/store/actions/mineActions.js":
-/*!******************************************!*\
-  !*** ./src/store/actions/mineActions.js ***!
-  \******************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-// Generate Mines
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (function (_ref) {
-  var numberOfMines = _ref.numberOfMines,
-      verticalDimension = _ref.verticalDimension,
-      horizontalDimension = _ref.horizontalDimension;
-  var mineArr = [];
-
-  while (mineArr.length < numberOfMines) {
-    var mineCanidate = Math.floor(Math.random() * (verticalDimension * horizontalDimension));
-
-    if (!mineArr.includes(mineCanidate)) {
-      mineArr.push(mineCanidate);
-    }
-  }
-
-  return mineArr;
-});
-
-/***/ }),
-
-/***/ "./src/store/actions/numberActions.js":
-/*!********************************************!*\
-  !*** ./src/store/actions/numberActions.js ***!
-  \********************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
-
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
-
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-// Generate Numbers
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (function (_ref) {
-  var mines = _ref.mines,
-      verticalDimension = _ref.verticalDimension,
-      horizontalDimension = _ref.horizontalDimension;
-
-  var board = _toConsumableArray(Array(verticalDimension * horizontalDimension).keys());
-
-  var numBoard = {};
-  mines.forEach(function (mine, index, mineArr) {
-    // Number is Top Left Diagonal
-    var tLD = horizontalDimension + 1;
-
-    if (board.includes(mine - tLD) && (mine - tLD + 1) % horizontalDimension !== 0 && !mineArr.includes(mine - tLD)) {
-      if (numBoard[mine - tLD]) {
-        numBoard[mine - tLD] = numBoard[mine - tLD] + 1;
-      } else {
-        numBoard[mine - tLD] = 1;
-      }
-    } // Number is Above
-
-
-    var tD = horizontalDimension;
-
-    if (board.includes(mine - tD) && !mineArr.includes(mine - tD)) {
-      if (numBoard[mine - tD]) {
-        numBoard[mine - tD] = numBoard[mine - tD] + 1;
-      } else {
-        numBoard[mine - tD] = 1;
-      }
-    } //Number is Top Right Diagonal
-
-
-    var tRD = horizontalDimension - 1;
-
-    if (board.includes(mine - tRD) && (mine - tRD) % horizontalDimension !== 0 && !mineArr.includes(mine - tRD)) {
-      if (numBoard[mine - tRD]) {
-        numBoard[mine - tRD] = numBoard[mine - tRD] + 1;
-      } else {
-        numBoard[mine - tRD] = 1;
-      }
-    } // Number to the right
-
-
-    if (board.includes(mine + 1) && (mine + 1) % horizontalDimension !== 0 && !mineArr.includes(mine + 1)) {
-      if (numBoard[mine + 1]) {
-        numBoard[mine + 1] = numBoard[mine + 1] + 1;
-      } else {
-        numBoard[mine + 1] = 1;
-      }
-    } // Number is Bottom Right Diagonal
-
-
-    var bRD = horizontalDimension + 1;
-
-    if (board.includes(mine + bRD) && (mine + bRD) % horizontalDimension !== 0 && !mineArr.includes(mine + bRD)) {
-      if (numBoard[mine + bRD]) {
-        numBoard[mine + bRD] = numBoard[mine + bRD] + 1;
-      } else {
-        numBoard[mine + bRD] = 1;
-      }
-    } // Number is Below
-
-
-    var bD = horizontalDimension;
-
-    if (board.includes(mine + bD) && !mineArr.includes(mine + bD)) {
-      if (numBoard[mine + bD]) {
-        numBoard[mine + bD] = numBoard[mine + bD] + 1;
-      } else {
-        numBoard[mine + bD] = 1;
-      }
-    } //Number is Bottom Left Diagonal
-
-
-    var bLD = horizontalDimension - 1;
-
-    if (board.includes(mine + bLD) && (mine + bLD + 1) % horizontalDimension !== 0 && !mineArr.includes(mine + bLD)) {
-      if (numBoard[mine + bLD]) {
-        numBoard[mine + bLD] = numBoard[mine + bLD] + 1;
-      } else {
-        numBoard[mine + bLD] = 1;
-      }
-    } // Number to the left
-
-
-    if (board.includes(mine - 1) && mine % horizontalDimension !== 0 && !mineArr.includes(mine - 1)) {
-      if (numBoard[mine - 1]) {
-        numBoard[mine - 1] = numBoard[mine - 1] + 1;
-      } else {
-        numBoard[mine - 1] = 1;
-      }
-    }
-  });
-  return numBoard;
-});
-
-/***/ }),
-
-/***/ "./src/store/reducers.js":
-/*!*******************************!*\
-  !*** ./src/store/reducers.js ***!
-  \*******************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _actions_mineActions_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./actions/mineActions.js */ "./src/store/actions/mineActions.js");
-/* harmony import */ var _actions_numberActions_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./actions/numberActions.js */ "./src/store/actions/numberActions.js");
-/* harmony import */ var _actions_flipperActions_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./actions/flipperActions.js */ "./src/store/actions/flipperActions.js");
-/* harmony import */ var _actions_colorDelayActions_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./actions/colorDelayActions */ "./src/store/actions/colorDelayActions.js");
-/* harmony import */ var _actions_colorActions_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./actions/colorActions.js */ "./src/store/actions/colorActions.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-
-
-
-
-
-
-
-var numbers = function numbers() {
-  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [4, 5, 6];
+var timerOn = function timerOn() {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
 
   var _ref = arguments.length > 1 ? arguments[1] : undefined,
       type = _ref.type,
       payload = _ref.payload;
 
   switch (type) {
-    case "GENERATE NUMBERS":
-      return (0,_actions_numberActions_js__WEBPACK_IMPORTED_MODULE_1__.default)(payload);
-
-    default:
-      return state;
-  }
-};
-
-var timerOn = function timerOn() {
-  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
-
-  var _ref2 = arguments.length > 1 ? arguments[1] : undefined,
-      type = _ref2.type,
-      payload = _ref2.payload;
-
-  switch (type) {
     case "SWITCH TIMER ON":
       return true;
-
-    case "SWITCH TIMER BOMBED":
-      return 'bombed';
 
     case "SWITCH TIMER OFF":
       return false;
 
-    case "SAVE TIMER VICTORY":
-      return payload;
+    case "FREEZE TIMER STATE":
+      return 'FREEZE';
 
-    default:
-      return state;
-  }
-};
-
-var definedUserName = function definedUserName() {
-  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
-
-  var _ref3 = arguments.length > 1 ? arguments[1] : undefined,
-      type = _ref3.type,
-      _ref3$payload = _ref3.payload;
-
-  _ref3$payload = _ref3$payload === void 0 ? {} : _ref3$payload;
-  var userName = _ref3$payload.userName;
-
-  switch (type) {
-    case "SET DEFINED USERNAME":
-      return userName;
-
-    default:
-      return state;
-  }
-}; // preloaded default state prevents an automatic win by default
-
-
-var mines = function mines(state, _ref4) {
-  var type = _ref4.type,
-      payload = _ref4.payload;
-
-  switch (type) {
-    case "GENERATE MINES":
-      return (0,_actions_mineActions_js__WEBPACK_IMPORTED_MODULE_0__.default)(payload);
-
-    default:
-      return state;
-  }
-};
-
-var flippers = function flippers(state, _ref5) {
-  var type = _ref5.type,
-      payload = _ref5.payload,
-      _ref5$payload = _ref5.payload;
-  _ref5$payload = _ref5$payload === void 0 ? {} : _ref5$payload;
-  var flagFlipped = _ref5$payload.flagFlipped,
-      flippedTile = _ref5$payload.flippedTile,
-      mines = _ref5$payload.mines;
-
-  switch (type) {
-    case "RESET FLIPPERS":
-      return payload;
-
-    case "SET FLAG FLIPPED":
-      return (0,_actions_flipperActions_js__WEBPACK_IMPORTED_MODULE_2__.setFlagFlipped)(state.slice(), flagFlipped);
-
-    case "FLIP NORMAL TILE":
-      return (0,_actions_flipperActions_js__WEBPACK_IMPORTED_MODULE_2__.flipNormalTile)(state.slice(), flippedTile);
-
-    case "FLIP RECURSED TILES":
-      return (0,_actions_flipperActions_js__WEBPACK_IMPORTED_MODULE_2__.flipRecursedTiles)(state.slice(), payload);
-
-    case "REVEAL DEAD FLIPPERS":
-      return (0,_actions_flipperActions_js__WEBPACK_IMPORTED_MODULE_2__.revealDeadFlippers)(state.slice());
-
-    case "REVEAL FLIPPERS":
-      return (0,_actions_flipperActions_js__WEBPACK_IMPORTED_MODULE_2__.revealFlippers)(state.slice(), mines);
-
-    default:
-      return state;
-  }
-};
-
-var colorDelay = function colorDelay() {
-  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1000;
-
-  var _ref6 = arguments.length > 1 ? arguments[1] : undefined,
-      type = _ref6.type,
-      _ref6$payload = _ref6.payload;
-
-  _ref6$payload = _ref6$payload === void 0 ? {} : _ref6$payload;
-  var newColorDelay = _ref6$payload.newColorDelay;
-
-  switch (type) {
-    case "UNSET COLOR DELAY":
-      return null;
-
-    case "MODULATE COLOR DELAY":
-      return (0,_actions_colorDelayActions_js__WEBPACK_IMPORTED_MODULE_3__.default)(state, newColorDelay);
-
-    default:
-      return state;
-  }
-};
-
-var colors = function colors() {
-  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : ['blue-num', 'green-num', 'red-num', 'gold-num', 'purple-num', 'maroon-num', 'turquoise-num', 'grey-num'];
-  var action = arguments.length > 1 ? arguments[1] : undefined;
-
-  switch (action.type) {
-    case "ITERATE":
-      return (0,_actions_colorActions_js__WEBPACK_IMPORTED_MODULE_4__.default)(state.slice());
-
-    case "STOP ITERATION":
-      return null;
-
-    default:
-      return state;
-  }
-};
-
-var scrollBoard = function scrollBoard() {
-  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
-  var action = arguments.length > 1 ? arguments[1] : undefined;
-
-  switch (action.type) {
-    case 'TOGGLE SCROLLBOARD':
-      return !state;
-
-    default:
-      return state;
-  }
-}; // const x = (state, action) => {
-//   console.log(state)
-//   return state;
-// };
-
-
-var surprised = function surprised(state, action) {
-  switch (action.type) {
-    case 'SURPRISED SMILES':
-      return true;
-
-    case 'RESET SMILES':
-      return false;
-
-    case 'DEAD SMILES':
-      return 'dead';
-
-    case 'VICTORY SMILES':
-      return 'victory';
+    case "FREEZE TIMER STATE VICTORY":
+      return 'VICTORY';
 
     default:
       return state;
@@ -2775,8 +3100,8 @@ var dimensions = function dimensions() {
     numberOfMines: 10
   };
 
-  var _ref7 = arguments.length > 1 ? arguments[1] : undefined,
-      type = _ref7.type;
+  var _ref2 = arguments.length > 1 ? arguments[1] : undefined,
+      type = _ref2.type;
 
   switch (type) {
     case "SET BEGINNER DIMENSIONS":
@@ -2810,95 +3135,16 @@ var dimensions = function dimensions() {
   ;
 };
 
-var userName = function userName() {
-  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+var topTimes = function topTimes() {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
 
-  var _ref8 = arguments.length > 1 ? arguments[1] : undefined,
-      type = _ref8.type,
-      payload = _ref8.payload;
-
-  switch (type) {
-    case "UPDATE USERNAME":
-      return payload;
-
-    default:
-      return state;
-  }
-};
-
-var userPass = function userPass() {
-  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
-
-  var _ref9 = arguments.length > 1 ? arguments[1] : undefined,
-      type = _ref9.type,
-      payload = _ref9.payload;
+  var _ref3 = arguments.length > 1 ? arguments[1] : undefined,
+      type = _ref3.type,
+      payload = _ref3.payload;
 
   switch (type) {
-    case "UPDATE USERPASS":
-      return payload;
-
-    default:
-      return state;
-  }
-};
-
-var flagsRemaining = function flagsRemaining() {
-  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 10;
-
-  var _ref10 = arguments.length > 1 ? arguments[1] : undefined,
-      type = _ref10.type,
-      payload = _ref10.payload;
-
-  switch (type) {
-    case "DECREMENT FLAGS REMAINING":
-      return state - 1;
-
-    case "INCREMENT FLAGS REMAINING":
-      return state + 1;
-
-    case "SET FLAGS REMAINING":
-      return payload;
-
-    default:
-      return state;
-  }
-};
-
-var timerDelay = function timerDelay() {
-  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
-
-  var _ref11 = arguments.length > 1 ? arguments[1] : undefined,
-      type = _ref11.type,
-      payload = _ref11.payload;
-
-  switch (type) {
-    case "FREEZE TIMER DELAY":
-      return -1;
-
-    case "INIT TIMER DELAY":
-      return 10;
-
-    case "UNSET TIMER DELAY":
-      return null;
-
-    default:
-      return state;
-  }
-};
-
-var timerTime = function timerTime() {
-  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
-
-  var _ref12 = arguments.length > 1 ? arguments[1] : undefined,
-      type = _ref12.type,
-      payload = _ref12.payload;
-
-  switch (type) {
-    case "ITERATE TIMER TIME":
-      return state += payload;
-
-    case "CLEAR TIMER TIME":
-      return 0;
+    case "SET TOP TIMES":
+      return payload.topTimes;
 
     default:
       return state;
@@ -2915,6 +3161,25 @@ var reduceReducers = function reduceReducers() {
       return nextReducer(acc, action);
     }, state);
   };
+};
+
+var definedUserName = function definedUserName() {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+
+  var _ref4 = arguments.length > 1 ? arguments[1] : undefined,
+      type = _ref4.type,
+      _ref4$payload = _ref4.payload;
+
+  _ref4$payload = _ref4$payload === void 0 ? {} : _ref4$payload;
+  var userName = _ref4$payload.userName;
+
+  switch (type) {
+    case "SET DEFINED USERNAME":
+      return userName;
+
+    default:
+      return state;
+  }
 }; // const rootReducer = combineReducers({
 //   a: reduceReducers(plusOneReducer, plusOneReducer), // aNew = aOld + 1 + 1
 //   b: reduceReducers(timesTwoReducer, plusOneReducer) // bNew = bOld * 2 + 1
@@ -2931,118 +3196,11 @@ var combineReducers = function combineReducers(slices) {
 };
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (combineReducers({
-  timerDelay: timerDelay,
-  timerTime: timerTime,
-  colors: colors,
   dimensions: dimensions,
-  colorDelay: colorDelay,
-  surprised: surprised,
-  scrollBoard: scrollBoard,
-  numbers: numbers,
-  mines: mines,
-  flippers: flippers,
   definedUserName: definedUserName,
-  timerOn: timerOn,
-  flagsRemaining: flagsRemaining,
-  userName: userName,
-  userPass: userPass
+  topTimes: topTimes,
+  timerOn: timerOn
 }));
-
-/***/ }),
-
-/***/ "./src/store/store.js":
-/*!****************************!*\
-  !*** ./src/store/store.js ***!
-  \****************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "StoreContext": () => (/* binding */ StoreContext),
-/* harmony export */   "StoreProvider": () => (/* binding */ StoreProvider)
-/* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _reducers_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./reducers.js */ "./src/store/reducers.js");
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
-
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
-// https://stackoverflow.com/questions/59200785/react-usereducer-how-to-combine-multiple-reducers
-
-
-var StoreContext = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createContext();
-var initialState = {
-  colorDelay: 1000,
-  colors: ['blue-num', 'green-num', 'red-num', 'gold-num', 'purple-num', 'maroon-num', 'turquoise-num', 'grey-num'],
-  dimensions: {
-    skillLevel: 'beginner',
-    verticalDimension: 9,
-    horizontalDimension: 9,
-    numberOfMines: 10
-  },
-  scrollBoard: false,
-  mines: [1, 2, 3],
-  numbers: [1, 2, 3],
-  flippers: [],
-  surprised: false,
-  definedUserName: null,
-  timerOn: false,
-  flagsRemaining: 10,
-  userName: '',
-  userPass: '',
-  timerDelay: null,
-  timerTime: 0
-};
-
-var StoreProvider = function StoreProvider(_ref) {
-  var children = _ref.children;
-
-  var _React$useReducer = react__WEBPACK_IMPORTED_MODULE_0___default().useReducer(_reducers_js__WEBPACK_IMPORTED_MODULE_1__.default, initialState),
-      _React$useReducer2 = _slicedToArray(_React$useReducer, 2),
-      state = _React$useReducer2[0],
-      dispatch = _React$useReducer2[1];
-
-  var store = react__WEBPACK_IMPORTED_MODULE_0___default().useMemo(function () {
-    return [state, dispatch];
-  }, [state]);
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(StoreContext.Provider, {
-    value: store
-  }, children);
-};
-
-
-
-/***/ }),
-
-/***/ "./src/store/useStoreContext.js":
-/*!**************************************!*\
-  !*** ./src/store/useStoreContext.js ***!
-  \**************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _store_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./store.js */ "./src/store/store.js");
-
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (function () {
-  return react__WEBPACK_IMPORTED_MODULE_0___default().useContext(_store_js__WEBPACK_IMPORTED_MODULE_1__.StoreContext);
-});
 
 /***/ }),
 
@@ -3342,7 +3500,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var Database_controllers_controllers_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! Database/controllers/controllers.js */ "./db/controllers/controllers.js");
 /* harmony import */ var Database_controllers_controllers_js__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(Database_controllers_controllers_js__WEBPACK_IMPORTED_MODULE_8__);
 /* harmony import */ var _template_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./template.js */ "./src/ssr-server/template.js");
-/* harmony import */ var Store_store_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! Store/store.js */ "./src/store/store.js");
+/* harmony import */ var GlobalStore__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! GlobalStore */ "./src/store/GlobalStore.js");
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
@@ -3373,7 +3531,7 @@ app.get('/', /*#__PURE__*/function () {
 
           case 2:
             topTimes = _context.sent;
-            minesweeperStream = (0,react_dom_server__WEBPACK_IMPORTED_MODULE_5__.renderToNodeStream)( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default().createElement(Store_store_js__WEBPACK_IMPORTED_MODULE_10__.StoreProvider, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default().createElement(Components_Minesweeper_Minesweeper_js__WEBPACK_IMPORTED_MODULE_6__.default, null)));
+            minesweeperStream = (0,react_dom_server__WEBPACK_IMPORTED_MODULE_5__.renderToNodeStream)( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default().createElement(GlobalStore__WEBPACK_IMPORTED_MODULE_10__.GlobalStoreProvider, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default().createElement(Components_Minesweeper_Minesweeper_js__WEBPACK_IMPORTED_MODULE_6__.default, null)));
             res.write((0,_template_js__WEBPACK_IMPORTED_MODULE_9__.htmlStart)({
               topTimes: topTimes
             }));

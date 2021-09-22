@@ -1,54 +1,33 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import regeneratorRuntime from "regenerator-runtime";
 
-const generateMinesEffect = (dimensions, dispatch) => {
+const generateMinesEffect = (dimensions, boardDispatch) => {
   useEffect(() => {
-    dispatch({ type: 'GENERATE MINES', payload: dimensions });
+    boardDispatch({ type: 'GENERATE MINES', payload: dimensions });
   }, []);
 };
 
-
-// const changeSkillLevelEffect = (skillLevel, dispatch) => {
-//   useEffect(() => {
-//     if (skillLevel === 'beginner') {
-//       return dispatch({ type: 'SET BEGINNER DIMENSIONS' })
-//     };
-
-//     if (skillLevel === 'intermediate') {
-//       return dispatch({ type: 'SET INTERMEDIATE DIMENSIONS' });
-//     };
-
-//     if (skillLevel === 'advanced') {
-//       return dispatch({ type: 'SET ADVANCED DIMENSIONS' });
-//     };
-//   }, [skillLevel]);
-// };
-
-const stopColorIterationEffect = (colorDelay, dispatch) => {
+const stopColorIterationEffect = (colorDelay, boardDispatch) => {
   useEffect(() => {
     if (colorDelay === null) {
-      dispatch({ type: 'STOP ITERATION' })
-    }
+      boardDispatch({ type: 'STOP COLOR ITERATION' })
+    };
   }, [colorDelay]);
 };
 
-const freezeColorDelayEffect = (definedUserName, dispatch) => {
+const freezeColorDelayEffect = (definedUserName, boardDispatch) => {
   useEffect(() => {
-    if (definedUserName) {
-      dispatch({ type: 'UNSET COLOR DELAY' })
-    }
+    if (definedUserName) boardDispatch({ type: 'UNSET COLOR DELAY' });
   }, [definedUserName]);
 };
 
 // This condition resets the board when the smiley face is punched or the skillLevel is changed because timerOn is set to false. It also resets the board if the user changes the skillLevel before playing, which is most likely.
-const resetGameEffectOnSmileyOrSkill = (timerOn, skillLevel, dimensions, dispatch) => {
+const resetGameEffectOnSmileyOrSkill = (timerOn, skillLevel, dimensions, boardDispatch) => {
   useEffect(() => {
     if (timerOn === false) {
       // Set all Tiles to False (hidden)
-      dispatch({ type: 'RESET FLIPPERS', payload: Array.from({ length: dimensions.horizontalDimension * dimensions.verticalDimension }, () => false) })
+      boardDispatch({ type: 'RESET FLIPPERS', payload: Array.from({ length: dimensions.horizontalDimension * dimensions.verticalDimension }, () => false) })
       // Generate Mines
-      dispatch({ type: 'GENERATE MINES', payload: dimensions });
+      boardDispatch({ type: 'GENERATE MINES', payload: dimensions });
     };
   }, [timerOn, dimensions])
 };
@@ -70,55 +49,59 @@ const freezeScrollBoardEffect = (scrollBoard) => {
 };
 
 
-const revealFlipperEffect = (mines, flippers, numbers, timerTime, skillLevel, definedUserName, dispatch) => {
-
-  const postResult = async () => {
-    const { data: results } = await axios.post('/minesweeper-topTimes', null, { params: { skillLevel, definedUserName, timerTime } });
-  };
-
-  useEffect(async () => {
+const revealFlipperEffect = ({ mines, flippers, numbers, globalDispatch, boardDispatch }) => {
+  useEffect(() => {
     if (mines.length && flippers.length && flippers[0] !== 'dead') {
       // Only store score when all flippers have been flipped (ends recursive loop)
       if (flippers.every((flipper) => (flipper === true || flipper === 'flag' || mines[flipper]))) {
-        // Stop The Timer Immediately
-        dispatch({ type: 'FREEZE TIMER DELAY' });
-        // Post Result
-        await postResult()
-        // This Gets the posted result
-        dispatch({ type: 'VICTORY SMILES' });
+        // Stop the clock and indicate a win
+        globalDispatch({ type: 'FREEZE TIMER STATE VICTORY' });
+
         // If a victory is detected by all numbers being revealed, flip all the empty squares
       } else if (Object.keys(numbers).every(num => flippers[num] === true)) {
-        dispatch({ type: 'REVEAL FLIPPERS', payload: { mines } });
+        boardDispatch({ type: 'REVEAL FLIPPERS', payload: { mines } });
       }
     }
   }, [flippers])
 };
 
 
-const generateNumberEffect = (mines, { verticalDimension, horizontalDimension }, dispatch) => {
+const generateNumberEffect = (mines, { verticalDimension, horizontalDimension }, boardDispatch) => {
   //When Mines are reset, generate numbers around those mines
   useEffect(() => {
-    dispatch({ type: 'GENERATE NUMBERS', payload: { mines, verticalDimension, horizontalDimension } });
+    boardDispatch({ type: 'GENERATE NUMBERS', payload: { mines, verticalDimension, horizontalDimension } });
   }, [mines]);
 };
 
 
-const resetOnSkillLevelChangeEffect = (skillLevel, dispatch) => {
+const resetOnSkillLevelChangeEffect = (skillLevel, globalDispatch) => {
   // If Skill Level is changed, reset the board.
   useEffect(() => {
-    dispatch({ type: 'SWITCH TIMER OFF' });
+    globalDispatch({ type: 'SWITCH TIMER OFF' });
   }, [skillLevel]);
 };
 
 
-const resetFlagsRemainingOnSkillChangeOrTimerOn = (timerOn, skillLevel, dispatch) => {
+const resetFlagsRemainingOnSkillChangeOrTimerOn = (timerOn, skillLevel, boardDispatch) => {
   // This resets the flags whenever the skillLevel is changed or game is reset
+
   useEffect(() => {
     if (timerOn === false) {
-      dispatch({ type: 'SET FLAGS REMAINING', payload: skillLevel === 'beginner' ? 10 : skillLevel === 'intermediate' ? 40 : 99 });
+      boardDispatch({ type: 'SET FLAGS REMAINING', payload: skillLevel === 'beginner' ? 10 : skillLevel === 'intermediate' ? 40 : 99 });
     };
   }, [skillLevel, timerOn]);
 };
 
 
-export { generateMinesEffect, stopColorIterationEffect, freezeColorDelayEffect, resetGameEffectOnSmileyOrSkill, freezeScrollBoardEffect, revealFlipperEffect, generateNumberEffect, resetOnSkillLevelChangeEffect, resetFlagsRemainingOnSkillChangeOrTimerOn };
+export default {
+  generateMinesEffect,
+  stopColorIterationEffect,
+  freezeColorDelayEffect,
+  resetGameEffectOnSmileyOrSkill,
+  freezeScrollBoardEffect,
+  revealFlipperEffect,
+  generateNumberEffect,
+  resetOnSkillLevelChangeEffect, resetFlagsRemainingOnSkillChangeOrTimerOn
+};
+
+

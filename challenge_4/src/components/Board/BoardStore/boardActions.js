@@ -1,5 +1,79 @@
-// Generate Numbers
-export default ({ mines, verticalDimension, horizontalDimension }) => {
+const iterateColors = (existingColors) => {
+  const lastColor = existingColors.pop();
+  existingColors.unshift(lastColor);
+  return [...existingColors];
+};
+
+const modulateColorDelay = (existing, newColorDelay) => {
+  if ((existing + newColorDelay) > 25) {
+    // If Increasing the Color Delay- do so at a rate of 1, otherwise when decreasing do so at 2.5 rate- full rate is less enjoyable
+    newColorDelay = newColorDelay < 0 && existing < 200 ? newColorDelay / 5
+      : newColorDelay < 0 ? newColorDelay / 2.5
+        : 1
+
+    return existing + newColorDelay;
+  }
+  return existing;
+};
+
+
+const revealFlippers = (existingFlippers, mines) => {
+  existingFlippers = existingFlippers.map((flipper, index) => {
+    if (flipper === 'flag' || mines.includes(index)) {
+      return 'flag'
+    } else {
+      return true
+    }
+  });
+  return [...existingFlippers];
+};
+
+const flipNormalTile = (existingFlippers, flippedTile) => {
+  existingFlippers.splice(flippedTile, 1, true);
+  return [...existingFlippers];
+};
+
+const flipRecursedTiles = (existingFlippers, recursedTiles) => {
+  for (let i = 0; i < recursedTiles.length; i++) {
+    existingFlippers.splice(recursedTiles[i], 1, true);
+  }
+  return [...existingFlippers];
+};
+
+const revealDeadFlippers = (existingFlippers) => {
+  existingFlippers = existingFlippers.map((flipper, index) => {
+    if (index === 0) {
+      return 'dead'
+    } else {
+      return true;
+    }
+  })
+  return [...existingFlippers]
+};
+
+const setFlagFlipped = (existingFlippers, flagFlipped) => {
+  if (existingFlippers[flagFlipped] === 'flag') {
+    existingFlippers.splice(flagFlipped, 1, false);
+  } else {
+    existingFlippers.splice(flagFlipped, 1, 'flag');
+  }
+  return [...existingFlippers];
+};
+
+
+const generateMines = ({ numberOfMines, verticalDimension, horizontalDimension }) => {
+  let mineArr = [];
+  while (mineArr.length < numberOfMines) {
+    const mineCanidate = Math.floor(Math.random() * (verticalDimension * horizontalDimension));
+    if (!mineArr.includes(mineCanidate)) {
+      mineArr.push(mineCanidate);
+    }
+  };
+  return mineArr;
+};
+
+
+const generateNumbers = ({ mines, verticalDimension, horizontalDimension }) => {
   let board = [...Array(verticalDimension * horizontalDimension).keys()];
   let numBoard = {};
 
@@ -84,4 +158,21 @@ export default ({ mines, verticalDimension, horizontalDimension }) => {
 
   })
   return numBoard;
+};
+
+
+export {
+  // Colors
+  iterateColors,
+  modulateColorDelay,
+  // Flippers
+  revealFlippers,
+  flipNormalTile,
+  flipRecursedTiles,
+  revealDeadFlippers,
+  setFlagFlipped,
+  // Mines
+  generateMines,
+  // Numbers
+  generateNumbers,
 };

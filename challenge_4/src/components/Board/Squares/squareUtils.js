@@ -1,4 +1,4 @@
-const generateLoginMessage = ({ currCanidate: t, skillLevel }) => {
+const generateLoginMessage = ({ currTile: t, skillLevel }) => {
   const beginnerMessages = { '1': 'Please', '2': 'Login', '3': 'First' };
   const intermediateMessages = { '2': 'Please', '4': 'Login', '6': 'First' };
   const advancedMessages = { '2': 'Please', '3': 'Login', '4': 'First' };
@@ -17,7 +17,7 @@ const generateLoginMessage = ({ currCanidate: t, skillLevel }) => {
 };
 
 
-const generateColors = ({ currCanidate: t, colors, skillLevel }) => {
+const generateColors = ({ currTile: t, colors, skillLevel }) => {
   if (skillLevel === 'beginner') {
     if ((t <= 9) || (t >= 16 && t <= 19) || (t >= 25 && t <= 29) || (t >= 35)) {
       return colors[(t + (Math.floor(t / 8))) % 9]
@@ -37,22 +37,36 @@ const generateColors = ({ currCanidate: t, colors, skillLevel }) => {
   }
 };
 
-const genNumberClassNames = ({ currCanidate, numbers, flippers, colors, surprised, definedUserName, dimensions: { skillLevel } }) => {
+const genNumberClassNames = ({
+  // Global
+  timerOn,
+  definedUserName,
+  skillLevel,
+  // Passed in
+  currTile,
+  // Board
+  numbers,
+  flippers,
+  colors }) => {
   let classNameArr = ['sweep-square'];
 
   if (colors !== null) {
-    classNameArr.push(generateColors({ currCanidate, colors, skillLevel }), 'disabled');
+    classNameArr.push(generateColors({ currTile, colors, skillLevel }), 'disabled');
     return classNameArr.join(' ');
   };
 
+  const numberTileOnVictoryDeadOrNotLoggedIn = (timerOn === 'VICTORY' || timerOn === 'FREEZE' || !definedUserName);
+
+  const flagOnNumberTileGamePlay = flippers[currTile] === 'flag';
+
   classNameArr.push(
-    (surprised === 'victory' || surprised === 'dead' || !definedUserName) ? 'disabled'
-      : flippers[currCanidate] === 'flag' ? 'flag'
+    numberTileOnVictoryDeadOrNotLoggedIn ? 'disabled'
+      : flagOnNumberTileGamePlay ? 'flag'
         : 'number'
   );
 
   // Color Determination
-  const currNum = numbers[currCanidate];
+  const currNum = numbers[currTile];
 
   classNameArr.push(
     currNum === 1 ? 'blue-num'
@@ -69,38 +83,69 @@ const genNumberClassNames = ({ currCanidate, numbers, flippers, colors, surprise
   return classNameArr.join(' ');
 };
 
-const genEmptyClassNames = ({ currCanidate, colors, surprised, flippers, definedUserName, dimensions: { skillLevel } }) => {
+const genEmptyClassNames = ({
+  // Global
+  skillLevel,
+  definedUserName,
+  timerOn,
+  // Passed in
+  currTile,
+  // Board
+  colors,
+  flippers,
+}) => {
   let classNameArr = ['sweep-square'];
 
   if (colors !== null) {
-    classNameArr.push(generateColors({ currCanidate, colors, skillLevel }), 'disabled');
+    classNameArr.push(generateColors({ currTile, colors, skillLevel }), 'disabled');
     return classNameArr.join(' ');
   };
 
+  const emptyTileOnVictoryOrDead = (timerOn === 'VICTORY' || timerOn === 'FREEZE');
+  const emptyTileOnNotLoggedIn = !definedUserName;
+  const flagOnEmptyTileGameplay = flippers[currTile] === 'flag';
+  const emptyTileRevealedGameplay = flippers[currTile] === true;
+
   classNameArr.push(
-    (surprised === 'victory' || surprised === 'dead') ? 'disabled dark-square'
-      : !definedUserName ? 'disabled'
-        : flippers[currCanidate] === 'flag' ? 'flag'
-          : flippers[currCanidate] === true ? 'dark-square'
+    emptyTileOnVictoryOrDead ? 'disabled dark-square'
+      : emptyTileOnNotLoggedIn ? 'disabled'
+        : flagOnEmptyTileGameplay ? 'flag'
+          : emptyTileRevealedGameplay ? 'dark-square'
             : null
   );
   return classNameArr.join(' ');
 };
 
-const genMineClassNames = ({ currCanidate, colors, surprised, flippers, definedUserName, skillLevel }) => {
+const genMineClassNames = ({
+  //Global
+  timerOn,
+  definedUserName,
+  skillLevel,
+  // Passed in
+  currTile,
+  // Board (Local)
+  colors,
+  flippers
+}) => {
   let classNameArr = ['sweep-square']
 
   if (colors !== null) {
-    classNameArr.push(generateColors({ currCanidate, colors, skillLevel }), 'disabled');
+    classNameArr.push(generateColors({ currTile, colors, skillLevel }), 'disabled');
     return classNameArr.join(' ');
   };
 
+  const flagOnMineTileAfterVictory = timerOn === 'VICTORY' && flippers[currTile] === 'flag';
+
+  const mineTileAfterDead = timerOn === 'FREEZE';
+  const tileIsFlaggedGamePlay = flippers[currTile] === 'flag';
+  const mineTileOnDead = flippers[currTile] === true;
+
   classNameArr.push(
-    (surprised === 'victory' && flippers[currCanidate] === 'flag') ? 'flag disabled'
-      : (surprised === 'victory' && !definedUserName) ? 'disabled'
-        : surprised === 'dead' ? 'disabled mine'
-          : flippers[currCanidate] === 'flag' ? 'flag'
-            : flippers[currCanidate] === true ? 'mine'
+    flagOnMineTileAfterVictory ? 'flag disabled'
+      // : (surprised === 'victory' && !definedUserName) ? 'disabled'
+        : mineTileAfterDead ? 'disabled mine'
+          : tileIsFlaggedGamePlay ? 'flag'
+            : mineTileOnDead ? 'mine'
               : null
   );
 
@@ -108,7 +153,13 @@ const genMineClassNames = ({ currCanidate, colors, surprised, flippers, definedU
 };
 
 
-const tileRecurse = ({ currCanidate: tile, dimensions, numbers, mines, resultArr }) => {
+const tileRecurse = ({
+  currTile: tile,
+  dimensions,
+  numbers,
+  mines,
+  resultArr
+}) => {
   resultArr.push(tile)
   const evalU = tile => (tile - dimensions.horizontalDimension);
   const evalR = tile => (tile + 1);
@@ -132,7 +183,7 @@ const tileRecurse = ({ currCanidate: tile, dimensions, numbers, mines, resultArr
   if (
     testTile(tile, evalU)
   ) {
-    tileRecurse({ currCanidate: evalU(tile), dimensions, numbers, mines, resultArr });
+    tileRecurse({ currTile: evalU(tile), dimensions, numbers, mines, resultArr });
   }
 
   // ***********
@@ -144,7 +195,7 @@ const tileRecurse = ({ currCanidate: tile, dimensions, numbers, mines, resultArr
     && (evalR(tile) % dimensions.horizontalDimension !== 0
       || (evalR(tile) % dimensions.horizontalDimension === 0 && tile % dimensions.horizontalDimension === 0))
   ) {
-    tileRecurse({ currCanidate: evalR(tile), dimensions, numbers, mines, resultArr });
+    tileRecurse({ currTile: evalR(tile), dimensions, numbers, mines, resultArr });
   }
 
   // ***********
@@ -154,7 +205,7 @@ const tileRecurse = ({ currCanidate: tile, dimensions, numbers, mines, resultArr
   if (
     testTile(tile, evalD)
   ) {
-    tileRecurse({ currCanidate: evalD(tile), dimensions, numbers, mines, resultArr })
+    tileRecurse({ currTile: evalD(tile), dimensions, numbers, mines, resultArr })
   }
 
   // ***********
@@ -166,21 +217,32 @@ const tileRecurse = ({ currCanidate: tile, dimensions, numbers, mines, resultArr
     && ((evalL(tile + 1)) % dimensions.horizontalDimension !== 0
       || (evalL(tile + 1) % dimensions.horizontalDimension === 0 && evalL(tile) % dimensions.horizontalDimension === 0))
   ) {
-    tileRecurse({ currCanidate: evalL(tile), dimensions, numbers, mines, resultArr });
+    tileRecurse({ currTile: evalL(tile), dimensions, numbers, mines, resultArr });
   };
 
   return resultArr;
 };
 
 
-const handleClick = ({ currCanidate: tile, indicator, dimensions, mines, numbers, surprised, dispatch }) => {
+const handleClick = ({
+  currTile: tile,
+  indicator,
+  dimensions,
+  mines,
+  numbers,
+  surprised,
+  boardDispatch
+}) => {
   event.preventDefault();
-
-  return (indicator === 'dead') ? dispatch({ type: 'REVEAL DEAD FLIPPERS' })
-    : (event.type === 'contextmenu') ? dispatch({ type: 'SET FLAG FLIPPED', payload: { flagFlipped: tile } })
+  return (indicator === 'dead') ? boardDispatch({ type: 'REVEAL DEAD FLIPPERS' })
+    : (event.type === 'contextmenu') ? boardDispatch({ type: 'SET FLAG FLIPPED', payload: { flagFlipped: tile } })
       : (event.type === 'click' && indicator !== 'dead') && (!numbers[tile] && !mines.includes(tile)) ?
-        dispatch({ type: 'FLIP RECURSED TILES', payload: tileRecurse({ currCanidate: tile, dimensions, numbers, mines, resultArr: [] }) })
-        : (event.type === 'click' && indicator !== 'dead') ? dispatch({ type: 'FLIP NORMAL TILE', payload: { flippedTile: tile } })
+        boardDispatch({
+          type: 'FLIP RECURSED TILES',
+          payload: tileRecurse({ currTile: tile, dimensions, numbers, mines, resultArr: [] })
+        })
+        : (event.type === 'click' && indicator !== 'dead') ?
+          boardDispatch({ type: 'FLIP NORMAL TILE', payload: { flippedTile: tile } })
           : null;
 };
 

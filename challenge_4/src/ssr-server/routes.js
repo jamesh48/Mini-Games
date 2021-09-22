@@ -40,8 +40,8 @@ minesweeper.post('/minesweeper-createUser', async ({ query: { userName, userPass
 
 minesweeper.post('/minesweeper-topTimes', async ({ query: { skillLevel, timerTime, definedUserName } }, res) => {
   try {
-    await postResult(skillLevel, timerTime, definedUserName);
-    res.send('ok');
+    const newTopTimes = await postResult(skillLevel, timerTime, definedUserName);
+    res.send(newTopTimes);
   } catch (err) {
     res.send(err);
   }

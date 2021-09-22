@@ -69,8 +69,13 @@ module.exports = {
           : advancedScores;
 
     try {
-      await determinedSkillLevel.create({ username: definedUserName, time: time });
-      return 'ok';
+      await determinedSkillLevel.create({
+        username: definedUserName,
+        time: time
+      });
+
+      const newTopTimes = await determinedSkillLevel.findAll({});
+      return newTopTimes;
     } catch (err) {
       console.log(err);
       throw err;

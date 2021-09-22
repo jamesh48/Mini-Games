@@ -1,33 +1,38 @@
 import React, { useState, useEffect, useContext, useCallback } from 'react';
-import Square from './Squares/GlobalSquare.js';
+import Square from './Squares/BoardSquare.js';
 import { useInterval } from 'Components/customHooks.js';
-import { generateMinesEffect, freezeColorDelayEffect, stopColorIterationEffect, resetGameEffectOnSmileyOrSkill, freezeScrollBoardEffect, revealFlipperEffect, generateNumberEffect, resetOnSkillLevelChangeEffect, resetFlagsRemainingOnSkillChangeOrTimerOn } from './useEffectBoardHooks.js';
-import useStoreContext from 'Store/useStoreContext.js';
-import handleClick from './boardHandlers.js';
+import BoardHooks from './useEffectBoardHooks.js';
+import { useGlobalContext } from 'GlobalStore';
+import { useBoardContext } from 'BoardStore';
 import './boardstyles.scss';
 
 
 export default () => {
-  const [globalState, dispatch] = useStoreContext();
-  const { surprised, colorDelay, colors, dimensions, mines, numbers, flippers, scrollBoard, timerOn, definedUserName, timerTime } = globalState;
+  const [globalState, globalDispatch] = useGlobalContext();
+  const [{ flippers, mines, numbers, scrollBoard, colorDelay }, boardDispatch] = useBoardContext();
 
-  // useEffects
-  generateMinesEffect(dimensions, dispatch);
-  // changeSkillLevelEffect(dimensions.skillLevel, dispatch);
-  freezeColorDelayEffect(definedUserName, dispatch);
-  stopColorIterationEffect(colorDelay, dispatch);
-  freezeScrollBoardEffect(scrollBoard);
-  resetOnSkillLevelChangeEffect(dimensions.skillLevel, dispatch);
-  resetGameEffectOnSmileyOrSkill(timerOn, dimensions.skillLevel, dimensions, dispatch);
-  generateNumberEffect(mines, dimensions, dispatch);
-  resetFlagsRemainingOnSkillChangeOrTimerOn(timerOn, dimensions.skillLevel, dispatch);
-  revealFlipperEffect(mines, flippers, numbers, timerTime, dimensions.skillLevel, definedUserName, dispatch);
+  const { dimensions, dimensions: { skillLevel }, timerOn, definedUserName } = globalState;
 
-  // Callbacks and Utils
-  const onHandleClick = useCallback((...args) => handleClick.call([globalState, dispatch], ...args), [surprised]);
-  const setScrollBoardCallback = useCallback(() => dispatch({ type: 'TOGGLE SCROLLBOARD' }), []);
-  const handleScroll = _ => dispatch({ type: 'MODULATE COLOR DELAY', payload: { newColorDelay: event.deltaY } });
-  useInterval(() => dispatch({ type: 'ITERATE' }), colorDelay);
+  // Board Specific useEffects && actions.
+  BoardHooks.freezeColorDelayEffect(definedUserName, boardDispatch);
+  BoardHooks.stopColorIterationEffect(colorDelay, boardDispatch);
+  BoardHooks.freezeScrollBoardEffect(scrollBoard);
+  BoardHooks.generateMinesEffect(dimensions, boardDispatch);
+  BoardHooks.generateNumberEffect(mines, dimensions, boardDispatch);
+  BoardHooks.resetGameEffectOnSmileyOrSkill(timerOn, skillLevel, dimensions, boardDispatch);
+  BoardHooks.resetFlagsRemainingOnSkillChangeOrTimerOn(timerOn, skillLevel, boardDispatch);
+
+  const setScrollBoardCallback = useCallback(() => boardDispatch({ type: 'TOGGLE SCROLLBOARD' }), []);
+
+  // Mixed!
+  BoardHooks.revealFlipperEffect({ mines, flippers, numbers, globalDispatch, boardDispatch });
+
+  // Global Board useEffects
+  BoardHooks.resetOnSkillLevelChangeEffect(skillLevel, globalDispatch);
+
+  const handleScroll = _ => boardDispatch({ type: 'MODULATE COLOR DELAY', payload: { newColorDelay: event.deltaY } });
+
+  useInterval(() => boardDispatch({ type: 'ITERATE COLORS' }), colorDelay);
 
 
   return (
@@ -38,13 +43,13 @@ export default () => {
     >
       {[...new Array(dimensions.verticalDimension)].map((row, rowIndex) => {
         return (
-          <div key={rowIndex} className={'sweep-row'}>
+          <div key={rowIndex} className='sweep-row'>
             {[...new Array(dimensions.horizontalDimension)].map((sqr, sqrIndex) => {
-              const currCanidate = ((rowIndex * dimensions.horizontalDimension) + sqrIndex);
+              const currTile = ((rowIndex * dimensions.horizontalDimension) + sqrIndex);
               return (
                 <Square
                   key={sqrIndex}
-                  currCanidate={currCanidate}
+                  currTile={currTile}
                 />
               )
             })
@@ -54,4 +59,4 @@ export default () => {
       })}
     </div>
   );
-};
+}

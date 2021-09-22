@@ -56,7 +56,12 @@ const serverConfig = {
       Database: path.resolve(__dirname, 'db'),
       Public: path.resolve(__dirname, 'dist/public'),
       Cloudfront: [process.env.Cloudfront],
-      Store: path.resolve(__dirname, 'src/store')
+      GlobalStore: path.resolve(__dirname, 'src/store/GlobalStore.js'),
+      UserNameStore: path.resolve(__dirname, 'src/components/UserNameEntry/UserNameStore/userNameStore.js'),
+      BoardStore: path.resolve(__dirname, 'src/components/Board/BoardStore/boardStore.js'),
+      SquareStore: path.resolve(__dirname, 'src/components/Board/Squares/SquareStore/squareStore.js'),
+      LeaderBoardStore: path.resolve(__dirname, 'src/components/Leaderboard/LeaderBoardStore/leaderBoardStore.js'),
+      TimerStore: path.resolve(__dirname, 'src/components/MillisecondTimer/TimerStore/timerStore.js')
     },
   },
   externals: [nodeExternals()],
@@ -86,7 +91,12 @@ const clientConfig = {
     // https://betterprogramming.pub/use-absolute-paths-with-react-51ced66f119f
     alias: {
       Components: path.resolve(__dirname, 'src/components'),
-      Store: path.resolve(__dirname, 'src/store')
+      GlobalStore: path.resolve(__dirname, 'src/store/GlobalStore.js'),
+      UserNameStore: path.resolve(__dirname, 'src/components/UserNameEntry/UserNameStore/userNameStore.js'),
+      BoardStore: path.resolve(__dirname, 'src/components/Board/BoardStore/boardStore.js'),
+      SquareStore: path.resolve(__dirname, 'src/components/Board/Squares/SquareStore/squareStore.js'),
+      LeaderBoardStore: path.resolve(__dirname, 'src/components/Leaderboard/LeaderBoardStore/leaderBoardStore.js'),
+      TimerStore: path.resolve(__dirname, 'src/components/MillisecondTimer/TimerStore/timerStore.js')
       // Public: path.resolve(__dirname, 'dist/public')
     },
   },

@@ -5,29 +5,43 @@ import MilliSecondTimer from 'Components/MillisecondTimer/MillisecondTimer.js';
 import SkillLevelSelector from 'Components/SkillLevelSelector/SkillLevelSelector.js';
 import LeaderBoard from 'Components/Leaderboard/LeaderBoard.js';
 import SmileyBar from 'Components/SmileyBar/SmileyBar.js';
+import { UserNameStoreProvider } from 'UserNameStore';
+import { BoardStoreProvider } from 'BoardStore';
+import { TimerStoreProvider } from 'TimerStore';
 import UserNameEntry from 'Components/UserNameEntry/UserNameEntry.js';
-import useStoreContext from 'Store/useStoreContext.js';
+import { useGlobalContext } from 'GlobalStore';
 import './minesweeper.scss';
 
 export default ({ ssrTopTimes }) => {
-  const [{ dimensions: { skillLevel } }] = useStoreContext();
+  const [{ dimensions: { skillLevel } }] = useGlobalContext();
 
   return (
     <div className='space-containers'>
-      <UserNameEntry />
+      <UserNameStoreProvider>
+        <UserNameEntry />
+      </UserNameStoreProvider>
 
-      <div className='space-containers' id='main-space-container'>
+      < div className='space-containers' id='main-space-container' >
         <div id='total-board' className={skillLevel}>
-          <SmileyBar />
-          <Board />
+          <BoardStoreProvider>
+            <SmileyBar />
+            <Board />
+          </BoardStoreProvider>
         </div>
         <LeaderBoard ssrTopTimes={ssrTopTimes} />
-      </div>
+
+      </div >
       <div className='space-containers'>
-        <MilliSecondTimer />
+
+        <TimerStoreProvider>
+          <MilliSecondTimer />
+        </TimerStoreProvider>
+
         <SkillLevelSelector />
       </div>
-    </div>
+    </div >
   );
 };
+
+
 

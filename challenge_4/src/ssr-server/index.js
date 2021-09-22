@@ -10,7 +10,7 @@ import Minesweeper from 'Components/Minesweeper/Minesweeper.js';
 import minesweeperRouter from './routes.js';
 import { getResults } from 'Database/controllers/controllers.js';
 import { htmlStart, htmlEnd } from './template.js';
-import { StoreProvider } from 'Store/store.js';
+import { GlobalStoreProvider } from 'GlobalStore';
 const app = express();
 
 app.use('/static', express.static('dist/public'));
@@ -19,9 +19,9 @@ app.use(/(minesweeper)?/, minesweeperRouter);
 app.get('/', async (req, res) => {
   const topTimes = await getResults();
   const minesweeperStream = renderToNodeStream(
-    <StoreProvider>
+    <GlobalStoreProvider>
       <Minesweeper />
-    </StoreProvider>
+    </GlobalStoreProvider>
   );
 
   res.write(htmlStart({ topTimes: topTimes }));

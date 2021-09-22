@@ -14,7 +14,7 @@ const useInterval = (callback, delay) => {
       savedCallback.current();
     }
 
-    // If victory is declared stop the timer...
+    // If victory is declared or bomb stop the timer...
     if (delay === -1) {
       return;
     };
