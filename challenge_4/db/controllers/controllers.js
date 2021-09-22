@@ -74,7 +74,12 @@ module.exports = {
         time: time
       });
 
-      const newTopTimes = await determinedSkillLevel.findAll({});
+      const newTopTimes = await determinedSkillLevel.findAll({
+        limit: 10,
+        order: [
+          ['time', 'ASC'],
+        ]
+      });
       return newTopTimes;
     } catch (err) {
       console.log(err);

@@ -255,7 +255,10 @@ module.exports = {
 
             case 5:
               _context4.next = 7;
-              return determinedSkillLevel.findAll({});
+              return determinedSkillLevel.findAll({
+                limit: 10,
+                order: [['time', 'ASC']]
+              });
 
             case 7:
               newTopTimes = _context4.sent;
