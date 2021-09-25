@@ -10,7 +10,7 @@ module.exports = {
       key: './minesweeper.pem',
       ref: 'origin/master',
       // repo: 'git@github.com:jamesh48/mini-apps-2.git',
-      repo: 'git@github.com:jamesh48/Mini-Games.git'
+      repo: 'git@github.com:jamesh48/Mini-Games.git',
       path: '/home/ubuntu/minesweeper',
       'post-deploy': 'cd /home/ubuntu/minesweeper/source/challenge_4 && npm install && npm run build && pm2 startOrRestart ./ecosystem.config.js && pm2 save'
     }
