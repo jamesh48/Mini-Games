@@ -4,19 +4,19 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require("path");
 require('dotenv').config({ path: './.env' });
 
-console.log(path.resolve(__dirname, 'src/store'))
 const css = {
   test: /\.(css|scss)$/,
   include: path.resolve(__dirname, 'src'),
   exclude: /node_modules/,
-  use: [MiniCssExtractPlugin.loader, {
-    loader: "css-loader"
-  }, {
-    loader: "sass-loader",
-    options: {
-      additionalData: process.env.CloudfrontCSS
-    }
-  }]
+  use: [
+    MiniCssExtractPlugin.loader, {
+      loader: "css-loader"
+    }, {
+      loader: "sass-loader",
+      options: {
+        additionalData: process.env.CloudfrontCSS
+      }
+    }]
 }
 
 const js = {
