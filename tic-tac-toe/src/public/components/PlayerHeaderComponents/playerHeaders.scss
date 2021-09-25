@@ -1,0 +1,15 @@
+#player-headers {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  .player-name-headers {
+    display: inline;
+    text-align: center;
+    border: 1px solid black;
+    background-color: seagreen;
+    color: white;
+    border-bottom: none;
+    .player-name-tally {
+      display: inline;
+    }
+  }
+}

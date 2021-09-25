@@ -1,0 +1,31 @@
+#player-name-entry {
+  #enter-your-players {
+    text-align: center;
+  }
+  .enter-players {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    .player-name-input {
+      text-align: center;
+      background-color: ivory;
+      color: darkslategrey;
+      &::placeholder {
+        color: darkslategrey;
+      }
+    }
+  }
+
+  #new-game-button {
+    background-color: seagreen;
+    color: ivory;
+    &:hover {
+      background-color: yellowgreen;
+      color: seagreen;
+    }
+  }
+}
+
+
+.js-input-width-adjusted {
+  grid-template-columns: 100%;
+}

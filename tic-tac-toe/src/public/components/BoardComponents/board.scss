@@ -1,0 +1,24 @@
+#board {
+  display: flex;
+  flex-direction: column;
+  width: 510px;
+  height: 510px;
+  border: 1px solid seagreen;
+  background-color: lightblue;
+
+  .board-row {
+    display: flex;
+    flex: 1;
+    .boxes {
+      width: 100%;
+      border: 1px solid seagreen;
+      text-align: center;
+      font-size: 4.5vw;
+      color: greenyellow;
+      &:hover {
+        background-color: seagreen;
+        border: 2px solid yellowgreen;
+      }
+    }
+  }
+}

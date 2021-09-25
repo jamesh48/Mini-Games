@@ -1,0 +1,132 @@
+/*!**********************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/public/components/PlayerHeaderComponents/playerHeaders.scss ***!
+  \**********************************************************************************************************************************************************/
+#player-headers {
+  display: grid;
+  grid-template-columns: 50% 50%; }
+  #player-headers .player-name-headers {
+    display: inline;
+    text-align: center;
+    border: 1px solid black;
+    background-color: seagreen;
+    color: white;
+    border-bottom: none; }
+    #player-headers .player-name-headers .player-name-tally {
+      display: inline; }
+
+/*!*******************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/public/components/BoardComponents/board.scss ***!
+  \*******************************************************************************************************************************************/
+#board {
+  display: flex;
+  flex-direction: column;
+  width: 510px;
+  height: 510px;
+  border: 1px solid seagreen;
+  background-color: lightblue; }
+  #board .board-row {
+    display: flex;
+    flex: 1; }
+    #board .board-row .boxes {
+      width: 100%;
+      border: 1px solid seagreen;
+      text-align: center;
+      font-size: 4.5vw;
+      color: greenyellow; }
+      #board .board-row .boxes:hover {
+        background-color: seagreen;
+        border: 2px solid yellowgreen; }
+
+/*!***************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/public/components/PlayerNameEntryComponents/playerNameEntry.scss ***!
+  \***************************************************************************************************************************************************************/
+#player-name-entry #enter-your-players {
+  text-align: center; }
+
+#player-name-entry .enter-players {
+  display: grid;
+  grid-template-columns: auto auto auto; }
+  #player-name-entry .enter-players .player-name-input {
+    text-align: center;
+    background-color: ivory;
+    color: darkslategrey; }
+    #player-name-entry .enter-players .player-name-input::placeholder {
+      color: darkslategrey; }
+
+#player-name-entry #new-game-button {
+  background-color: seagreen;
+  color: ivory; }
+  #player-name-entry #new-game-button:hover {
+    background-color: yellowgreen;
+    color: seagreen; }
+
+.js-input-width-adjusted {
+  grid-template-columns: 100%; }
+
+/*!******************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/public/components/MainComponents/main-styles/reset.scss ***!
+  \******************************************************************************************************************************************************/
+/* http://meyerweb.com/eric/tools/css/reset/
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline; }
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+  display: block; }
+
+ol, ul {
+  list-style: none; }
+
+blockquote, q {
+  quotes: none; }
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: '';
+  content: none; }
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0; }
+
+/*!*****************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/public/components/MainComponents/main-styles/main.scss ***!
+  \*****************************************************************************************************************************************************/
+#container {
+  max-height: 100%;
+  max-width: 100%; }
+
+/*!*******************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/public/components/MainComponents/main-styles/global.scss ***!
+  \*******************************************************************************************************************************************************/
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+  background-color: ivory; }
+
+
+/*# sourceMappingURL=index.css.map*/

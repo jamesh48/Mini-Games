@@ -1,20 +1,20 @@
 const gamePlayState = {
-  hasAlreadyWon: false,
-  xPlayerWinCount: 0,
-  oPlayerWinCount: 0,
-  currentMove: 'X',
+  // hasAlreadyWon: false,
+  // xPlayerWinCount: 0,
+  // oPlayerWinCount: 0,
+  // currentMove: 'X',
   xHasFirstMove: true,
-  confirmed: {
-    1: false,
-    2: false,
-    3: false,
-    4: false,
-    5: false,
-    6: false,
-    7: false,
-    8: false,
-    9: false
-  }
+  // confirmed: {
+  //   1: false,
+  //   2: false,
+  //   3: false,
+  //   4: false,
+  //   5: false,
+  //   6: false,
+  //   7: false,
+  //   8: false,
+  //   9: false
+  // }
 }
 const gamePlayMethods = {
   handleUserEntry: (e) => {
@@ -22,46 +22,7 @@ const gamePlayMethods = {
     if (gamePlayState.hasAlreadyWon || gamePlayState.confirmed[event.target.id]) {
       return;
     }
-    var player = gamePlayMethods.countMoves(e);
-
     setTimeout(() => { gamePlayMethods.detectWin(player) }, 1);
-  },
-
-  countMoves: (e) => {
-    //Opponents moves cannot be overwritten.
-    gamePlayState.confirmed[e.target.id] = true;
-    // if (gamePlayState.confirmed[e.target.id]) {
-    //   return;
-    // }
-    // console.log('hello');
-    var boxes = document.getElementsByClassName('boxes');
-    let xLength = Array.from(boxes).filter(item => (item.innerHTML.includes('X') || item.innerHTML.includes('O')) && gamePlayState.confirmed[item.id] === true).length
-
-    console.log(gamePlayState.xHasFirstMove);
-    if (gamePlayState.xHasFirstMove === false) {
-      console.log('test');
-      if (xLength % 2 !== 0) {
-        document.getElementById(e.target.id).innerHTML = 'O';
-        gamePlayState.currentMove = 'X';
-        return 'O';
-      } else {
-        console.log('here')
-        document.getElementById(e.target.id).innerHTML = 'X';
-        gamePlayState.currentMove = 'O';
-        return 'X';
-      }
-    } else {
-      if (xLength % 2 !== 0) {
-        document.getElementById(e.target.id).innerHTML = 'X';
-        gamePlayState.currentMove = 'O';
-        return 'X';
-      } else {
-        document.getElementById(e.target.id).innerHTML = 'O';
-        gamePlayState.currentMove = 'X';
-        return 'O';
-      }
-    }
-    return;
   },
 
   detectWin: (player) => {
@@ -264,36 +225,10 @@ var adjustBoardWidth = (inputSize) => {
   document.querySelector('.enter-players').style.width = ((boardWidth * 3 + 8) + 'px');
 
   var test = document.getElementsByTagName('p').length;
-
-
-
-  // document.getElementById('body').style.height = ((boardWidth * 3) + 6  + newGameButtonHeight) + 'px'
 }
 
 const addEventListeners = () => {
   Object.values(gameListeners).forEach((listener) => {
     listener();
   });
-
-
-  // const enterPlayers = document.getElementById('enter-players');
-  //   enterPlayers.addEventListener('submit', event => {
-  //     handlePlayerEntry(event);
-  // });
-}
-
-
-
-// vertical
-//1,4,7
-//2,5,8
-//3,6,9
-
-//horizontal
-//1,2,3
-//4,5,6
-//7,8,9
-
-// diagonal
-//1,5,9
-//3,5,7
+};
