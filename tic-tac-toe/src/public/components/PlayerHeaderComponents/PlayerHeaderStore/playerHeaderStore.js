@@ -20,7 +20,7 @@ const PlayerHeaderStoreProvider = ({ children }) => {
 const usePlayerHeaderContext = () => {
   const context = React.useContext(PlayerHeaderContext);
   if (context === undefined) {
-    throw new Error('useCount must be used within a CountProvider')
+    throw new Error('usePlayerHeaderContext must be used within a PlayerHeaderStoreProvider');
   }
   return context;
 };

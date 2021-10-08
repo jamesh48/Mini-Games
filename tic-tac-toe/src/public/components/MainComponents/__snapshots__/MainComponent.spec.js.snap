@@ -1,0 +1,150 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Main Component snapshot renders 1`] = `
+<div
+  id="container"
+>
+  <div
+    id="player-headers"
+  >
+    <span
+      className="player-name-headers"
+      id="p1-name-header"
+    >
+      X Player-&gt; 
+      <h1
+        className="player-name-tally"
+        id="p-x-tally"
+      >
+        0
+      </h1>
+    </span>
+    <span
+      className="player-name-headers"
+      id="p2-name-header"
+    >
+      O Player-&gt; 
+      <p
+        className="player-name-tally"
+        id="p-o-tally"
+      >
+        0
+      </p>
+    </span>
+  </div>
+  <div
+    id="board"
+  >
+    <div
+      className="board-row"
+    >
+      <span
+        className="boxes"
+        id="box-0"
+        onClick={[Function]}
+      />
+      <span
+        className="boxes"
+        id="box-1"
+        onClick={[Function]}
+      />
+      <span
+        className="boxes"
+        id="box-2"
+        onClick={[Function]}
+      />
+    </div>
+    <div
+      className="board-row"
+    >
+      <span
+        className="boxes"
+        id="box-3"
+        onClick={[Function]}
+      />
+      <span
+        className="boxes"
+        id="box-4"
+        onClick={[Function]}
+      />
+      <span
+        className="boxes"
+        id="box-5"
+        onClick={[Function]}
+      />
+    </div>
+    <div
+      className="board-row"
+    >
+      <span
+        className="boxes"
+        id="box-6"
+        onClick={[Function]}
+      />
+      <span
+        className="boxes"
+        id="box-7"
+        onClick={[Function]}
+      />
+      <span
+        className="boxes"
+        id="box-8"
+        onClick={[Function]}
+      />
+    </div>
+  </div>
+  <div
+    id="player-name-entry"
+  >
+    <legend
+      id="enter-your-players"
+    >
+      Enter Your Players!
+    </legend>
+    <form
+      className="enter-players"
+      onSubmit={[Function]}
+    >
+      <input
+        autoComplete="off"
+        className="player-name-input"
+        id="p1"
+        onChange={[Function]}
+        placeholder="X Player"
+        type="text"
+        value=""
+      />
+      <input
+        autoComplete="off"
+        className="player-name-input"
+        id="p2"
+        onChange={[Function]}
+        placeholder="O Player"
+        type="text"
+        value=""
+      />
+      <input
+        autoComplete="off"
+        className="player-name-input"
+        id="board-size"
+        placeholder="Board Width"
+        type="text"
+      />
+      <button
+        hidden={true}
+        type="submit"
+        value="Submit"
+      >
+        Submit Form
+      </button>
+    </form>
+    <form>
+      <input
+        id="new-game-button"
+        type="button"
+        value="New Game!"
+      />
+    </form>
+  </div>
+</div>
+`;

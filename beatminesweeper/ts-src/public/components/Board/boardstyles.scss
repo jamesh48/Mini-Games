@@ -1,0 +1,11 @@
+#play-board {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  .sweep-row {
+    display: flex;
+    flex: 1;
+    border-left: 2px solid darkslategrey;
+    border-right: 2px solid darkslategrey;
+  }
+}

@@ -1,0 +1,6 @@
+mutation BeginnerScore($username: String!,  $time: Float!) {
+  newBeginnerScore(username: $username, time: $time) {
+    username
+    time
+  }
+}

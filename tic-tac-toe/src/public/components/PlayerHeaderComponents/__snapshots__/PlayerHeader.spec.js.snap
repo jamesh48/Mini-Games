@@ -1,0 +1,32 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Player Headers snapshot renders 1`] = `
+<div
+  id="player-headers"
+>
+  <span
+    className="player-name-headers"
+    id="p1-name-header"
+  >
+    X Player-&gt; 
+    <h1
+      className="player-name-tally"
+      id="p-x-tally"
+    >
+      0
+    </h1>
+  </span>
+  <span
+    className="player-name-headers"
+    id="p2-name-header"
+  >
+    O Player-&gt; 
+    <p
+      className="player-name-tally"
+      id="p-o-tally"
+    >
+      0
+    </p>
+  </span>
+</div>
+`;

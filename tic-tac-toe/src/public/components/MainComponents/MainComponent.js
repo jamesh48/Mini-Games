@@ -1,11 +1,11 @@
 import React from 'react';
 // Player Header
-import PlayerHeaderComponent from '../PlayerHeaderComponents/PlayerHeaders.js';
-import { PlayerHeaderStoreProvider } from '../PlayerHeaderComponents/PlayerHeaderStore/playerHeaderStore.js';
+import { PlayerHeaderStoreProvider } from 'Components/PlayerHeaderComponents/PlayerHeaderStore/playerHeaderStore.js';
+import PlayerHeaders from 'Components/PlayerHeaderComponents/PlayerHeaders.js';
 
 // Board
-import { BoardStoreProvider } from '../BoardComponents/BoardStore/boardStore.js';
-import Board from '../BoardComponents/Board.js';
+import { BoardStoreProvider } from 'Components/BoardComponents/BoardStore/boardStore.js';
+import Board from 'Components/BoardComponents/Board.js';
 
 import PlayerNameEntry from 'Components/PlayerNameEntryComponents/PlayerNameEntry.js';
 
@@ -17,7 +17,7 @@ export default () => {
   return (
     <div id='container'>
       <PlayerHeaderStoreProvider>
-        <PlayerHeaderComponent />
+        <PlayerHeaders />
       </PlayerHeaderStoreProvider>
 
       <BoardStoreProvider>

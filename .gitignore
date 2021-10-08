@@ -4,7 +4,9 @@ node_modules
 config.json
 *.sh
 *.pem
-public
 challenge_4/dist
 challenge_4/public
+aws
+dotenv
+grunt
 aws-keys.json

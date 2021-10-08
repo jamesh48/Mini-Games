@@ -1,0 +1,6 @@
+mutation IntermediateScore($username: String!,  $time: Float!) {
+  newIntermediateScore(username: $username, time: $time) {
+    username
+    time
+  }
+}

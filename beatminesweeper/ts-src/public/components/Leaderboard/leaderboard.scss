@@ -1,0 +1,134 @@
+// /* Leader Board Colors */
+
+/* Leader Board */
+#leaderboard {
+  text-rendering: geometricPrecision;
+  border: 1px solid darkslategray;
+  background-color: blue;
+  overflow-y: hidden;
+  height: 92vh;
+  width: 50%;
+  margin: 0 auto;
+  border: 3px solid gold;
+  border-style: inset;
+  #leaderboard-header {
+    // text-decoration: underline;
+    text-align: center;
+    color: gold;
+    text-transform: capitalize;
+    line-height: 3;
+  }
+
+  .winners-circle {
+    // remove after paginating
+    overflow-y: hidden;
+    display: flex;
+    flex-direction: column;
+    background-color: teal;
+    border-bottom: 1px solid ivory;
+    border-top: 1px solid ivory;
+    height: 75vh;
+    .scores-list-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100%;
+      .scores-list-item {
+        display: flex;
+        width: 50%;
+        flex: 1;
+        align-items: center;
+        justify-content: center;
+
+        &:hover * {
+          color: aqua;
+          cursor: pointer;
+        }
+
+        .scores-user {
+          margin-right: 2%;
+        }
+      }
+    }
+
+    // Pagination...
+    #page-numbers {
+      display: flex;
+      max-width: 75%;
+      padding: 1em 0;
+      border-top: 1px solid ivory;
+      overflow-x: auto;
+      align-self: center;
+      // Scroll Bar
+      -ms-overflow-style: none; /* Internet Explorer 10+ */
+      scrollbar-width: none;
+      &::-webkit-scrollbar {
+        display: none; /* Safari and Chrome */
+      }
+      .pageNoLi {
+        display: flex;
+        flex: 1;
+        justify-content: center;
+        border: 0.5px solid ivory;
+        color: ivory;
+        &:hover {
+          background-color: darkslategrey;
+        }
+        a {
+          padding: 0.2em 0.5em;
+          cursor: pointer;
+        }
+      }
+
+      .selected-page-li {
+        background-color: darkslategrey;
+      }
+    }
+  }
+
+  .golden {
+    color: gold !important;
+  }
+
+  .personalized:hover * {
+    color: aqua;
+    cursor: default;
+  }
+  .leaderboard-buttons-container {
+    display: flex;
+    flex-direction: column;
+    height: 10vh;
+    .return-to-leaderboard-button {
+      display: flex;
+      margin: 0 auto 3% auto;
+      padding: 0.5% 2%;
+      border-radius: 10px;
+      background-color: ivory;
+      color: darkslategray;
+      &:hover {
+        background-color: darkslateblue;
+        color: ivory;
+        cursor: pointer;
+      }
+    }
+    .leaderboard-skill-level-selector-container {
+      display: flex;
+      align-items: center;
+      height: 100%;
+      .leaderboard-skill-level-selector-button {
+        display: flex;
+        margin: 0 auto;
+        padding: 0 2%;
+        height: 1.75em;
+        border-radius: 10px;
+        background-color: ivory;
+        color: darkslategray;
+        &:hover {
+          background-color: darkslateblue;
+          cursor: pointer;
+          color: ivory;
+        }
+      }
+    }
+  }
+}

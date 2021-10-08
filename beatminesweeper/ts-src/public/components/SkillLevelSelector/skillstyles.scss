@@ -1,0 +1,15 @@
+#skill-level-selector {
+  display: flex;
+  justify-content: center;
+  align-self: center;
+  > * {
+    background-color: ivory;
+    color: darkblue;
+    width: 30%;
+    margin: 0px 1.6%;
+    &:hover {
+      background-color: darkslategray;
+      color: ivory;
+    }
+  }
+}

@@ -1,0 +1,9 @@
+query GetBeginnerScores {
+  allBeginnerScores {
+    id
+    username
+    time
+    createdAt
+    updatedAt
+  }
+}

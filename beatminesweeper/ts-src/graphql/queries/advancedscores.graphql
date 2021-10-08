@@ -1,0 +1,9 @@
+query GetAdvancedScores {
+  allAdvancedScores {
+    id
+    username
+    time
+    createdAt
+    updatedAt
+  }
+}

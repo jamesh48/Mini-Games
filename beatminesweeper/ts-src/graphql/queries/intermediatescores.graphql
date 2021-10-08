@@ -1,0 +1,9 @@
+query GetIntermediateScores {
+  allIntermediateScores {
+    id
+    username
+    time
+    createdAt
+    updatedAt
+  }
+}

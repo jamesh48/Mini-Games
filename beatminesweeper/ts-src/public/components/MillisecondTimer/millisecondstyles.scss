@@ -1,0 +1,13 @@
+.milli-second-timer-container {
+  display: flex;
+  width: 50%;
+  justify-content: center;
+  padding: 1.5em 0;
+  #milli-second-timer {
+    color: ivory;
+    display: flex;
+    justify-content: center;
+    border: 1px solid ivory;
+    padding: .5% 0;
+  }
+}

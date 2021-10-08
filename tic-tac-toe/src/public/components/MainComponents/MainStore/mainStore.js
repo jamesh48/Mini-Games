@@ -20,7 +20,7 @@ const MainStoreProvider = ({ children }) => {
 const useMainContext = () => {
   const context = React.useContext(MainStoreContext);
   if (context === undefined) {
-    throw new Error('useCount must be used within a CountProvider')
+    throw new Error('useMainStoreContext must be used within a MainStoreProvider')
   }
   return context;
 };

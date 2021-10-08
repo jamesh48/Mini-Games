@@ -1,0 +1,6 @@
+mutation AdvancedScore($username: String!,  $time: Float!) {
+  newAdvancedScore(username: $username, time: $time) {
+    username
+    time
+  }
+}

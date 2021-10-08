@@ -1,0 +1,39 @@
+html {
+  background-color: rgb(31, 33, 36);
+  overflow: hidden;
+}
+
+.golden-background {
+  background-color: goldenrod;
+}
+
+/* Global Styles */
+.beginner {
+  width: 40%;
+}
+
+.intermediate {
+  width: 55%;
+}
+
+.advanced {
+  width: 80%;
+}
+
+.space-containers {
+  width: 100%;
+  display: flex;
+
+  &:nth-child(1) {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  &:last-child {
+    flex-direction: column;
+  }
+}
+
+#main-space-container {
+  justify-content: center;
+}

@@ -4,10 +4,11 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
 const cssRules = require(path.resolve(__dirname, 'cssRules.js'));
 const jsRules = require(path.resolve(__dirname, 'jsRules.js'));
+const { aliases, stats } = require('./shareableConfigs.js');
 
 require('dotenv').config({ path: './.env' });
 
-const serverConfig = {
+module.exports = {
   mode: 'development',
   target: 'node',
   plugins: [
@@ -16,22 +17,13 @@ const serverConfig = {
       'process.env.DEV_ENV': process.env.DEV_ENV
     }),
   ],
-
   devtool: 'source-map',
   node: {
     __dirname: false,
   },
   resolve: {
     extensions: ['*', '.js', '.jsx'],
-    alias: {
-      GlobalUtils: path.resolve(__dirname, '../globalUtils.js'),
-      Public: path.resolve(__dirname, '../dist/public'),
-      Components: path.resolve(__dirname, '../src/public/components'),
-      MainStore: path.resolve(__dirname, '../src/public/components/MainComponents/MainStore/mainStore.js'),
-      PlayerHeaderStore: path.resolve(__dirname, '../src/public/components/PlayerHeaderComponents/PlayerHeaderStore/playerHeaderStore.js'),
-      BoardStore: path.resolve(__dirname, '../src/public/components/BoardComponents/BoardStore/boardStore.js'),
-      Database: path.resolve(__dirname, '../database')
-    }
+    alias: aliases
   },
   externals: [nodeExternals()],
   entry: {
@@ -44,6 +36,5 @@ const serverConfig = {
     path: path.resolve(__dirname, '../dist/server'),
     filename: '[name].js'
   },
+  stats: stats
 };
-
-module.exports = serverConfig;

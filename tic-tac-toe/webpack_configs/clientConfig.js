@@ -2,22 +2,18 @@ const webpack = require('webpack');
 const nodeExternals = require("webpack-node-externals");
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
+const { aliases, stats } = require('./shareableConfigs.js');
+
 const cssRules = require(path.resolve(__dirname, 'cssRules.js'));
 const jsRules = require(path.resolve(__dirname, 'jsRules.js'));
-const clientConfig = {
+
+module.exports = {
   mode: "development",
   devtool: "source-map",
   resolve: {
     extensions: ['*', '.js', '.jsx'],
     // https://betterprogramming.pub/use-absolute-paths-with-react-51ced66f119f
-    alias: {
-      GlobalUtils: path.resolve(__dirname, '../globalUtils.js'),
-      Public: path.resolve(__dirname, '../dist/public'),
-      Components: path.resolve(__dirname, '../src/public/components'),
-      MainStore: path.resolve(__dirname, '../src/public/components/MainComponents/MainStore/mainStore.js'),
-      PlayerHeaderStore: path.resolve(__dirname, '../src/public/components/PlayerHeaderComponents/PlayerHeaderStore/playerHeaderStore.js'),
-      BoardStore: path.resolve(__dirname, '../src/public/components/BoardComponents/BoardStore/boardStore.js')
-    },
+    alias: aliases
   },
 
   target: "web",
@@ -37,6 +33,5 @@ const clientConfig = {
     path: path.resolve(__dirname, "../dist/public"),
     filename: "[name].js",
   },
+  stats: stats,
 };
-
-module.exports = clientConfig;
