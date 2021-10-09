@@ -5,6 +5,7 @@ import { User } from "TSDatabase/entities/User";
 import { __prod__ } from "../constants";
 import { MikroORM } from "@mikro-orm/core";
 
+
 export default {
   migrations: {
     path: "./ts-src/database/migrations",
@@ -15,5 +16,6 @@ export default {
   type: "postgresql",
   debug: !__prod__,
   port: 5432,
-  user: "jameshrivnak",
+  user: __prod__ ? "ubuntu" : "jameshrivnak",
+  password: process.env.PGPassword
 } as Parameters<typeof MikroORM.init>[0];

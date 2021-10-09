@@ -34,8 +34,6 @@ const main = async () => {
 
   const link = process.env.NODE_ENV === 'development' ? 'http://localhost:4000' : 'https://beatminesweeper.app';
 
-
-
   app.use(cors(
     {
       origin: link,
