@@ -1,7 +1,6 @@
 import { GenericScore } from "TSSrc/public/components/Leaderboard/leaderboard-types";
 
 const htmlStart = (DEV_ENV: boolean, Cloudfront: string | undefined, resultScores: GenericScore[]) => {
-  console.log(Cloudfront);
   return (`<!DOCTYPE HTML>
     <html>
       <head>
@@ -13,7 +12,7 @@ const htmlStart = (DEV_ENV: boolean, Cloudfront: string | undefined, resultScore
 
       <script>
         const devStyleSheetHref = '/static/index.css';
-        const prodStyleSheetHref = '${Cloudfront}/build/public/index.min.css';
+        const prodStyleSheetHref = '${Cloudfront}/build/public/index.css';
         const [head] = document.getElementsByTagName('HEAD');
         let link = document.createElement('link');
         link.rel = 'stylesheet';
@@ -35,7 +34,7 @@ const htmlStart = (DEV_ENV: boolean, Cloudfront: string | undefined, resultScore
 const htmlEnd = (DEV_ENV: boolean, Cloudfront: string | undefined) => (`</div>
       <script>
       const devScriptLink = '/static/index.js';
-      const prodScriptLink = '${Cloudfront}/build/public/public-bundle.js';
+      const prodScriptLink = '${Cloudfront}/build/public/index.js';
 
       const [body] = document.getElementsByTagName('BODY');
       let script = document.createElement('script');

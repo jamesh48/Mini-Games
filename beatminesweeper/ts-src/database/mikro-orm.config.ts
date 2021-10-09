@@ -7,7 +7,7 @@ import { MikroORM } from "@mikro-orm/core";
 
 export default {
   migrations: {
-    path: "TSDatabase/migrations",
+    path: "./ts-src/database/migrations",
     pattern: /^[\w-]+\d+\.[tj]s$/,
   },
   entities: [BeginnerScore, IntermediateScore, AdvancedScore, User],

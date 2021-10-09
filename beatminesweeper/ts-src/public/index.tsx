@@ -13,8 +13,12 @@ import {
 import { GlobalStoreProvider } from "GlobalStore";
 import { GenericScore } from "./components/Leaderboard/leaderboard-types";
 
+console.log(process.env.NODE_ENV);
+
+const link = process.env.NODE_ENV === 'development' ? 'http://localhost:4000/graphql' : 'https://beatminesweeper.app/graphql';
+
 const httpLink = new HttpLink({
-  uri: "http://localhost:4000/graphql",
+  uri: link,
   fetchOptions: {
     credentials: "include",
   },

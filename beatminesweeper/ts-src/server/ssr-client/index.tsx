@@ -35,7 +35,9 @@ minesweeperRouter.get("*", async (req, res) => {
   const context = {};
   let resultScores;
   try {
-    const results = await axios.post("http://localhost:4000/graphql", {
+    const link = process.env.NODE_ENV === 'development' ? "http://localhost:4000/graphql" : "https://beatminesweeper.app/graphql";
+
+    const results = await axios.post(link, {
       headers: {
         "Content-Type": "application/json",
       },
@@ -50,7 +52,8 @@ minesweeperRouter.get("*", async (req, res) => {
               }`,
     });
 
-    resultScores = results.data.data.allBeginnerScores;
+    resultScores = results.data?.data.allBeginnerScores || [];
+
   } catch (err) {
     console.log(err.message);
   }

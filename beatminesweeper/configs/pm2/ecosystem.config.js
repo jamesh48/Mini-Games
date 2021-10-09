@@ -14,7 +14,7 @@ module.exports = {
       ref: 'origin/master',
       repo: 'git@github.com:jamesh48/Mini-Games.git',
       path: '/home/ubuntu/minesweeper',
-      'post-deploy': 'cd /home/ubuntu/minesweeper/source/challenge_4 && npm install && npm run build && pm2 startOrRestart ./ecosystem.config.js && pm2 save'
+      'post-deploy': 'cd /home/ubuntu/minesweeper/source/beatminesweeper && npm install && npm run build && pm2 startOrRestart ./configs/pm2/ecosystem.config.js && pm2 save'
     }
   }
 }

@@ -32,9 +32,13 @@ const main = async () => {
   const redisStore = connectRedis(session);
   const redisClient = redis.createClient();
 
+  const link = process.env.NODE_ENV === 'development' ? 'http://localhost:4000' : 'https://beatminesweeper.app';
+
+
+
   app.use(cors(
     {
-      origin: 'http://localhost:4000',
+      origin: link,
       credentials: true
     })
   )
