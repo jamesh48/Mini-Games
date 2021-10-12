@@ -32,12 +32,6 @@ const main = async () => {
   const redisStore = connectRedis(session);
   const redisClient = redis.createClient();
 
-  app.use('*', (req,_,next)=>{
-    console.log(req.originalUrl);
-    console.log(process.env.redis_secret);
-    next();
-  });
-
   app.use(cors(
     {
       origin: ['https://fullstackhrivnak.com', 'https://beatminesweeper.app'],

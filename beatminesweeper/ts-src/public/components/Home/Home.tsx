@@ -33,11 +33,13 @@ export const Home: React.FC<HomeProps> = (props) => {
   React.useEffect(() => {
     if (window.location.href.indexOf('fullstack') > -1) {
       setIsProxied(true)
+
     }
   }, []);
 
   React.useEffect(() => {
     if (data?.me?.username) {
+      console.log(data.me.username)
       globalDispatch({type: 'SET DEFINED USERNAME', payload: {userName: data.me.username}});
     } else {
       globalDispatch({type: 'UNSET DEFINED USERNAME'});

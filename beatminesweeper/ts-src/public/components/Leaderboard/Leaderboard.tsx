@@ -60,8 +60,6 @@ const Leaderboard: React.FC<LeaderboardProps> = React.memo((props) => {
     currentPage: number,
     pageOffset: number
   ) => {
-    console.log(currentPage * pageOffset, currentPage * pageOffset + pageOffset);
-    // console.log(array.slice(0).sort((a, b) => a.time - b.time));
     return array
       .slice(0)
       .sort((a, b) => a.time - b.time)

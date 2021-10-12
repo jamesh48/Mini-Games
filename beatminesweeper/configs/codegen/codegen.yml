@@ -1,5 +1,5 @@
 overwrite: true
-schema: "http://localhost:4000/graphql"
+schema: "https://beatminesweeper.app/graphql"
 documents: "ts-src/graphql/**/*.graphql"
 generates:
   ts-src/generated/graphql.tsx:
