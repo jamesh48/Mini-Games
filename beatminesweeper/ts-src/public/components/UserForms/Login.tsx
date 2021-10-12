@@ -36,7 +36,11 @@ const UserLoginForm: React.FC<{}> = () => {
             payload: { userName: loginSuccess.username },
           });
           // After logging in return to home screen
-          history.push("/");
+          if (window.location.href.indexOf('fullstack') > -1) {
+            history.push('/fullstack/minesweeper')
+          } else {
+            history.push('/');
+          }
         }
 
         setSubmitting(false);

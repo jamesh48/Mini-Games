@@ -25,8 +25,16 @@ export const Home: React.FC<HomeProps> = (props) => {
   const { data, loading } = useMeQuery();
   const [,globalDispatch] = useGlobalContext();
   const [logout] = useLogoutMutation();
+  const [isProxied, setIsProxied] = React.useState<boolean>(false);
+
 
   let headerBody = null;
+
+  React.useEffect(() => {
+    if (window.location.href.indexOf('fullstack') > -1) {
+      setIsProxied(true)
+    }
+  }, []);
 
   React.useEffect(() => {
     if (data?.me?.username) {
@@ -37,9 +45,13 @@ export const Home: React.FC<HomeProps> = (props) => {
   }, [data])
 
   headerBody = loading ? null : !data?.me ? (
-    <LoggedOutView />
+    <LoggedOutView isProxied={isProxied}  />
   ) : (
-    <LoggedInView username={data.me.username} logout={logout} />
+    <LoggedInView
+    isProxied={isProxied}
+    username={data.me.username}
+    logout={logout}
+    />
   );
 
   return (
@@ -47,19 +59,20 @@ export const Home: React.FC<HomeProps> = (props) => {
       <nav className="header-nav">
         <ul className={data?.me?.username ? `header-nav-ul header-is-concealed` : `header-nav-ul` } >{headerBody}</ul>
       </nav>
+
       <Switch>
-        <Route path="/login">
+        <Route path={isProxied ? '/fullstack/minesweeper/login' : '/login'}>
           <UserLoginForm />
           <Minesweeper />
         </Route>
-        <Route path="/register">
+        <Route path={isProxied ? '/fullstack/minesweeper/register' : '/register'}>
           <UserRegisterForm />
           <Minesweeper />
         </Route>
-        <Route path="/scoreboard">
+        <Route path={isProxied ? '/fullstack/minesweeper/scoreboard' : '/scoreboard'}>
           <Leaderboard ssrTopTimes={props.ssrTopTimes}/>
         </Route>
-        <Route path="/">
+        <Route path={isProxied ? '/fullstack/minesweeper' : '/'}>
           <Minesweeper />
         </Route>
       </Switch>

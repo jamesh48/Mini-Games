@@ -34,7 +34,13 @@ const UserLoginForm: React.FC<{}> = () => {
             type: "SET DEFINED USERNAME",
             payload: { userName: registerSuccess.username },
           });
-          history.push("/");
+
+          if (window.location.href.indexOf('fullstack') > -1) {
+            history.push('/fullstack/minesweeper')
+          } else {
+            history.push('/');
+          }
+
         }
 
         setSubmitting(false);

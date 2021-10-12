@@ -15,6 +15,8 @@
     "grunt:uglify": "grunt uglify --gruntfile configs/grunt/Gruntfile.js",
     "grunt:cssmin": "grunt cssmin --gruntfile configs/grunt/Gruntfile.js",
     "grunt:bucketDeploy": "grunt bucketDeploy --gruntfile configs/grunt/GruntFile.js",
+    "grunt:cf_invalidate": "grunt cf_invalidate --gruntfile configs/grunt/Gruntfile.js",
+    "grunt:git": "grunt git --gruntfile configs/grunt/Gruntfile.js",
     "deploy": "grunt deploy-all --gruntfile configs/grunt/Gruntfile.js",
     "postdeploy": "pm2 deploy configs/pm2/ecosystem.config.js production",
     "postinstall": "npm link typescript",

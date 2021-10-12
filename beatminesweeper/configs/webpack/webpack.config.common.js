@@ -15,7 +15,8 @@ module.exports = merge(moduleRules, {
     new MiniCssExtractPlugin(),
     new webpack.DefinePlugin({
       "process.env.Cloudfront": JSON.stringify(process.env.Cloudfront),
-      "process.env.PGPassword": JSON.stringify(process.env.PGPassword)
+      "process.env.PGPassword": JSON.stringify(process.env.PGPassword),
+      "process.env.redis_secret": JSON.stringify(process.env.redis_secret)
     }),
   ],
   resolve: {

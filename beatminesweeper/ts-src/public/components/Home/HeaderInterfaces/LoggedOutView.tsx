@@ -2,13 +2,15 @@
 import React from "react";
 import {Link, useLocation} from 'react-router-dom';
 
+interface LoggedOutViewProps {
+  isProxied: boolean;
+};
 
-
-const LoggedOutView: React.FC<{}> = () => {
+const LoggedOutView: React.FC<LoggedOutViewProps> = (props) => {
 
   const location = useLocation();
 
-  const loginSelected = location.pathname === '/login';
+  const loginSelected = location.pathname === '/login' || location.pathname === '/fullstack/minesweeper/login';
   const registerSelected = location.pathname === '/register';
   const scoreboardSelected = location.pathname === '/scoreboard'
 
@@ -20,7 +22,7 @@ const LoggedOutView: React.FC<{}> = () => {
           `header-nav-ul-li`
         }
       >
-        <Link to="/login">Login</Link>
+        <Link to={props.isProxied ? '/fullstack/minesweeper/login' : '/login'}>Login</Link>
       </li>
       <li
         className={
@@ -28,7 +30,7 @@ const LoggedOutView: React.FC<{}> = () => {
           `header-nav-ul-li`
         }
       >
-        <Link to="/register">Register</Link>
+        <Link to={props.isProxied ? '/fullstack/minesweeper/register' : '/register'}>Register</Link>
       </li>
       <li
         className={
@@ -36,7 +38,7 @@ const LoggedOutView: React.FC<{}> = () => {
           `header-nav-ul-li`
         }
       >
-        <Link to="/scoreboard">High Scores</Link>
+        <Link to={props.isProxied ? '/fullstack/minesweeper/scoreboard' : '/scoreboard'}>High Scores</Link>
       </li>
     </>
   );

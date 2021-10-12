@@ -1,6 +1,5 @@
 .header-nav {
   text-rendering: geometricPrecision;
-  margin-left: auto;
   padding-bottom: 1%;
   .header-nav-ul {
     display: flex;
@@ -8,8 +7,9 @@
     .header-nav-ul-li {
       display: flex;
       border: 1px solid #fffff0;
-      flex: 1;
       justify-content: center;
+      align-items: center;
+      flex: 1;
 
       a,
       p {

@@ -15,7 +15,9 @@ import { GenericScore } from "./components/Leaderboard/leaderboard-types";
 
 console.log(process.env.NODE_ENV);
 
-const link = process.env.NODE_ENV === 'development' ? 'http://localhost:4000/graphql' : 'https://beatminesweeper.app/graphql';
+// const link = process.env.NODE_ENV === 'development' ? 'http://localhost:4000/graphql' : 'https://beatminesweeper.app/graphql';
+
+const link = 'https://beatminesweeper.app/graphql';
 
 const httpLink = new HttpLink({
   uri: link,

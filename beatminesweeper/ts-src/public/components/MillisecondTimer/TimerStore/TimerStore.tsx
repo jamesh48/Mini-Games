@@ -1,6 +1,6 @@
 import React from "react";
 import CombinedReducers from "./timerReducers";
-import { TimerIStateTypes } from "../TimerTypes";
+import { TimerIStateTypes, TimerStoreInterface } from "../TimerTypes";
 
 const initialState: TimerIStateTypes = {
   timerTime: 0,
@@ -10,11 +10,8 @@ const TimerContext = React.createContext<
   [TimerIStateTypes, React.Dispatch<any>]
 >([initialState, () => {}]);
 
-type Props = {
-  children: JSX.Element;
-};
 
-const TimerStoreProvider: React.FC<Props> = ({ children }) => {
+const TimerStoreProvider: React.FC<TimerStoreInterface> = ({ children }) => {
   const [state, dispatch] = React.useReducer(CombinedReducers, initialState);
 
   const store = React.useMemo<any>(() => [state, dispatch], [state]);

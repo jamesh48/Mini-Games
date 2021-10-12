@@ -16,8 +16,6 @@ import { htmlStart, htmlEnd } from "./template";
 import { GlobalStoreProvider } from "GlobalStore";
 import { Home } from "TSComponents/Home/Home";
 
-
-
 const client = new ApolloClient({
   cache: new InMemoryCache(),
   link: new HttpLink({
@@ -31,11 +29,26 @@ const client = new ApolloClient({
 
 const minesweeperRouter = express.Router();
 
+minesweeperRouter.use("*", (req, _, next) => {
+  console.log(req.originalUrl, req.method);
+  next();
+});
+
+minesweeperRouter.get('/minesweeper-topTimes', (req, res) => {
+  console.log(req.query)
+  res.send('ok');
+})
+
 minesweeperRouter.get("*", async (req, res) => {
   const context = {};
   let resultScores;
   try {
-    const link = process.env.NODE_ENV === 'development' ? "http://localhost:4000/graphql" : "https://beatminesweeper.app/graphql";
+    // const link =
+    //   process.env.NODE_ENV === "development"
+    //     ? "http://localhost:4000/graphql"
+    //     : "https://beatminesweeper.app/graphql";
+
+        const link = 'https://beatminesweeper.app/graphql'
 
     const results = await axios.post(link, {
       headers: {
@@ -53,7 +66,6 @@ minesweeperRouter.get("*", async (req, res) => {
     });
 
     resultScores = results.data?.data.allBeginnerScores || [];
-
   } catch (err) {
     console.log(err.message);
   }
@@ -68,7 +80,9 @@ minesweeperRouter.get("*", async (req, res) => {
     </ApolloProvider>
   );
 
-  res.write(htmlStart(!!process.env.NODE_ENV, process.env.Cloudfront, resultScores));
+  res.write(
+    htmlStart(!!process.env.NODE_ENV, process.env.Cloudfront, resultScores)
+  );
   minesweeperStream.pipe(res, { end: false });
   minesweeperStream.on("end", () => {
     res.write(htmlEnd(!!process.env.NODE_ENV, process.env.Cloudfront));

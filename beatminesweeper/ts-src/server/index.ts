@@ -32,11 +32,15 @@ const main = async () => {
   const redisStore = connectRedis(session);
   const redisClient = redis.createClient();
 
-  const link = process.env.NODE_ENV === 'development' ? 'http://localhost:4000' : 'https://beatminesweeper.app';
+  app.use('*', (req,_,next)=>{
+    console.log(req.originalUrl);
+    console.log(process.env.redis_secret);
+    next();
+  });
 
   app.use(cors(
     {
-      origin: link,
+      origin: ['https://fullstackhrivnak.com', 'https://beatminesweeper.app'],
       credentials: true
     })
   )
@@ -55,7 +59,7 @@ const main = async () => {
         secure: __prod__ // cookie only works in https
       },
       saveUninitialized: false,
-      secret: 'abcdefghijklmnop',
+      secret: process.env.redis_secret || '',
       resave: false
     })
   );
