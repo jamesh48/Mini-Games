@@ -29,13 +29,7 @@ const client = new ApolloClient({
 
 const minesweeperRouter = express.Router();
 
-minesweeperRouter.use("*", (req, _, next) => {
-  console.log(req.originalUrl, req.method);
-  next();
-});
-
-minesweeperRouter.get('/minesweeper-topTimes', (req, res) => {
-  console.log(req.query)
+minesweeperRouter.get('/minesweeper-topTimes', (_, res) => {
   res.send('ok');
 })
 
@@ -43,12 +37,7 @@ minesweeperRouter.get("*", async (req, res) => {
   const context = {};
   let resultScores;
   try {
-    // const link =
-    //   process.env.NODE_ENV === "development"
-    //     ? "http://localhost:4000/graphql"
-    //     : "https://beatminesweeper.app/graphql";
-
-        const link = 'https://beatminesweeper.app/graphql'
+    const link = 'https://beatminesweeper.app/graphql'
 
     const results = await axios.post(link, {
       headers: {

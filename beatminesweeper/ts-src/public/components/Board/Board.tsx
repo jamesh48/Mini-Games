@@ -9,7 +9,7 @@ import './boardstyles.scss';
 
 
 const Board: React.FC = () => {
-  const [{ dimensions, definedUserName, timerOn, dimensions: { skillLevel } }, globalDispatch] = useGlobalContext()
+  const [{ isProxied, dimensions, definedUserName, timerOn, dimensions: { skillLevel } }, globalDispatch] = useGlobalContext()
   const [{ flippers, mineArr, numbers, scrollBoard, colorDelay }, boardDispatch] = useBoardContext();
 
   // Board Specific useEffects && actions.
@@ -23,7 +23,9 @@ const Board: React.FC = () => {
 
   // const setScrollBoardCallback = React.useCallback(() => boardDispatch({ type: 'TOGGLE SCROLLBOARD' }), []);
 
-  useInterval(() => boardDispatch({ type: 'ITERATE COLORS' }), colorDelay);
+  if (!isProxied) {
+    useInterval(() => boardDispatch({ type: 'ITERATE COLORS' }), colorDelay);
+  }
 
   // Mixed!
   BoardHooks.revealFlipperEffect({ mineArr, flippers, numbers, globalDispatch, boardDispatch });

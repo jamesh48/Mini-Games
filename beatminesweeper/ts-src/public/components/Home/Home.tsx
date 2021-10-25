@@ -17,68 +17,74 @@ import { GenericScore } from "../Leaderboard/leaderboard-types";
 import { useGlobalContext } from "TSSrc/public/GlobalStore/GlobalStore";
 
 interface HomeProps {
-  ssrTopTimes?: GenericScore[]
+  ssrTopTimes?: GenericScore[];
 }
 
 export const Home: React.FC<HomeProps> = (props) => {
-
   const { data, loading } = useMeQuery();
-  const [,globalDispatch] = useGlobalContext();
-  const [logout] = useLogoutMutation();
-  const [isProxied, setIsProxied] = React.useState<boolean>(false);
 
+  const [{isProxied}, globalDispatch] = useGlobalContext();
+  const [logout] = useLogoutMutation();
 
   let headerBody = null;
 
   React.useEffect(() => {
-    if (window.location.href.indexOf('fullstack') > -1) {
-      setIsProxied(true)
-
+    if (window.location.href.indexOf("fullstack") > -1) {
+      globalDispatch({type: 'SET PROXIED TRUE'})
     }
   }, []);
 
   React.useEffect(() => {
     if (data?.me?.username) {
-      console.log(data.me.username)
-      globalDispatch({type: 'SET DEFINED USERNAME', payload: {userName: data.me.username}});
+      globalDispatch({
+        type: "SET DEFINED USERNAME",
+        payload: {
+          userName: data.me.username,
+        },
+      });
     } else {
-      globalDispatch({type: 'UNSET DEFINED USERNAME'});
+      globalDispatch({ type: "UNSET DEFINED USERNAME" });
     }
-  }, [data])
+  }, [data]);
 
   headerBody = loading ? null : !data?.me ? (
-    <LoggedOutView isProxied={isProxied}  />
+    <LoggedOutView />
   ) : (
-    <LoggedInView
-    isProxied={isProxied}
-    username={data.me.username}
-    logout={logout}
-    />
+    <LoggedInView username={data.me.username} logout={logout} />
   );
 
-  return (
+  return !isProxied ? (
     <>
       <nav className="header-nav">
-        <ul className={data?.me?.username ? `header-nav-ul header-is-concealed` : `header-nav-ul` } >{headerBody}</ul>
+        <ul
+          className={
+            data?.me?.username
+              ? `header-nav-ul header-is-concealed`
+              : `header-nav-ul`
+          }
+        >
+          {headerBody}
+        </ul>
       </nav>
 
       <Switch>
-        <Route path={isProxied ? '/fullstack/minesweeper/login' : '/login'}>
+        <Route path="/login">
           <UserLoginForm />
           <Minesweeper />
         </Route>
-        <Route path={isProxied ? '/fullstack/minesweeper/register' : '/register'}>
+        <Route path="/register">
           <UserRegisterForm />
           <Minesweeper />
         </Route>
-        <Route path={isProxied ? '/fullstack/minesweeper/scoreboard' : '/scoreboard'}>
-          <Leaderboard ssrTopTimes={props.ssrTopTimes}/>
+        <Route path="/scoreboard">
+          <Leaderboard ssrTopTimes={props.ssrTopTimes} />
         </Route>
-        <Route path={isProxied ? '/fullstack/minesweeper' : '/'}>
+        <Route path="/">
           <Minesweeper />
         </Route>
       </Switch>
     </>
+  ) : (
+    <Minesweeper />
   );
 };
-

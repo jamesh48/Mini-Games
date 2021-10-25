@@ -3,10 +3,9 @@ import React from "react";
 import {Link, useLocation} from 'react-router-dom';
 
 interface LoggedOutViewProps {
-  isProxied: boolean;
 };
 
-const LoggedOutView: React.FC<LoggedOutViewProps> = (props) => {
+const LoggedOutView: React.FC<LoggedOutViewProps> = () => {
 
   const location = useLocation();
 
@@ -22,7 +21,7 @@ const LoggedOutView: React.FC<LoggedOutViewProps> = (props) => {
           `header-nav-ul-li`
         }
       >
-        <Link to={props.isProxied ? '/fullstack/minesweeper/login' : '/login'}>Login</Link>
+        <Link to='/login'>Login</Link>
       </li>
       <li
         className={
@@ -30,7 +29,7 @@ const LoggedOutView: React.FC<LoggedOutViewProps> = (props) => {
           `header-nav-ul-li`
         }
       >
-        <Link to={props.isProxied ? '/fullstack/minesweeper/register' : '/register'}>Register</Link>
+        <Link to={'/register'}>Register</Link>
       </li>
       <li
         className={
@@ -38,7 +37,7 @@ const LoggedOutView: React.FC<LoggedOutViewProps> = (props) => {
           `header-nav-ul-li`
         }
       >
-        <Link to={props.isProxied ? '/fullstack/minesweeper/scoreboard' : '/scoreboard'}>High Scores</Link>
+        <Link to={'/scoreboard'}>High Scores</Link>
       </li>
     </>
   );

@@ -19,6 +19,7 @@ type Dimensions = {
   horizontalDimension: number;
   numberOfMines: number;
 };
+type IsProxied = boolean;
 type ScrollBoard = boolean;
 type Colors = string[];
 type Surprised = boolean | string;
@@ -88,6 +89,7 @@ type GenNumberClassNamesFunc = (args: {
   timerOn: TimerOn;
   definedUserName: DefinedUserName;
   skillLevel: SkillLevel;
+  isProxied: IsProxied;
   currTile: CurrTile;
   numbers: Numbers;
   flippers: Flippers;
@@ -99,6 +101,7 @@ type GenEmptyClassNamesFunc = (args: {
   skillLevel: SkillLevel;
   definedUserName: DefinedUserName;
   timerOn: TimerOn;
+  isProxied: IsProxied;
   // Board & passed in
   flippers: Flippers;
   colors: Colors;
@@ -108,6 +111,7 @@ type GenEmptyClassNamesFunc = (args: {
 type GenMineClassNamesFunc = (args: {
   timerOn: TimerOn;
   skillLevel: SkillLevel;
+  isProxied: IsProxied;
   currTile: CurrTile;
   colors: Colors;
   flippers: Flippers;
@@ -172,4 +176,4 @@ export {
   ResetFlagsRemainingOnSkillChangeOrTimerOnFunc,
 };
 
-export { Dimensions, TimerOn, DefinedUserName, SkillLevel };
+export { Dimensions, TimerOn, DefinedUserName, SkillLevel, IsProxied };

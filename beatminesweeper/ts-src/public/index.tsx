@@ -13,7 +13,7 @@ import {
 import { GlobalStoreProvider } from "GlobalStore";
 import { GenericScore } from "./components/Leaderboard/leaderboard-types";
 
-const link = 'https://beatminesweeper.app/graphql';
+const link = 'https://www.beatminesweeper.app/graphql';
 
 const httpLink = new HttpLink({
   uri: link,

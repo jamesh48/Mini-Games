@@ -1,20 +1,22 @@
 import React from 'react';
 import CombinedReducers from './globalReducers';
-import { Dimensions, DefinedUserName, TimerOn } from 'MinesweeperTypes';
+import { Dimensions, DefinedUserName, TimerOn, IsProxied } from 'MinesweeperTypes';
 
 
 interface IStateTypes {
   dimensions: Dimensions
   topTimes: [];
   definedUserName: DefinedUserName;
-  timerOn: TimerOn
+  timerOn: TimerOn;
+  isProxied: IsProxied;
 };
 
 const initialState: IStateTypes = {
   dimensions: { skillLevel: 'beginner', verticalDimension: 9, horizontalDimension: 9, numberOfMines: 10 },
   topTimes: [],
   definedUserName: null,
-  timerOn: false
+  timerOn: false,
+  isProxied: false
 };
 
 
@@ -36,7 +38,7 @@ const GlobalStoreProvider: React.FC<Props> = ({ children }) => {
 const useGlobalContext = () => {
   const context = React.useContext(GlobalStoreContext);
   if (context === undefined) {
-    throw new Error('useCount must be used within a CountProvider')
+    throw new Error('useGlobalContext must be used within a GlobalContextProvider')
   }
   return context;
 };

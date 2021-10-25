@@ -1,3 +1,18 @@
+import {IsProxied} from 'MinesweeperTypes';
+
+type IsProxiedAction = {
+  type: string;
+}
+
+const isProxied = (state: IsProxied = false, action: IsProxiedAction) => {
+  switch (action.type) {
+    case 'SET PROXIED TRUE':
+      return true;
+    default:
+      return state;
+  }
+};
+
 type TimerOnType = {
     type: string;
 };
@@ -83,6 +98,7 @@ export default combineReducers({
   dimensions,
   definedUserName,
   topTimes,
-  timerOn
+  timerOn,
+  isProxied
 });
 

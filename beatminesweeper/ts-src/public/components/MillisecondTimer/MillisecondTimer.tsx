@@ -12,6 +12,7 @@ export default () => {
   const [postAdvancedScore] = useAdvancedScoreMutation();
   const [
     {
+      isProxied,
       dimensions: { skillLevel },
       definedUserName,
       timerOn,
@@ -37,7 +38,7 @@ export default () => {
       timerDispatch({ type: "CLEAR TIMER TIME" });
     }
 
-    if (timerOn === "VICTORY" && typeof definedUserName === "string") {
+    if (timerOn === "VICTORY" && typeof definedUserName === "string" && !isProxied) {
       if (skillLevel === 'beginner') {
         postBeginnerScore({
           variables: { username: definedUserName, time: timerTime },
@@ -65,6 +66,22 @@ export default () => {
         })
         return;
       }
+    }
+    if (isProxied && timerOn === 'VICTORY') {
+      setTimeout(() => {
+        alert(`
+        Congratulations!
+
+        You cleared the board in ${("0" + (Math.floor(timerTime / 1000) % 60)).slice(-2)} seconds!
+
+        check out the full game with login and high scores at...
+        https://wwww.beatminesweeper.app
+
+        -James
+        `
+
+        );
+      }, 500);
     }
   }, [timerOn]);
 

@@ -5,13 +5,12 @@ import { LogoutMutationFn, MeDocument } from "TSSrc/generated/graphql";
 interface LoggedInViewProps {
   username: string;
   logout: LogoutMutationFn;
-  isProxied: boolean;
 }
 
 const LoggedInView: React.FC<LoggedInViewProps> = (props) => {
   const location = useLocation();
   const history = useHistory();
-  const homeSelected = location.pathname === "/" || location.pathname === '/fullstack/minesweeper';
+  const homeSelected = location.pathname === "/";
   const scoreboardSelected = location.pathname === "/scoreboard";
 
   return (
@@ -27,7 +26,7 @@ const LoggedInView: React.FC<LoggedInViewProps> = (props) => {
             {" "}
             Logged in as: {props.username}{" "}
           </p>
-        )) || <Link to={props.isProxied ? '/fullstack/minesweeper' : '/'}>Minesweeper</Link>}
+        )) || <Link to="/">Minesweeper</Link>}
       </li>
       <li
         className={
@@ -35,7 +34,7 @@ const LoggedInView: React.FC<LoggedInViewProps> = (props) => {
           "header-nav-ul-li"
         }
       >
-        <Link to={props.isProxied ? '/fullstack/minesweeper/scoreboard' : '/scoreboard'}>High Scores</Link>
+        <Link to="/scoreboard">High Scores</Link>
       </li>
       <li className="header-nav-ul-li">
         <a
@@ -44,11 +43,7 @@ const LoggedInView: React.FC<LoggedInViewProps> = (props) => {
             props.logout({
               refetchQueries: [MeDocument],
             });
-            if (window.location.href.indexOf('fullstack') > -1) {
-              history.push('/fullstack/minesweeper');
-            } else {
-              history.push('/');
-            }
+            history.push("/");
           }}
         >
           Logout

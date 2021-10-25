@@ -135,7 +135,9 @@ export class UserResolver {
     }
     // Store user id session, this will set a cookie on the user and keep them logged in.
     req.session.userId = user.id;
-    return { user };
+    req.session.save(() => {})
+
+    return {user};
   }
 
   @Mutation(() => Boolean)

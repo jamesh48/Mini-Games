@@ -50,15 +50,15 @@ const generateColors: GenerateColorsFunc = (args) => {
 };
 
 const genNumberClassNames: GenNumberClassNamesFunc = (args) => {
-  const { timerOn, definedUserName, skillLevel, currTile, numbers, flippers, colors } = args;
+  const { timerOn, definedUserName, skillLevel, currTile, numbers, flippers, colors, isProxied } = args;
   let classNameArr: ClassNameArr = ['sweep-square'];
 
-  if (colors !== null) {
+  if (colors !== null && !isProxied) {
     classNameArr.push(generateColors({ currTile, colors, skillLevel }), 'disabled');
     return classNameArr.join(' ');
   };
 
-  const numberTileOnVictoryDeadOrNotLoggedIn = (timerOn === 'VICTORY' || timerOn === 'FREEZE WIN' || timerOn === 'FREEZE DEAD' || !definedUserName);
+  const numberTileOnVictoryDeadOrNotLoggedIn = (timerOn === 'VICTORY' || timerOn === 'FREEZE WIN' || timerOn === 'FREEZE DEAD' || (!definedUserName && !isProxied));
 
   const flagOnNumberTileGamePlay = flippers[currTile] === 'flag';
 
@@ -87,16 +87,16 @@ const genNumberClassNames: GenNumberClassNamesFunc = (args) => {
 };
 
 const genEmptyClassNames: GenEmptyClassNamesFunc = (args) => {
-  const { skillLevel, definedUserName, timerOn, currTile, colors, flippers } = args
+  const { isProxied, skillLevel, definedUserName, timerOn, currTile, colors, flippers } = args
   let classNameArr: ClassNameArr = ['sweep-square'];
 
-  if (colors !== null) {
+  if (colors !== null && !isProxied) {
     classNameArr.push(generateColors({ currTile, colors, skillLevel }), 'disabled');
     return classNameArr.join(' ');
   };
 
   const emptyTileOnVictoryOrDead = (timerOn === 'VICTORY' || timerOn === 'FREEZE WIN' || timerOn === 'FREEZE DEAD');
-  const emptyTileOnNotLoggedIn = !definedUserName;
+  const emptyTileOnNotLoggedIn = (!definedUserName && !isProxied);
   const flagOnEmptyTileGameplay = flippers[currTile] === 'flag';
   const emptyTileRevealedGameplay = flippers[currTile] === true;
 
@@ -111,10 +111,10 @@ const genEmptyClassNames: GenEmptyClassNamesFunc = (args) => {
 };
 
 const genMineClassNames: GenMineClassNamesFunc = (args) => {
-  const { timerOn, skillLevel, currTile, colors, flippers } = args;
+  const { timerOn, skillLevel, currTile, colors, flippers, isProxied } = args;
   let classNameArr: ClassNameArr = ['sweep-square']
 
-  if (colors !== null) {
+  if (colors !== null && !isProxied) {
     classNameArr.push(generateColors({ currTile, colors, skillLevel }), 'disabled');
     return classNameArr.join(' ');
   };

@@ -10,4 +10,4 @@ console.log(
 const clientConfig = require(relativePath('webpack/webpack.config.client.js'));
 const serverConfig = require(relativePath('webpack/webpack.config.server.js'));
 
-module.exports = [clientConfig];
+module.exports = [clientConfig, serverConfig];

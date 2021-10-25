@@ -12,12 +12,14 @@ import SmileyBar from "TSComponents/SmileyBar/SmileyBar";
 
 import "./minesweeper.scss";
 
+
 const Minesweeper: React.FC<{}> = () => {
   const [
     {
       dimensions: { skillLevel },
     },
   ] = useGlobalContext();
+
   return (
     <div className="space-containers" id="main-space-container">
       <div id="total-board" className={skillLevel}>

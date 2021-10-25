@@ -11,7 +11,7 @@ type Props = {
 
 const Square: React.FC<Props> = React.memo((props) => {
   const { currTile } = props;
-  const [{ dimensions: { skillLevel }, definedUserName, dimensions, timerOn }, globalDispatch] = useGlobalContext();
+  const [{ isProxied, dimensions: { skillLevel }, definedUserName, dimensions, timerOn }, globalDispatch] = useGlobalContext();
 
   const [{ colors, mineArr, flippers, numbers }, boardDispatch] = useBoardContext();
 
@@ -108,6 +108,7 @@ const Square: React.FC<Props> = React.memo((props) => {
           skillLevel,
           flippers,
           colors,
+          isProxied,
           currTile
         })
           : numbers[currTile] ? genNumberClassNames({
@@ -117,6 +118,7 @@ const Square: React.FC<Props> = React.memo((props) => {
             flippers,
             numbers,
             colors,
+            isProxied,
             currTile
           })
             : genEmptyClassNames({
@@ -124,6 +126,7 @@ const Square: React.FC<Props> = React.memo((props) => {
               skillLevel,
               definedUserName,
               timerOn,
+              isProxied,
               // Board & passed in
               flippers,
               colors,
@@ -132,7 +135,7 @@ const Square: React.FC<Props> = React.memo((props) => {
       }
     >
       {
-        userNotLoggedIn ?
+        userNotLoggedIn && !isProxied ?
           generateLoginMessage({
             currTile,
             skillLevel

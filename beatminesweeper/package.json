@@ -6,12 +6,14 @@
   "scripts": {
     "test": "jest",
     "build": "webpack --config configs/webpack/webpack.config.js",
+    "postbuild": "pm2 restart minesweeper",
     "webpack:test": "webpack t configs/webpack/webpack.config.js",
     "create:database": "npx mikro-orm schema:create --run",
     "drop:database": "npx mikro-orm schema:drop --drop-db --run",
     "create:migration": "npx mikro-orm migration:create",
     "dev:build": "webpack --config configs/webpack/webpack.config.js && concurrently \"webpack --config configs/webpack/webpack.config.js --watch \" \"npm run dev:start\"",
     "dev:start": "nodemon ts-dist/server/server.js",
+    "grunt:deploy": "grunt deploy --gruntfile configs/grunt/Gruntfile.js",
     "grunt:uglify": "grunt uglify --gruntfile configs/grunt/Gruntfile.js",
     "grunt:cssmin": "grunt cssmin --gruntfile configs/grunt/Gruntfile.js",
     "grunt:bucketDeploy": "grunt bucketDeploy --gruntfile configs/grunt/GruntFile.js",
@@ -19,7 +21,6 @@
     "grunt:git": "grunt git --gruntfile configs/grunt/Gruntfile.js",
     "deploy": "grunt deploy-all --gruntfile configs/grunt/Gruntfile.js",
     "postdeploy": "pm2 deploy configs/pm2/ecosystem.config.js production",
-    "postinstall": "npm link typescript",
     "gen": "graphql-codegen --config configs/codegen/codegen.yml"
   },
   "keywords": [
