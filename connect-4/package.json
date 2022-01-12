@@ -16,6 +16,8 @@
     "@babel/preset-env": "^7.12.16",
     "@babel/preset-react": "^7.12.13",
     "@babel/register": "^7.13.0",
+    "@types/express": "^4.17.13",
+    "@types/react-dom": "^17.0.11",
     "@wojtekmaj/enzyme-adapter-react-17": "^0.4.1",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
@@ -41,7 +43,7 @@
   },
   "scripts": {
     "test": "mocha --require @babel/register --require babel-polyfill client/tests --recursive",
-    "start": "nodemon ./server/server.js",
+    "start": "nodemon ./server/dist/server.js",
     "react-dev": "webpack --watch"
   },
   "author": "James Hrivnak",

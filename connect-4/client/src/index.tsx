@@ -1,8 +1,8 @@
-import App from './App.jsx';
+import App from './App';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-const Index = () => {
+const Index: React.FC<{}> = () => {
   return (
     <div>
       <App/>

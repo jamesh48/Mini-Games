@@ -10,3 +10,9 @@ aws
 dotenv
 grunt
 aws-keys.json
+
+beatminesweeper/ts-dist
+tic-tac-toe/dist
+connect-4/client/public/bundle.*
+connect-4/client/staging
+connect-4/server/dist
