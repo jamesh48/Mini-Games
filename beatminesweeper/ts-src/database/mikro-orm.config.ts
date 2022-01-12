@@ -16,6 +16,6 @@ export default {
   type: "postgresql",
   debug: !__prod__,
   port: 5432,
-  user: "ubuntu",
+  user: "jameshrivnak",
   password: process.env.PGPassword
 } as Parameters<typeof MikroORM.init>[0];

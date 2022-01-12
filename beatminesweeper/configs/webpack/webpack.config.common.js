@@ -9,7 +9,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 require("dotenv").config({ path: rootPath("configs/dotenv/.env") });
 
 module.exports = merge(moduleRules, {
-  mode: process.env.NODE_ENV ? "development" : "development",
+  mode: process.env.NODE_ENV ? "development" : "production",
   devtool: process.env.NODE_ENV ? "inline-source-map" : "source-map",
   plugins: [
     new MiniCssExtractPlugin(),
