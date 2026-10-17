@@ -1,89 +1,149 @@
 
-#pin-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: relative;
-  /* justify-content: middle; */
+/* Night-time bowling alley: dark room lit from above, with a faint neon glow */
+body {
+  margin: 0;
+  min-height: 100vh;
+  background-color: #0d0f1f;
+  background-image: radial-gradient(ellipse 60% 50% at 50% 0%, rgba(90, 110, 255, 0.28), transparent),
+    radial-gradient(ellipse 40% 60% at 15% 100%, rgba(255, 60, 160, 0.12), transparent),
+    radial-gradient(ellipse 40% 60% at 85% 100%, rgba(0, 200, 255, 0.12), transparent),
+    linear-gradient(180deg, #1b1f3d 0%, #0d0f1f 70%);
+  background-attachment: fixed;
 }
 
 #bowling-alley {
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding-top: 8px;
+  user-select: none;
 }
 
-#pin-entry {
+/* Lane: 2 x GUTTER_EDGE pin spacings of wood, with a gutter either side */
+#lane {
   position: relative;
-  padding: 10px;
-  border-radius: 25px;
-  background-color: darkslategrey;
+  width: 272px;
+  /* As long as the screen allows, leaving room for the scorecard and controls */
+  height: max(460px, min(720px, calc(100vh - 200px)));
+  overflow: hidden;
+  cursor: pointer;
+  border-left: 24px solid #4a4a4a;
+  border-right: 24px solid #4a4a4a;
+  box-shadow: inset 6px 0 6px rgba(0, 0, 0, 0.35), inset -6px 0 6px rgba(0, 0, 0, 0.35),
+    0 0 40px rgba(90, 120, 255, 0.35);
+  background-color: #e3b47a;
+  background-image: repeating-linear-gradient(90deg, rgba(120, 70, 20, 0.12) 0 1px, transparent 1px 17px),
+    linear-gradient(180deg, #d8a466, #ecc58f);
+}
+
+#pin-container {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  margin-top: 16px;
 }
 
 #sweep-bar {
-  position: relative;
-  padding: 15px;
-  border-radius: 25px;
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  height: 16px;
   background-color: black;
+  border-radius: 4px;
+}
+
+#aim-guide {
+  position: absolute;
+  left: 50%;
+  top: 290px;
+  bottom: 80px;
+  border-left: 2px dashed rgba(59, 75, 163, 0.7);
+}
+
+#ball-track {
+  position: absolute;
+  left: calc(50% - 30px);
+  bottom: 14px;
+}
+
+#foul-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 6px;
+  background-color: darkslategrey;
+}
+
+#bowl-controls {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  margin-top: 12px;
+  font-family: sans-serif;
 }
 
-#pin-input {
-  background-color: lightslategrey;
+#power-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 14px;
+  border-radius: 25px;
+  background-color: darkslategrey;
+}
+
+#power-label {
   color: ivory;
-  border-radius: 25px;
+  font-size: 14px;
 }
 
-#pin-input-inactive {
+#power-meter {
+  width: 180px;
+  height: 14px;
+  border-radius: 7px;
+  overflow: hidden;
   background-color: lightslategrey;
-  color: ivory;
+}
+
+#power-fill {
+  height: 100%;
+  background: linear-gradient(90deg, green, gold 70%, orangered);
+  background-size: 180px 100%;
+}
+
+#bowl-button {
+  width: 80px;
   border-radius: 25px;
-}
-
-#pin-input-invalid {
-  background-color: red;
-  color: white;
-  border-radius: 25px;
-}
-
-#pin-input-active {
-  background-color: lightslategrey;
-  color: ivory;
-  border-radius: 25px;
-
-  /* border-top-right-radius: 0; */
-  /* border-bottom-right-radius: 0; */
-}
-
-#pin-input-active:focus, #pin-input-inactive:focus, #pin-input-invalid:focus {
-  outline: none;
-}
-
-
-#bowl-button-inactive {
-  display: none;
-}
-
-#bowl-button-active {
-  border-radius: 25px;
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
+  border: none;
+  padding: 4px 10px;
+  cursor: pointer;
   background-color: green;
-  color: white
-
+  color: white;
 }
-#bowl-button-active:hover {
+
+#bowl-button:hover:enabled {
   background-color: greenyellow;
-  color: darkslategrey
+  color: darkslategrey;
+}
+
+#bowl-button:disabled {
+  background-color: lightslategrey;
+  cursor: default;
+}
+
+#bowl-hint {
+  color: #c9cdea;
+  font-size: 13px;
 }
 
 .pin-row {
   display: flex;
 }
 .pin {
+  background-color: white;
   border: 2px solid red;
   width: 50px;
   height: 50px;
@@ -163,9 +223,105 @@
 }
 
 #ball-element {
+  zoom: 0.6;
+}
+
+#gutter-message {
+  color: ivory;
+  font-size: 200px;
+  font-family: 'PermanentMarker';
+  text-decoration: underline;
+  background-color: darkslategrey;
+  width: 100%;
+  text-align: center;
+}
+
+#scorecard {
+  display: flex;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  margin: 10px 0 20px;
+  font-family: sans-serif;
+  border: 2px solid darkslategrey;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: ivory;
+}
+
+.frame {
+  width: 52px;
+  border-right: 1px solid darkslategrey;
+  text-align: center;
+}
+
+.frame:last-child {
+  width: 72px;
+  border-right: none;
+}
+
+.frame-number {
+  background-color: darkslategrey;
+  color: ivory;
+  font-size: 12px;
+  padding: 2px 0;
+}
+
+.current-frame .frame-number {
+  background-color: #3b4ba3;
+}
+
+.frame-rolls {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.frame-roll {
+  width: 22px;
+  height: 22px;
+  line-height: 22px;
+  border-left: 1px solid darkslategrey;
+  border-bottom: 1px solid darkslategrey;
+  font-size: 14px;
+}
+
+.frame-total {
+  height: 26px;
+  line-height: 26px;
+  font-weight: bold;
+}
+
+#game-over {
   display: flex;
   flex-direction: column;
   align-items: center;
-  position: relative;
-  top: 45vh;
+  gap: 20px;
+  width: 100%;
+  padding: 40px 0;
+  background-color: #3b4ba3;
+  color: ivory;
+}
+
+#game-over-title {
+  font-family: 'PermanentMarker';
+  font-size: 120px;
+}
+
+#game-over-score {
+  font-family: sans-serif;
+  font-size: 32px;
+}
+
+#new-game-button {
+  font-family: 'PermanentMarker';
+  font-size: 24px;
+  padding: 10px 30px;
+  border: none;
+  border-radius: 25px;
+  background-color: green;
+  color: white;
+  cursor: pointer;
+}
+
+#new-game-button:hover {
+  background-color: greenyellow;
+  color: darkslategrey;
 }

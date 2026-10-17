@@ -1,124 +1,182 @@
 import React, { useEffect, useRef } from "react";
-import Pins from "./Pins";
-import PinEntry from "./PinEntry";
+import Lane from "./Lane";
+import BowlControls, { Phase } from "./BowlControls";
 import Strike from "./validationMessageStrike";
 import Spare from "./validationMessageSpare";
-import BowlingBall from "./BowlingBall";
-import { CustomWindow } from "./bowlingTypes";
-declare let window: CustomWindow;
+import Gutter from "./validationMessageGutter";
+import Scorecard from "./Scorecard";
+import GameOver from "./GameOver";
+import { useOscillator } from "./useOscillator";
+import { AIM_RANGE, ballPath, knockDownPins } from "./rollPhysics";
+import {
+  PIN_COUNT,
+  currentFrameIndex,
+  frameMarks,
+  groupFrames,
+  isGameOver,
+  pinsStanding,
+  scoreFrames
+} from "./scoring";
+
+type ValidationMessage = "strike" | "spare" | "gutter";
+
+const ROLL_DURATION = 2000;
+const AIM_PERIOD = 1800;
+const POWER_PERIOD = 1100;
+const SWEEP_STEP = 2;
+const MESSAGE_DURATION = { strike: 3000, spare: 3000, gutter: 1500 };
+const ROLL_MESSAGES: { [mark: string]: ValidationMessage } = { X: "strike", "/": "spare", "-": "gutter" };
+
+const pinReset = () => [
+  [false, false, false, false],
+  [false, false, false],
+  [false, false],
+  [false]
+];
+
+const countPinsDown = (pinMap: boolean[][]) =>
+  pinMap.reduce((total, row) => total + row.filter(Boolean).length, 0);
+
 export default () => {
-  const pinReset = [
-    [false, false, false, false],
-    [false, false, false],
-    [false, false],
-    [false]
-  ];
-
-  const [pinCount, setPinCount] = React.useState(0);
+  const [rolls, setRolls] = React.useState<number[]>([]);
   const [pinMap, setPinMap] = React.useState(pinReset);
+  const [phase, setPhase] = React.useState<Phase>("aim");
   const [sweepBarPosition, setSweepBarPosition] = React.useState(0);
-  const [numberOfBowls, setNumberOfBowls] = React.useState(0);
-  const [rolling, setRolling] = React.useState(false);
+  const [rollPath, setRollPath] = React.useState(0);
 
-  const [validationMessage, setValidationMessage] = React.useState<string | null>(null);
+  // Aim starts in the middle of the lane; power starts empty
+  const [aimValue, aimRef] = useOscillator(phase === "aim", AIM_PERIOD, 0.25);
+  const [power, powerRef] = useOscillator(phase === "power", POWER_PERIOD);
+
+  const [validationMessage, setValidationMessage] = React.useState<ValidationMessage | null>(null);
+  const pendingMessage = useRef<ValidationMessage | null>(null);
   const pinsClientHeight = useRef<HTMLDivElement>(null);
-  const pinEntryClientHeight = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (pinCount === 10) {
-      window.interval = setInterval(() => {
-        setSweepBarPosition((prevPosition) => {
-          return prevPosition + 1;
-        });
-      }, 20);
-    }
-  }, [pinCount]);
-  // { currentTarget: [{ value: pinEntry }] }: { currentTarget: [{ value: string }] },
+  const gameOver = isGameOver(rolls);
+  const scores = scoreFrames(rolls);
+  const sweeping = phase === "sweeping";
 
-  const handleBowl = (
-    event: React.FormEvent<HTMLFormElement>,
-    resolve: (value: unknown) => void
-  ) => {
-    event.preventDefault();
-    const pinEntry = event.target[0].value;
-    setRolling(true);
-    setTimeout(() => {
-      setPinMap((existingPinMap) => {
-        const existingBowledPins = existingPinMap
-          .join(",")
-          .split(",")
-          .filter((x) => x === "true").length;
-        const updatedBowledPins = pinCount + Number(pinEntry);
-        let count = updatedBowledPins - existingBowledPins;
-        while (count) {
-          const searchRow = Math.floor(Math.random() * 4);
-          const searchColumn = Math.floor(Math.random() * (3 - searchRow + 1));
-
-          if (!existingPinMap[searchRow][searchColumn]) {
-            existingPinMap[searchRow][searchColumn] = true;
-            count--;
-          }
-        }
-        return existingPinMap;
-      });
-      setNumberOfBowls((current) => {
-        return Number(current) + 1;
-      });
-      setPinCount((current) => {
-        return Number(current) + Number(pinEntry);
-      });
-      setRolling(false);
-      resolve("");
-    }, 3500);
+  const showMessage = (message: ValidationMessage | null) => {
+    pendingMessage.current = null;
+    if (!message) return;
+    setValidationMessage(message);
+    setTimeout(() => setValidationMessage(null), MESSAGE_DURATION[message]);
   };
 
-  if (
-    sweepBarPosition ===
-    // @ts-ignore
-    pinEntryClientHeight.current?.clientHeight +
-      // @ts-ignore
-      pinsClientHeight.current?.clientHeight +
-      10
-  ) {
-    clearInterval(window.interval);
-    if (numberOfBowls === 1) {
-      setValidationMessage("strike");
-    }
+  useEffect(() => {
+    if (!sweeping) return;
+    const interval = setInterval(() => {
+      setSweepBarPosition((prevPosition) => prevPosition + SWEEP_STEP);
+    }, 10);
+    return () => clearInterval(interval);
+  }, [sweeping]);
 
-    if (numberOfBowls > 1) {
-      setValidationMessage("spare");
-    }
-    setNumberOfBowls(0);
+  useEffect(() => {
+    const pins = pinsClientHeight.current;
+    // The sweep bar sits just below the pins and carries them off the top of the lane
+    const sweepDistance = (pins?.offsetTop ?? 0) + (pins?.clientHeight ?? 0) + 30;
+    if (!sweeping || sweepBarPosition < sweepDistance) return;
+    setPhase("aim");
     setSweepBarPosition(0);
-    setPinCount(0);
-    setPinMap(pinReset);
+    setPinMap(pinReset());
+    showMessage(pendingMessage.current);
+  }, [sweeping, sweepBarPosition]);
+
+  const handleBowl = (aim: number, throwPower: number) => {
+    const path = ballPath(aim, throwPower);
+    setRollPath(path);
+    setPhase("rolling");
     setTimeout(() => {
-      setValidationMessage(null);
-    }, 3000);
-  }
+      const nextPinMap = knockDownPins(pinMap, path, throwPower);
+      const nextRolls = [...rolls, countPinsDown(nextPinMap) - countPinsDown(pinMap)];
+      setPinMap(nextPinMap);
+      setRolls(nextRolls);
+
+      const frames = groupFrames(nextRolls);
+      const marks = frameMarks(frames[frames.length - 1]);
+      pendingMessage.current = ROLL_MESSAGES[marks[marks.length - 1]] || null;
+
+      // Clear the lane once the frame is over or the tenth frame earns a fresh rack
+      if (isGameOver(nextRolls) || pinsStanding(nextRolls) === PIN_COUNT) {
+        setPhase("sweeping");
+      } else {
+        setPhase("aim");
+        showMessage(pendingMessage.current);
+      }
+    }, ROLL_DURATION);
+  };
+
+  const handleNewGame = () => {
+    setRolls([]);
+    setPinMap(pinReset());
+    setPhase("aim");
+    setValidationMessage(null);
+  };
+
+  // Pressing locks your aim and starts the power meter; releasing bowls
+  const handlePress = () => {
+    if (validationMessage) return;
+    if (gameOver) {
+      if (!sweeping) handleNewGame();
+      return;
+    }
+    if (phase === "aim") setPhase("power");
+  };
+
+  const handleRelease = () => {
+    if (phase === "power") handleBowl(aimRef.current * 2 - 1, powerRef.current);
+  };
+
+  const handlersRef = useRef({ handlePress, handleRelease });
+  handlersRef.current = { handlePress, handleRelease };
+
+  useEffect(() => {
+    const isBowlKey = (e: KeyboardEvent) => e.code === "Space" || e.key === "Enter";
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (!isBowlKey(e)) return;
+      e.preventDefault();
+      if (!e.repeat) handlersRef.current.handlePress();
+    };
+    const onKeyUp = (e: KeyboardEvent) => {
+      if (isBowlKey(e)) handlersRef.current.handleRelease();
+    };
+    // Listen on the window so letting go anywhere still bowls
+    const onPointerUp = () => handlersRef.current.handleRelease();
+    window.addEventListener("keydown", onKeyDown);
+    window.addEventListener("keyup", onKeyUp);
+    window.addEventListener("pointerup", onPointerUp);
+    return () => {
+      window.removeEventListener("keydown", onKeyDown);
+      window.removeEventListener("keyup", onKeyUp);
+      window.removeEventListener("pointerup", onPointerUp);
+    };
+  }, []);
 
   return (
     <div id="bowling-alley">
+      <Scorecard rolls={rolls} currentFrame={currentFrameIndex(rolls)} gameOver={gameOver} />
       {validationMessage === "strike" ? (
         <Strike />
       ) : validationMessage === "spare" ? (
         <Spare />
+      ) : validationMessage === "gutter" ? (
+        <Gutter />
+      ) : gameOver && !sweeping ? (
+        <GameOver score={scores[scores.length - 1]} onNewGame={handleNewGame} />
       ) : (
-        <div>
-          <Pins
+        <>
+          <Lane
+            pinMap={pinMap}
             pinsClientHeight={pinsClientHeight}
-            pinMap={pinMap}
+            sweeping={sweeping}
             sweepBarPosition={sweepBarPosition}
+            ballX={phase === "rolling" ? rollPath : (aimValue * 2 - 1) * AIM_RANGE}
+            rolling={phase === "rolling"}
+            rollDuration={ROLL_DURATION}
+            onPress={handlePress}
           />
-          {sweepBarPosition === 0 ? <BowlingBall rolling={rolling} /> : null}
-          <PinEntry
-            pinCount={pinCount}
-            pinEntryClientHeight={pinEntryClientHeight}
-            sweepBarPosition={sweepBarPosition}
-            pinMap={pinMap}
-            handleBowl={handleBowl}
-          />
-        </div>
+          <BowlControls phase={phase} power={power} onPress={handlePress} />
+        </>
       )}
     </div>
   );

@@ -2,9 +2,10 @@ import React from "react";
 
 const Pins: React.FC<{
   pinMap: boolean[][];
+  sweeping: boolean;
   sweepBarPosition: number;
   pinsClientHeight: React.RefObject<HTMLDivElement>;
-}> = ({ pinMap, sweepBarPosition, pinsClientHeight }) => {
+}> = ({ pinMap, sweeping, sweepBarPosition, pinsClientHeight }) => {
   return (
     <div
       style={{ bottom: `${sweepBarPosition}px` }}
@@ -29,6 +30,7 @@ const Pins: React.FC<{
           </div>
         ];
       }, [])}
+      {sweeping ? <div id="sweep-bar"></div> : null}
     </div>
   );
 };
