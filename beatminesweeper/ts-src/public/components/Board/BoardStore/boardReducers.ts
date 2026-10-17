@@ -79,6 +79,8 @@ const mineArr: MinesFunc = (state = [], action) => {
   switch (action.type) {
     case "GENERATE MINES":
       return generateMines(action.payload);
+    case "SET MINES":
+      return action.payload.mines;
     default:
       return state;
   }

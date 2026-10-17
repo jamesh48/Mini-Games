@@ -5,7 +5,9 @@ import { useGlobalContext } from "GlobalStore";
 import InputField from "TSSrc/public/components/UserForms/InputField";
 import { MeDocument, useLoginMutation } from "TSSrc/generated/graphql";
 import { toErrorMap } from "TSSrc/utils/toErrorMap";
-import "./userForms.scss";
+import Stack from "@mui/material/Stack";
+import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
 
 const UserLoginForm: React.FC<{}> = () => {
   const history = useHistory();
@@ -17,7 +19,6 @@ const UserLoginForm: React.FC<{}> = () => {
       initialValues={{ username: "", password: "" }}
       onSubmit={async (values, { setSubmitting, setErrors }) => {
         setSubmitting(true);
-
 
         const loginData = await login({
           variables: { options: values },
@@ -36,9 +37,8 @@ const UserLoginForm: React.FC<{}> = () => {
             type: "SET DEFINED USERNAME",
             payload: { userName: loginSuccess.username },
           });
-          // After logging in return to home screen
           if (window.location.href.indexOf('fullstack') > -1) {
-            history.push('/fullstack/minesweeper')
+            history.push('/fullstack/minesweeper');
           } else {
             history.push('/');
           }
@@ -47,26 +47,22 @@ const UserLoginForm: React.FC<{}> = () => {
         setSubmitting(false);
       }}
     >
-      {({}) => (
-        <Form className="login-register-form">
-          <div className="user-inputs">
-            <InputField
-              name="username"
-              placeholder="username"
-              label="Username"
-            />
-
-            <InputField
-              name="password"
-              placeholder="password"
-              label="Password"
-              type="password"
-            />
-            <span>
-              <input type="submit" value="login" />
-            </span>
-          </div>
-        </Form>
+      {({ isSubmitting }) => (
+        <Box component={Form} sx={{ display: 'flex', justifyContent: 'center', py: 2 }}>
+          <Stack spacing={1.5} sx={{ width: { xs: '80%', sm: '40%', md: '25%' } }}>
+            <InputField name="username" placeholder="username" label="Username" />
+            <InputField name="password" placeholder="password" label="Password" type="password" />
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              disabled={isSubmitting}
+              size="small"
+            >
+              Login
+            </Button>
+          </Stack>
+        </Box>
       )}
     </Formik>
   );

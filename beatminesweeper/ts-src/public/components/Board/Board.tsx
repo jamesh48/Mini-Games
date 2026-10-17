@@ -4,8 +4,7 @@ import { useBoardContext } from 'BoardStore';
 import BoardHooks from './useEffectBoardHooks';
 import { useInterval } from 'CustomHooks';
 import Square from 'TSComponents/Board/Squares/Square';
-
-import './boardstyles.scss';
+import Box from '@mui/material/Box';
 
 
 const Board: React.FC = () => {
@@ -48,15 +47,24 @@ const Board: React.FC = () => {
 
 
   return (
-    <div
-    id="play-board"
-    onWheel={(e) => colorDelay ? handleScroll(e) : null}
-    onMouseEnter={() => colorDelay ? setScrollBoardCallback() : null}
-    onMouseLeave={() => colorDelay ? setScrollBoardCallback() : null}
+    <Box
+      id="play-board"
+      onWheel={(e) => colorDelay ? handleScroll(e) : null}
+      onMouseEnter={() => colorDelay ? setScrollBoardCallback() : null}
+      onMouseLeave={() => colorDelay ? setScrollBoardCallback() : null}
+      sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
     >
       {[...new Array(dimensions.verticalDimension)].map((_, rowIndex) => {
         return (
-          <div key={rowIndex} className='sweep-row'>
+          <Box
+            key={rowIndex}
+            sx={{
+              display: 'flex',
+              flex: 1,
+              borderLeft: '2px solid rgba(255,215,0,0.2)',
+              borderRight: '2px solid rgba(255,215,0,0.2)',
+            }}
+          >
             {[...new Array(dimensions.horizontalDimension)].map((_, sqrIndex) => {
               const currTile: number = ((rowIndex * dimensions.horizontalDimension) + sqrIndex);
               return (
@@ -64,10 +72,10 @@ const Board: React.FC = () => {
               )
             })
             }
-          </div >
+          </Box>
         )
       })}
-    </div>
+    </Box>
   )
 };
 

@@ -74,13 +74,13 @@ const setFlagFlipped: SetFlagFlippedFunc = (existingFlippers, flagFlipped) => {
   return [...existingFlippers];
 };
 
-type GenerateMinesFunc = (dimensions: { numberOfMines: number, verticalDimension: number, horizontalDimension: number }) => number[];
+type GenerateMinesFunc = (dimensions: { numberOfMines: number, verticalDimension: number, horizontalDimension: number, safeTile?: number }) => number[];
 
-const generateMines: GenerateMinesFunc = ({ numberOfMines, verticalDimension, horizontalDimension }) => {
+const generateMines: GenerateMinesFunc = ({ numberOfMines, verticalDimension, horizontalDimension, safeTile }) => {
   let generatedMines: number[] = [];
   while (generatedMines.length < numberOfMines) {
     const mineCanidate = Math.floor(Math.random() * (verticalDimension * horizontalDimension));
-    if (!generatedMines.includes(mineCanidate)) {
+    if (!generatedMines.includes(mineCanidate) && mineCanidate !== safeTile) {
       generatedMines.push(mineCanidate);
     }
   };

@@ -1,44 +1,31 @@
-
 import React from "react";
-import {Link, useLocation} from 'react-router-dom';
+import { Link as RouterLink, useLocation } from "react-router-dom";
+import Button from "@mui/material/Button";
 
-interface LoggedOutViewProps {
-};
-
-const LoggedOutView: React.FC<LoggedOutViewProps> = () => {
-
+const LoggedOutView: React.FC = () => {
   const location = useLocation();
+  const loginSelected = location.pathname === "/login" || location.pathname === "/fullstack/minesweeper/login";
+  const registerSelected = location.pathname === "/register";
+  const scoreboardSelected = location.pathname === "/scoreboard";
 
-  const loginSelected = location.pathname === '/login' || location.pathname === '/fullstack/minesweeper/login';
-  const registerSelected = location.pathname === '/register';
-  const scoreboardSelected = location.pathname === '/scoreboard'
+  const navBtn = (to: string, label: string, selected: boolean) => (
+    <Button
+      component={RouterLink}
+      to={to}
+      variant={selected ? "contained" : "text"}
+      color="primary"
+      size="small"
+      sx={{ flex: 1, borderRadius: 0, py: 0.75 }}
+    >
+      {label}
+    </Button>
+  );
 
   return (
     <>
-      <li
-        className={
-          (loginSelected && `selected-header header-nav-ul-li`) ||
-          `header-nav-ul-li`
-        }
-      >
-        <Link to='/login'>Login</Link>
-      </li>
-      <li
-        className={
-          (registerSelected && `selected-header header-nav-ul-li`) ||
-          `header-nav-ul-li`
-        }
-      >
-        <Link to={'/register'}>Register</Link>
-      </li>
-      <li
-        className={
-          (scoreboardSelected && `selected-header header-nav-ul-li`) ||
-          `header-nav-ul-li`
-        }
-      >
-        <Link to={'/scoreboard'}>High Scores</Link>
-      </li>
+      {navBtn("/login", "Login", loginSelected)}
+      {navBtn("/register", "Register", registerSelected)}
+      {navBtn("/scoreboard", "High Scores", scoreboardSelected)}
     </>
   );
 };

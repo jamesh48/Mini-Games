@@ -10,11 +10,12 @@ const cssRules = {
     MiniCssExtractPlugin.loader,
     {
       loader: "css-loader",
+      options: { url: false },
     },
     {
       loader: "sass-loader",
       options: {
-        additionalData: process.env.CloudfrontCSS,
+        additionalData: process.env.CloudfrontCSS || "$Cloudfront: '';",
       },
     },
   ],
@@ -33,12 +34,26 @@ const jsRules = {
 
 const tsRules = {
   test: /\.(ts|tsx)?$/,
-  use: "ts-loader",
+  use: {
+    loader: "ts-loader",
+    options: {
+      compilerOptions: {
+        emitDecoratorMetadata: true,
+      },
+    },
+  },
   exclude: /node_modules/,
+};
+
+const mjsRules = {
+  test: /\.mjs$/,
+  include: /node_modules/,
+  type: 'javascript/auto',
+  resolve: { fullySpecified: false },
 };
 
 module.exports = {
   module: {
-    rules: [jsRules, cssRules, tsRules],
+    rules: [mjsRules, jsRules, cssRules, tsRules],
   },
 };

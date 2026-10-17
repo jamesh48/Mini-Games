@@ -2,7 +2,13 @@ import React from "react";
 import LeaderBoardEntry from "TSComponents/Leaderboard/LeaderboardEntry";
 import PageNoUl from "./Pagination/pageNoUl";
 import { useGlobalContext } from "GlobalStore";
-import "./leaderboard.scss";
+import Box from "@mui/material/Box";
+import Paper from "@mui/material/Paper";
+import Stack from "@mui/material/Stack";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import Divider from "@mui/material/Divider";
+import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 import {
   FormatTimeFunc,
   GenericScore,
@@ -19,6 +25,8 @@ import {
   useGetIntermediateScoresQuery,
 } from "TSSrc/generated/graphql";
 
+const SKILL_LEVELS = ["beginner", "intermediate", "advanced"] as const;
+
 const Leaderboard: React.FC<LeaderboardProps> = React.memo((props) => {
   const [
     {
@@ -33,25 +41,16 @@ const Leaderboard: React.FC<LeaderboardProps> = React.memo((props) => {
   const handleScoreLength = () => {
     if (skillLevel === "beginner") {
       const { data } = useGetBeginnerScoresQuery();
-      if (data?.allBeginnerScores.length) {
-        return data.allBeginnerScores.length;
-      }
+      if (data?.allBeginnerScores.length) return data.allBeginnerScores.length;
     }
-
     if (skillLevel === "intermediate") {
       const { data } = useGetIntermediateScoresQuery();
-      if (data?.allIntermediateScores.length) {
-        return data.allIntermediateScores.length;
-      }
+      if (data?.allIntermediateScores.length) return data.allIntermediateScores.length;
     }
-
     if (skillLevel === "advanced") {
       const { data } = useGetAdvancedScoresQuery();
-      if (data?.allAdvancedScores.length) {
-        return data.allAdvancedScores.length;
-      }
+      if (data?.allAdvancedScores.length) return data.allAdvancedScores.length;
     }
-
     return 10;
   };
 
@@ -59,94 +58,119 @@ const Leaderboard: React.FC<LeaderboardProps> = React.memo((props) => {
     array: GenericScore[],
     currentPage: number,
     pageOffset: number
-  ) => {
-    return array
+  ) =>
+    array
       .slice(0)
       .sort((a, b) => a.time - b.time)
       .slice(currentPage * pageOffset, currentPage * pageOffset + pageOffset);
-  };
 
   const handleScoreView: HandleScoreViewFunc = (ssrTopTimes) => {
-
     if (typeof window === "undefined" && ssrTopTimes) {
       return ssrTopTimes.slice(0, pageOffset);
     }
-
     if (skillLevel === "beginner") {
       const { data } = useGetBeginnerScoresQuery();
-      const topScores = data?.allBeginnerScores;
-      if (topScores) {
-        let test = handleScoreViewHelper(topScores, currentPage, pageOffset);
-        return test;
-      }
+      if (data?.allBeginnerScores)
+        return handleScoreViewHelper(data.allBeginnerScores, currentPage, pageOffset);
     }
-
     if (skillLevel === "intermediate") {
       const { data } = useGetIntermediateScoresQuery();
-      const topScores = data?.allIntermediateScores;
-      if (topScores) {
-        let test = handleScoreViewHelper(topScores, currentPage, pageOffset);
-        return test;
-      }
+      if (data?.allIntermediateScores)
+        return handleScoreViewHelper(data.allIntermediateScores, currentPage, pageOffset);
     }
-
     if (skillLevel === "advanced") {
       const { data } = useGetAdvancedScoresQuery();
-      const topScores = data?.allAdvancedScores;
-
-      if (topScores) {
-        return handleScoreViewHelper(topScores, currentPage, pageOffset);
-      }
+      if (data?.allAdvancedScores)
+        return handleScoreViewHelper(data.allAdvancedScores, currentPage, pageOffset);
     }
-
-    return [
-      {
-        username: "loading",
-        time: 0,
-        updatedAt: "",
-        createdAt: "",
-        id: 1,
-      },
-    ];
+    return [{ username: "loading", time: 0, updatedAt: "", createdAt: "", id: 1 }];
   };
 
   const [personalized, setPersonalized] = React.useState<Personalized>(false);
 
   const formatTime: FormatTimeFunc = (time) => {
-    const centiseconds = ("0" + (Math.floor(time / 10) % 100)).slice(-2);
-    const seconds = ("0" + (Math.floor(time / 1000) % 60)).slice(-2);
-    const minutes = ("0" + (Math.floor(time / 60000) % 60)).slice(-2);
-    const hours = ("0" + Math.floor(time / 3600000)).slice(-2);
-
-    return minutes !== "00"
-      ? `${minutes} : ${seconds} . ${centiseconds}`
-      : hours !== "00"
-      ? `${hours} : ${minutes}: ${seconds} . ${centiseconds}`
-      : `${seconds} . ${centiseconds} secs`;
+    const cs = ("0" + (Math.floor(time / 10) % 100)).slice(-2);
+    const s  = ("0" + (Math.floor(time / 1000) % 60)).slice(-2);
+    const m  = ("0" + (Math.floor(time / 60000) % 60)).slice(-2);
+    const h  = ("0" + Math.floor(time / 3600000)).slice(-2);
+    return m !== "00"
+      ? `${m}:${s}.${cs}`
+      : h !== "00"
+      ? `${h}:${m}:${s}.${cs}`
+      : `${s}.${cs}s`;
   };
 
   const handleClickPersonalized: LeaderboardHandleClickFunc = (e) => {
     const userName = e.currentTarget.innerHTML;
-    return userName ? setPersonalized(userName) : setPersonalized(false);
+    setPersonalized(userName || false);
   };
 
   const handleClickPage: HandleClickPageFunc = (e) => {
-    const selected = Number(e.currentTarget.children[0].innerHTML) - 1;
-    setCurrentPage(selected);
+    setCurrentPage(Number(e.currentTarget.children[0].innerHTML) - 1);
   };
 
   const makeTitle: MakeTitleFunc = (personalized, skillLevel) =>
     personalized
-      ? `${personalized}s ${skillLevel} Leaderboard:`
+      ? `${personalized}'s ${skillLevel} Leaderboard`
       : `${skillLevel} Leaderboard`;
 
   return (
-    <div id="leaderboard">
-      <h3 id="leaderboard-header">{makeTitle(personalized, skillLevel)}</h3>
-      <div className="winners-circle">
-        <div className="scores-list-container">
-          {(handleScoreView(props?.ssrTopTimes) || []).map((entry, index) => {
-            return entry ? (
+    <Paper
+      elevation={8}
+      sx={{
+        bgcolor: "background.paper",
+        border: (t) => `3px inset ${t.palette.primary.main}`,
+        width: { xs: "95%", sm: "80%", md: "50%" },
+        maxWidth: 700,
+        height: "90vh",
+        mx: "auto",
+        display: "flex",
+        flexDirection: "column",
+        overflow: "hidden",
+      }}
+    >
+      {/* Header */}
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: 1,
+          py: 1.25,
+          px: 2,
+        }}
+      >
+        <EmojiEventsIcon sx={{ color: "primary.main" }} />
+        <Typography
+          variant="h6"
+          sx={{
+            color: "primary.main",
+            textTransform: "capitalize",
+            fontSize: "clamp(0.9rem, 2.5vw, 1.2rem)",
+            fontWeight: 700,
+            letterSpacing: "0.05em",
+          }}
+        >
+          {makeTitle(personalized, skillLevel)}
+        </Typography>
+        <EmojiEventsIcon sx={{ color: "primary.main" }} />
+      </Box>
+
+      <Divider sx={{ borderColor: "primary.main", opacity: 0.4 }} />
+
+      {/* Scores panel */}
+      <Box
+        sx={{
+          flex: 1,
+          display: "flex",
+          flexDirection: "column",
+          bgcolor: "secondary.main",
+          overflow: "hidden",
+        }}
+      >
+        <Box sx={{ flex: 1, overflowY: "auto" }}>
+          {(handleScoreView(props?.ssrTopTimes) || []).map((entry, index) =>
+            entry ? (
               <LeaderBoardEntry
                 key={index}
                 currentPage={currentPage}
@@ -156,9 +180,10 @@ const Leaderboard: React.FC<LeaderboardProps> = React.memo((props) => {
                 handleClick={handleClickPersonalized}
                 formatTime={formatTime}
               />
-            ) : null;
-          })}
-        </div>
+            ) : null
+          )}
+        </Box>
+
         <PageNoUl
           pageOffset={pageOffset}
           handleClick={handleClickPage}
@@ -166,43 +191,41 @@ const Leaderboard: React.FC<LeaderboardProps> = React.memo((props) => {
           topTimesPerPage={pageOffset}
           noOfTopTimes={handleScoreLength()}
         />
-      </div>
+      </Box>
 
-      <div className="leaderboard-buttons-container">
-        {personalized ? (
-          <input
-            type="button"
-            onClick={(e) => handleClickPersonalized(e)}
-            className="return-to-leaderboard-button"
-            value={`return to ${skillLevel} LeaderBoard`}
-          />
-        ) : null}
-        <div className="leaderboard-skill-level-selector-container">
-          <input
-            className="leaderboard-skill-level-selector-button"
-            type="button"
-            value="beginner"
-            onClick={() => globalDispatch({ type: "SET BEGINNER DIMENSIONS" })}
-          />
-          <input
-            className="leaderboard-skill-level-selector-button"
-            type="button"
-            value="intermediate"
-            onClick={() =>
-              globalDispatch({ type: "SET INTERMEDIATE DIMENSIONS" })
-            }
-          />
-          <input
-            className="leaderboard-skill-level-selector-button"
-            type="button"
-            value="advanced"
-            onClick={() => {
-              globalDispatch({ type: "SET ADVANCED DIMENSIONS" });
-            }}
-          />
-        </div>
-      </div>
-    </div>
+      <Divider sx={{ borderColor: "primary.main", opacity: 0.4 }} />
+
+      {/* Footer */}
+      <Stack spacing={0.75} sx={{ py: 1, px: 1.5 }}>
+        {personalized && (
+          <Button
+            variant="outlined"
+            size="small"
+            color="primary"
+            onClick={() => setPersonalized(false)}
+            sx={{ alignSelf: "center" }}
+          >
+            ← Back to {skillLevel} Leaderboard
+          </Button>
+        )}
+
+        <Stack direction="row" sx={{ justifyContent: "center", flexWrap: "wrap", gap: 0.75 }}>
+          {SKILL_LEVELS.map((level) => (
+            <Button
+              key={level}
+              variant={skillLevel === level ? "contained" : "outlined"}
+              color="primary"
+              size="small"
+              onClick={() =>
+                globalDispatch({ type: `SET ${level.toUpperCase()} DIMENSIONS` as any })
+              }
+            >
+              {level}
+            </Button>
+          ))}
+        </Stack>
+      </Stack>
+    </Paper>
   );
 });
 

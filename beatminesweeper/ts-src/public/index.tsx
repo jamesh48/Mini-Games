@@ -9,17 +9,17 @@ import {
   ApolloProvider,
   HttpLink,
 } from "@apollo/client";
-
+import { ThemeProvider } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
+import theme from "./theme/theme";
 import { GlobalStoreProvider } from "GlobalStore";
 import { GenericScore } from "./components/Leaderboard/leaderboard-types";
 
-const link = 'https://www.beatminesweeper.app/graphql';
+const link = '/graphql';
 
 const httpLink = new HttpLink({
   uri: link,
-  fetchOptions: {
-    credentials: "include",
-  },
+  credentials: "include",
 });
 
 const client = new ApolloClient({
@@ -36,12 +36,15 @@ declare const window: Window &
 
 
 ReactDOM.hydrate(
-  <ApolloProvider client={client}>
-    <GlobalStoreProvider>
-      <BrowserRouter>
-        <Home ssrTopTimes={window.__INITIAL__DATA__.ssrTopTimes} />
-      </BrowserRouter>
-    </GlobalStoreProvider>
-  </ApolloProvider>,
+  <ThemeProvider theme={theme}>
+    <CssBaseline />
+    <ApolloProvider client={client}>
+      <GlobalStoreProvider>
+        <BrowserRouter>
+          <Home ssrTopTimes={window.__INITIAL__DATA__.ssrTopTimes} />
+        </BrowserRouter>
+      </GlobalStoreProvider>
+    </ApolloProvider>
+  </ThemeProvider>,
   document.getElementById("minesweeper-root")
 );

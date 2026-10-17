@@ -113,6 +113,8 @@ const revealFlipperEffect: RevealFlipperEffectFunc = (args) => {
         Object.keys(numbers).every((num) => flippers[num] === true)
       ) {
         boardDispatch({ type: "REVEAL FLIPPERS", payload: { mineArr } });
+        // Sync counter: auto-flagging remaining mines means 0 flags left in hand
+        boardDispatch({ type: "SET FLAGS REMAINING", payload: 0 });
       }
     }
   }, [flippers]);

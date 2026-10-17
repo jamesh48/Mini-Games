@@ -34,7 +34,9 @@ const main = async () => {
 
   app.use(cors(
     {
-      origin: ['https://fullstackhrivnak.com', 'https://beatminesweeper.app'],
+      origin: __prod__
+        ? ['https://fullstackhrivnak.com', 'https://beatminesweeper.app']
+        : ['http://localhost:4000', 'http://127.0.0.1:4000'],
       credentials: true
     })
   )

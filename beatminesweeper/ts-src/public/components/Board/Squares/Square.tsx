@@ -1,8 +1,10 @@
 import React from 'react';
 import {CurrTile} from 'MinesweeperTypes';
 import { genNumberClassNames, genEmptyClassNames, genMineClassNames, handleClick, generateLoginMessage } from './squareUtils';
+import { generateMines, generateNumbers } from '../BoardStore/boardActions';
 import { useGlobalContext } from 'GlobalStore';
 import { useBoardContext } from 'BoardStore';
+import Box from '@mui/material/Box';
 import './sweepsquarestyles.scss';
 
 type Props = {
@@ -23,11 +25,26 @@ const Square: React.FC<Props> = React.memo((props) => {
   const userNotLoggedIn = !definedUserName;
 
   return (
-    <div
+    <Box
       data-testid={`test-${currTile}`}
 
       onClick={
         (e) => {
+          // Safe first click: if the first click lands on a mine, regenerate the board
+          if (mineArr.includes(currTile) && !timerOn) {
+            const safeMines = generateMines({ ...dimensions, safeTile: currTile });
+            const safeNumbers = generateNumbers({ mineArr: safeMines, ...dimensions });
+            boardDispatch({ type: 'SET MINES', payload: { mines: safeMines } });
+            globalDispatch({ type: 'SWITCH TIMER ON' });
+            return handleClick(e, {
+              dimensions,
+              mineArr: safeMines,
+              numbers: safeNumbers,
+              currTile,
+              boardDispatch
+            });
+          }
+
           // If tile is a bomb...
           if (mineArr.includes(currTile)) {
             globalDispatch({ type: 'FREEZE TIMER STATE DEAD' });
@@ -144,7 +161,7 @@ const Square: React.FC<Props> = React.memo((props) => {
             : tileIsAMine ? '*'
               : null
       }
-    </div >
+    </Box>
   );
 });
 

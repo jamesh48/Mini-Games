@@ -10,8 +10,10 @@ import UserRegisterForm from "TSComponents/UserForms/Register";
 import LoggedInView from "TSComponents/Home/HeaderInterfaces/LoggedInView";
 import LoggedOutView from "TSComponents/Home/HeaderInterfaces/LoggedOutView";
 
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+
 import "./home.scss";
-import "./header.scss";
 import { useMeQuery, useLogoutMutation } from "TSSrc/generated/graphql";
 import { GenericScore } from "../Leaderboard/leaderboard-types";
 import { useGlobalContext } from "TSSrc/public/GlobalStore/GlobalStore";
@@ -23,14 +25,12 @@ interface HomeProps {
 export const Home: React.FC<HomeProps> = (props) => {
   const { data, loading } = useMeQuery();
 
-  const [{isProxied}, globalDispatch] = useGlobalContext();
+  const [{ isProxied }, globalDispatch] = useGlobalContext();
   const [logout] = useLogoutMutation();
-
-  let headerBody = null;
 
   React.useEffect(() => {
     if (window.location.href.indexOf("fullstack") > -1) {
-      globalDispatch({type: 'SET PROXIED TRUE'})
+      globalDispatch({ type: "SET PROXIED TRUE" });
     }
   }, []);
 
@@ -38,34 +38,48 @@ export const Home: React.FC<HomeProps> = (props) => {
     if (data?.me?.username) {
       globalDispatch({
         type: "SET DEFINED USERNAME",
-        payload: {
-          userName: data.me.username,
-        },
+        payload: { userName: data.me.username },
       });
     } else {
       globalDispatch({ type: "UNSET DEFINED USERNAME" });
     }
   }, [data]);
 
-  headerBody = loading ? null : !data?.me ? (
+  const headerBody = loading ? null : !data?.me ? (
     <LoggedOutView />
   ) : (
     <LoggedInView username={data.me.username} logout={logout} />
   );
 
+  const isLoggedIn = !!data?.me?.username;
+
   return !isProxied ? (
     <>
-      <nav className="header-nav">
-        <ul
-          className={
-            data?.me?.username
-              ? `header-nav-ul header-is-concealed`
-              : `header-nav-ul`
-          }
+      <AppBar
+        position="static"
+        elevation={2}
+        sx={{
+          bgcolor: "secondary.dark",
+          mb: 0.5,
+          ...(isLoggedIn && {
+            opacity: 0,
+            transition: "opacity 3s",
+            "& *": { pointerEvents: "none" },
+            "&:hover": {
+              opacity: 1,
+              "& *": { pointerEvents: "auto" },
+            },
+          }),
+        }}
+      >
+        <Toolbar
+          variant="dense"
+          disableGutters
+          sx={{ px: 0, display: "flex" }}
         >
           {headerBody}
-        </ul>
-      </nav>
+        </Toolbar>
+      </AppBar>
 
       <Switch>
         <Route path="/login">
