@@ -49,6 +49,9 @@ export default () => {
   const [power, powerRef] = useOscillator(phase === "power", POWER_PERIOD);
 
   const [validationMessage, setValidationMessage] = React.useState<ValidationMessage | null>(null);
+  // Bumped on every message so back-to-back strikes replay the toast animation
+  const [messageId, setMessageId] = React.useState(0);
+  const messageTimer = useRef<number>();
   const pendingMessage = useRef<ValidationMessage | null>(null);
   const pinsClientHeight = useRef<HTMLDivElement>(null);
 
@@ -59,8 +62,10 @@ export default () => {
   const showMessage = (message: ValidationMessage | null) => {
     pendingMessage.current = null;
     if (!message) return;
+    window.clearTimeout(messageTimer.current);
     setValidationMessage(message);
-    setTimeout(() => setValidationMessage(null), MESSAGE_DURATION[message]);
+    setMessageId((id) => id + 1);
+    messageTimer.current = window.setTimeout(() => setValidationMessage(null), MESSAGE_DURATION[message]);
   };
 
   useEffect(() => {
@@ -110,12 +115,12 @@ export default () => {
     setRolls([]);
     setPinMap(pinReset());
     setPhase("aim");
+    window.clearTimeout(messageTimer.current);
     setValidationMessage(null);
   };
 
   // Pressing locks your aim and starts the power meter; releasing bowls
   const handlePress = () => {
-    if (validationMessage) return;
     if (gameOver) {
       if (!sweeping) handleNewGame();
       return;
@@ -155,13 +160,19 @@ export default () => {
   return (
     <div id="bowling-alley">
       <Scorecard rolls={rolls} currentFrame={currentFrameIndex(rolls)} gameOver={gameOver} />
-      {validationMessage === "strike" ? (
-        <Strike />
-      ) : validationMessage === "spare" ? (
-        <Spare />
-      ) : validationMessage === "gutter" ? (
-        <Gutter />
-      ) : gameOver && !sweeping ? (
+      {/* Toasts float just under the scorecard, over the top of the lane */}
+      <div id="toast-anchor">
+        {validationMessage ? (
+          <div
+            className="toast"
+            key={messageId}
+            style={{ animationDuration: `${MESSAGE_DURATION[validationMessage]}ms` }}
+          >
+            {validationMessage === "strike" ? <Strike /> : validationMessage === "spare" ? <Spare /> : <Gutter />}
+          </div>
+        ) : null}
+      </div>
+      {gameOver && !sweeping ? (
         <GameOver score={scores[scores.length - 1]} onNewGame={handleNewGame} />
       ) : (
         <>

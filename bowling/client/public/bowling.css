@@ -24,7 +24,7 @@ body {
   position: relative;
   width: 272px;
   /* As long as the screen allows, leaving room for the scorecard and controls */
-  height: max(460px, min(720px, calc(100vh - 200px)));
+  height: max(460px, min(720px, calc(100vh - 260px)));
   overflow: hidden;
   cursor: pointer;
   border-left: 24px solid #4a4a4a;
@@ -185,22 +185,12 @@ body {
 
 #strike-message {
   color: green;
-  font-size: 200px;
-  font-family: 'PermanentMarker';
-  text-decoration: underline;
   background-color: yellowgreen;
-  width: 100%;
-  text-align: center;
 }
 
 #spare-message {
   color: orangered;
-  font-size: 200px;
-  font-family: 'PermanentMarker';
-  text-decoration: underline;
   background-color: burlywood;
-  width: 100%;
-  text-align: center;
 }
 
 #bowling-ball {
@@ -228,18 +218,61 @@ body {
 
 #gutter-message {
   color: ivory;
-  font-size: 200px;
-  font-family: 'PermanentMarker';
-  text-decoration: underline;
   background-color: darkslategrey;
+}
+
+/* Toast: slides down from under the scorecard, holds, then fades away.
+   Its animation-duration is set inline to match how long the message shows.
+   The anchor reserves a row for it so it never covers the lane. */
+#toast-anchor {
+  position: relative;
+  z-index: 10;
   width: 100%;
-  text-align: center;
+  height: 64px;
+  margin-bottom: 10px;
+}
+
+.toast {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  animation-name: toast;
+  animation-timing-function: ease-out;
+  animation-fill-mode: forwards;
+  pointer-events: none;
+}
+
+.toast > div {
+  padding: 4px 28px;
+  border-radius: 999px;
+  font-family: 'PermanentMarker';
+  font-size: 40px;
+  line-height: 56px;
+  white-space: nowrap;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+}
+
+@keyframes toast {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -16px);
+  }
+  10%,
+  85% {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -8px);
+  }
 }
 
 #scorecard {
   display: flex;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-  margin: 10px 0 20px;
+  margin: 10px 0;
   font-family: sans-serif;
   border: 2px solid darkslategrey;
   border-radius: 8px;

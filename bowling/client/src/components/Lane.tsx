@@ -3,10 +3,8 @@ import Pins from "./Pins";
 import BowlingBall from "./BowlingBall";
 import { GUTTER_EDGE, PIN_SPACING_PX, isGutter } from "./rollPhysics";
 
-// Where the top of the ball starts above the bottom of the lane, and how far it
-// reaches into the pin deck by the time it arrives at the head pin
-const BALL_START_PX = 74;
-const PIN_OVERLAP_PX = 68;
+// Gap between the bottom of the ball and the bottom of the lane (#ball-track's bottom)
+const BALL_START_PX = 14;
 const GUTTER_CENTER = GUTTER_EDGE + 0.2;
 
 const Lane: React.FC<{
@@ -20,13 +18,8 @@ const Lane: React.FC<{
   onPress: () => void;
 }> = ({ pinMap, pinsClientHeight, sweeping, sweepBarPosition, ballX, rolling, rollDuration, onPress }) => {
   const laneRef = useRef<HTMLDivElement>(null);
-  const pins = pinsClientHeight.current;
-  // Distance the ball travels from the foul line to the front of the pin deck
-  const rollTravel =
-    (laneRef.current?.clientHeight ?? 0) -
-    BALL_START_PX -
-    ((pins?.offsetTop ?? 0) + (pins?.clientHeight ?? 0)) +
-    PIN_OVERLAP_PX;
+  // The ball rolls the whole length of the lane, through the pin deck and off the far end
+  const rollTravel = (laneRef.current?.clientHeight ?? 0) - BALL_START_PX;
   // A gutter ball drops into the middle of the gutter
   const ballOffset = (isGutter(ballX) ? Math.sign(ballX) * GUTTER_CENTER : ballX) * PIN_SPACING_PX;
 
