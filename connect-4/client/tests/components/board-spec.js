@@ -1,98 +1,98 @@
-import 'jsdom-global/register';
 import React from 'react';
 import { expect } from 'chai';
-import { configure, mount, shallow } from 'enzyme';
-import App from '../../src/App.jsx';
-import Board from '../../src/components/board.jsx';
-import Square from '../../src/components/square.jsx';
-// import Adapter from 'enzyme-adapter-react-16';
-import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
+import { mount } from 'enzyme';
+import { act } from 'react-dom/test-utils';
+import App from '../../staging/App.js';
+import createFakeSocket from '../fake-socket.js';
 
-configure({ adapter: new Adapter() });
+const render = () => mount(<App createSocket={createFakeSocket} />);
+
+// Plays a move the way it arrives from the server, without the cascade animation
+const play = (wrapper, column) => act(() => { wrapper.instance().dropInColumn(column, false); });
 
 describe(`Win Annoucement`, () => {
   it('should announce a red win', async () => {
-    const wrapper = mount(<App />);
+    const wrapper = render();
     await wrapper.setState({
       winner: 'red'
     })
-    expect(wrapper.find("#annouce-winner").text()).to.equal('Red Wins!');
+    expect(wrapper.update().find("#annouce-winner").hostNodes().text()).to.equal('Red Wins!');
   })
 
   it('should announce a yellow win', async () => {
-    const wrapper = mount(<App />);
+    const wrapper = render();
     await wrapper.setState({
       winner: 'yellow'
     })
-    expect(wrapper.find("#annouce-winner").text()).to.equal('Yellow Wins!');
+    expect(wrapper.update().find("#annouce-winner").hostNodes().text()).to.equal('Yellow Wins!');
   })
 
   it('should announce a tie', async () => {
-    const wrapper = mount(<App />);
+    const wrapper = render();
     await wrapper.setState({
       winner: 'tie'
     })
-    expect(wrapper.find("#annouce-winner").text()).to.equal("It's a Tie!");
+    expect(wrapper.update().find("#annouce-winner").hostNodes().text()).to.equal("It's a Tie!");
   })
 })
 
 describe('Win Detection', () => {
   describe(`Vertical Win`, () => {
     it(`detects a vertical win`, async () => {
-      const wrapper = mount(<App />);
+      const wrapper = render();
       await wrapper.setState({
         t39: 'red',
         t32: 'red',
         t25: 'red',
       })
-      await wrapper.find(`[id=4]`).simulate(`click`)
+      play(wrapper, 4);
       expect(wrapper.state().winner).to.equal('red');
     });
   });
 
   describe(`Horizontal Win`, () => {
     it(`detects a horizontal win`, async () => {
-      const wrapper = mount(<App />);
+      const wrapper = render();
       await wrapper.setState({
         t36: 'red',
         t37: 'red',
         t38: 'red',
       })
-      await wrapper.find(`[id=4]`).simulate('click');
+      play(wrapper, 4);
       expect(wrapper.state().winner).to.equal('red');
     });
 
     it('should not detect a horizontal win on separate rows (3 + 1)', async () => {
-      const wrapper = mount(<App />);
+      const wrapper = render();
       await wrapper.setState({
         t33: 'red',
         t34: 'red',
         t35: 'red'
       })
-      await wrapper.find(`[id=1]`).simulate(`click`);
+      play(wrapper, 1);
 
       expect(wrapper.state().winner).to.equal(undefined);
     })
 
     it('should not detect a horizontal win on separate rows (2 + 2)', async () => {
-      const wrapper = mount(<App />);
+      const wrapper = render();
       await wrapper.setState({
         t34: 'red',
         t35: 'red',
         t36: 'red'
       });
-      await wrapper.find(`[id=2]`).simulate(`click`);
+      play(wrapper, 2);
       expect(wrapper.state().winner).to.equal(undefined);
     })
 
     it('should not detect a horizontal win on separate rows (1 + 3)', async () => {
-      const wrapper = mount(<App />);
+      const wrapper = render();
       wrapper.setState({
         t35: 'red',
         t36: 'red',
         t37: 'red',
       })
-      await wrapper.find(`[id=3]`).simulate(`click`);
+      play(wrapper, 3);
 
       expect(wrapper.state().winner).to.equal(undefined);
     })
@@ -100,48 +100,48 @@ describe('Win Detection', () => {
   })
   describe(`Right Diagonal Win`, () => {
     it(`detects a right diagonal win`, async () => {
-      const wrapper = mount(<App />);
+      const wrapper = render();
       await wrapper.setState({
         t15: 'red',
         t23: 'red',
         t31: 'red'
       })
-      await wrapper.find(`[id=4]`).simulate('click');
+      play(wrapper, 4);
       // Winner
       expect(wrapper.state().winner).to.equal('red');
     });
 
     it('1+3, should not detect a right diagonal win if c1 < c2', async () => {
-      const wrapper = mount(<App />);
+      const wrapper = render();
       await wrapper.setState({
         t7: 'red',
         t15: 'red',
         t23: 'red',
         t38: 'yellow'
       })
-      await wrapper.find(`[id=3]`).simulate('click');
+      play(wrapper, 3);
       expect(wrapper.state().winner).to.equal(undefined);
     });
 
     it('2+2, should not detect a right diagonal win if c3 < c2', async () => {
-      const wrapper = mount(<App />);
+      const wrapper = render();
       wrapper.setState({
         t13: 'red',
         t21: 'red',
         t29: 'red'
       })
-      await wrapper.find(`[id=2]`).simulate('click');
+      play(wrapper, 2);
       expect(wrapper.state().winner).to.equal(undefined);
     });
 
     it('3+1, should not detect a right diagonal win if c4 < c3)', async () => {
-      const wrapper = mount(<App />);
+      const wrapper = render();
       await wrapper.setState({
         t12: 'red',
         t20: 'red',
         t28: 'red'
       })
-      await wrapper.find(`[id=1]`).simulate('click');
+      play(wrapper, 1);
       expect(wrapper.state().winner).to.equal(undefined);
     })
 
@@ -150,19 +150,19 @@ describe('Win Detection', () => {
 
   describe(`Left Diagonal Win`, () => {
     it(`Should detect a left diagonal win`, async () => {
-      const wrapper = mount(<App />);
+      const wrapper = render();
       wrapper.setState({
         t18: 'red',
         t24: 'red',
         t30: 'red'
       })
-      await wrapper.find(`[id=1]`).simulate(`click`);
+      play(wrapper, 1);
       // Winner
       expect(wrapper.state().winner).to.equal('red');
     })
 
     it('1+3, should not detect a left diagonal win if c4 > c3)', async () => {
-      const wrapper = mount(<App />);
+      const wrapper = render();
       await wrapper.setState({
         t3: 'red',
         t9: 'red',
@@ -171,24 +171,24 @@ describe('Win Detection', () => {
         t35: 'red',
         t28: 'yellow'
       });
-      await wrapper.find(`[id=7]`).simulate(`click`);
+      play(wrapper, 7);
       expect(wrapper.state().winner).to.equal(undefined);
     })
 
     it('2+2, should not detect a left diagonal win if c3 > c2)', async () => {
-      const wrapper = mount(<App />);
+      const wrapper = render();
       await wrapper.setState({
         t16: 'red',
         t22: 'red',
         t28: 'red',
         t41: 'yellow'
       })
-      await wrapper.find(`[id=6]`).simulate(`click`);
+      play(wrapper, 6);
       expect(wrapper.state().winner).to.equal(undefined);
     })
 
     it('3+1, should not detect a left diagonal win if c2 > c1)', async () => {
-      const wrapper = mount(<App />);
+      const wrapper = render();
       wrapper.setState({
         t15: 'yellow',
         t21: 'yellow',
@@ -196,7 +196,7 @@ describe('Win Detection', () => {
         t40: 'red',
         turn: 'red'
       })
-      await wrapper.find(`[id=5]`).simulate(`click`);
+      play(wrapper, 5);
       expect(wrapper.state().winner).to.equal(undefined);
     })
 
@@ -204,7 +204,7 @@ describe('Win Detection', () => {
 
   describe(`Tie`, () => {
     it('should detect an obvious tie', async () => {
-      const wrapper = mount(<App />);
+      const wrapper = render();
       wrapper.setState({
         t1: 'yellow',
         t2: 'yellow',
@@ -254,7 +254,7 @@ describe('Win Detection', () => {
         t41: 'red',
         t42: 'red'
       })
-      await wrapper.find('[id=4]').simulate(`click`);
+      play(wrapper, 4);
       expect(wrapper.state().winner).to.equal('tie');
     });
   })

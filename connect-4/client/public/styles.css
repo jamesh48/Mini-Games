@@ -1,51 +1,38 @@
-#board {
-  display: grid;
-  grid-template-columns: 50px 50px 50px 50px 50px 50px 50px;
-  grid-template-rows: 50px 50px 50px 50px 50px 50px;
-  background-color: darkblue;
-  width: 350px;
-}
-
-
-.square {
-  text-align: center;
-  border: 1px solid goldenrod;
-  border-radius: 20px;
-  color: ivory;
-}
-
-.red {
-  background-color: red;
-  border: 1px solid goldenrod;
-}
-
-.yellow {
-  background-color: yellow;
-  border: 1px solid goldenrod;
-}
-
-.white {
-  border: 1px solid goldenrod;
-}
+/* Layout and colors live in the MUI components; this file only holds the move animation. */
 
 @keyframes drop {
-  from {bottom: 250px;}
-  to {bottom: 0px;}
+  0% { transform: translateY(calc((var(--cell) + var(--gap)) * (var(--row) + 1) * -1)); }
+  75% { transform: translateY(0); }
+  87% { transform: translateY(calc(var(--cell) * -0.12)); }
+  100% { transform: translateY(0); }
+}
+
+.square.yellow,
+.square.red {
+  animation: drop calc(0.27s + 0.09s * var(--row)) cubic-bezier(0.5, 0, 1, 0.6);
 }
 
 @keyframes highlight {
-  from {background-color: ivory;}
-  to {background-color: initial}
+  from { background-color: ivory; }
+  to { background-color: #0b1426; }
 }
 
-.white {
-  animation-name: highlight;
-  animation-duration: 1.5s;
+.square.white {
+  animation: highlight 1.5s;
 }
 
-.yellow, .red {
-  position: relative;
-  animation-name: drop;
-  animation-duration: 1.0s;
-  z-index: 0;
+/* Discs already on the board light up as the cascade passes. An overlay keeps the disc's own drop animation from replaying. */
+@keyframes chip-highlight {
+  from { opacity: 0.45; }
+  to { opacity: 0; }
+}
+
+.square.lit::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: ivory;
+  pointer-events: none;
+  animation: chip-highlight 1.5s forwards;
 }

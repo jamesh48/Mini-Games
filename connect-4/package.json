@@ -4,12 +4,18 @@
   "description": "",
   "main": "server.js",
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@mui/icons-material": "^5.18.0",
+    "@mui/material": "^5.18.0",
     "express": "^4.17.1",
     "jquery": "^3.5.1",
     "mysql2": "^2.2.5",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
-    "sinon": "^9.2.4"
+    "sinon": "^9.2.4",
+    "socket.io": "^4.8.4",
+    "socket.io-client": "^4.8.4"
   },
   "devDependencies": {
     "@babel/core": "^7.13.1",
@@ -27,6 +33,7 @@
     "babel-preset-stage-0": "^6.24.1",
     "babel-register": "^6.26.0",
     "chai": "^4.3.0",
+    "concurrently": "^9.2.5",
     "css-loader": "^5.0.2",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.6",
@@ -34,17 +41,23 @@
     "jsdom-global": "3.0.2",
     "mocha": "^8.3.0",
     "mocha-jsdom": "^2.0.0",
+    "nodemon": "^3.1.14",
     "react-addons-test-utils": "^15.6.2",
     "react-test-renderer": "^17.0.1",
     "style-loader": "^2.0.0",
+    "typescript": "^4.9.5",
     "webpack": "^5.22.0",
     "webpack-cli": "^4.5.0",
     "webpack-dev-server": "^3.11.2"
   },
   "scripts": {
-    "test": "mocha --require @babel/register --require babel-polyfill client/tests --recursive",
+    "pretest": "npm run compile:client",
+    "test": "mocha --require @babel/register --require babel-polyfill --require client/tests/setup.js client/tests/components --recursive --exit",
+    "compile:server": "tsc -p server",
+    "prestart": "npm run compile:server",
     "start": "nodemon ./server/dist/server.js",
-    "react-dev": "webpack --watch"
+    "compile:client": "tsc -p client",
+    "react-dev": "npm run compile:client && concurrently \"tsc -p client --watch --preserveWatchOutput\" \"NODE_OPTIONS=--openssl-legacy-provider webpack --watch\""
   },
   "author": "James Hrivnak",
   "license": "ISC"

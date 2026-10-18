@@ -4,7 +4,7 @@ var DIST_DIR = path.join(__dirname, "/client/public");
 // var combineLoaders = require('webpack-combine-loaders')
 module.exports = {
   mode: "development",
-  entry: `${SRC_DIR}/index.jsx`,
+  entry: `${SRC_DIR}/index.js`,
   output: {
     filename: "bundle.js",
     path: DIST_DIR
@@ -29,6 +29,9 @@ module.exports = {
       //   ])
       // }
     ]
+  },
+  resolve: {
+    extensions: [".js", ".jsx"]
   },
   devtool: "source-map",
   devServer: {
