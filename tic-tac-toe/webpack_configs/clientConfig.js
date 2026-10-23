@@ -2,7 +2,7 @@ const webpack = require('webpack');
 const nodeExternals = require("webpack-node-externals");
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
-const { aliases, stats } = require('./shareableConfigs.js');
+const { aliases, extensions, stats } = require('./shareableConfigs.js');
 
 const cssRules = require(path.resolve(__dirname, 'cssRules.js'));
 const jsRules = require(path.resolve(__dirname, 'jsRules.js'));
@@ -11,7 +11,7 @@ module.exports = {
   mode: "development",
   devtool: "source-map",
   resolve: {
-    extensions: ['*', '.js', '.jsx'],
+    extensions,
     // https://betterprogramming.pub/use-absolute-paths-with-react-51ced66f119f
     alias: aliases
   },
@@ -24,10 +24,10 @@ module.exports = {
     }),
   ],
   entry: {
-    "index": path.resolve(__dirname, '../src/index.js'),
+    "index": path.resolve(__dirname, '../src/index.tsx'),
   },
   module: {
-    rules: [jsRules, cssRules],
+    rules: [jsRules(), cssRules],
   },
   output: {
     path: path.resolve(__dirname, "../dist/public"),

@@ -1,5 +1,5 @@
 {
-  "testRegex": "((\\.|/*.)(spec))\\.js?$",
+  "testRegex": "\\.spec\\.(js|jsx|ts|tsx)$",
   "moduleNameMapper": {
     "^.+\\.(css|less|scss)$": "babel-jest"
   },

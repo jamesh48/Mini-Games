@@ -1,14 +1,14 @@
 const path = require('path');
 
 const aliases = {
-  GlobalUtils: path.resolve(__dirname, '../globalUtils.js'),
   Public: path.resolve(__dirname, '../dist/public'),
   Components: path.resolve(__dirname, '../src/public/components'),
-  MainStore: path.resolve(__dirname, '../src/public/components/MainComponents/MainStore/mainStore.js'),
-  PlayerHeaderStore: path.resolve(__dirname, '../src/public/components/PlayerHeaderComponents/PlayerHeaderStore/playerHeaderStore.js'),
-  BoardStore: path.resolve(__dirname, '../src/public/components/BoardComponents/BoardStore/boardStore.js'),
+  GameStore: path.resolve(__dirname, '../src/public/components/GameStore/gameStore.tsx'),
+  Theme: path.resolve(__dirname, '../src/public/theme.ts'),
   Database: path.resolve(__dirname, '../database')
 };
+
+const extensions = ['.tsx', '.ts', '.js', '.jsx'];
 
 const stats = {
   cached: false,
@@ -20,6 +20,4 @@ const stats = {
 };
 // stats: 'minimal' || 'errors-only
 
-module.exports = { aliases, stats };
-
-
+module.exports = { aliases, extensions, stats };

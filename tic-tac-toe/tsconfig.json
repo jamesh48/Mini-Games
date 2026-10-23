@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "target": "es2020",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "lib": ["dom", "dom.iterable", "es2020"],
+    "jsx": "react",
+    "strict": true,
+    "noEmit": true,
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "types": ["node", "jest"],
+    "paths": {
+      "Components/*": ["./src/public/components/*"],
+      "GameStore": ["./src/public/components/GameStore/gameStore.tsx"],
+      "Theme": ["./src/public/theme.ts"]
+    }
+  },
+  "include": ["src", "jest.setup.js"]
+}
